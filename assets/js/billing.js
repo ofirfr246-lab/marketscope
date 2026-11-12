@@ -1,4 +1,4 @@
-/* MarketScope checkout — calls the create-checkout / create-portal edge functions. */
+/* MarketScope checkout — opens Stripe Payment Links (no secret key required). */
 import { SUPABASE_URL, SUPABASE_ANON_KEY, isSupabaseConfigured } from "./supabase-config.js";
 
 var CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
@@ -16,6 +16,24 @@ function isYearly() {
   var sw = $(".switch[aria-checked], .switch");
   if (sw && sw.getAttribute("aria-checked") === "true") return true;
   return false;
+}
+
+function linkFor(lookup) {
+  var cfg = window.MS_STRIPE || {};
+  return (cfg.links && lookup && cfg.links[lookup]) || "";
+}
+
+function portalLoginUrl() {
+  var cfg = window.MS_STRIPE || {};
+  return cfg.portalLoginUrl || "";
+}
+
+function withParams(base, params) {
+  var u = new URL(base, window.location.href);
+  Object.keys(params).forEach(function (k) {
+    if (params[k]) u.searchParams.set(k, params[k]);
+  });
+  return u.toString();
 }
 
 async function getSb() {
@@ -53,8 +71,7 @@ function clearPending() {
 
 function goSignup(lookup, plan) {
   setPending(lookup);
-  var q = "signup.html?plan=" + encodeURIComponent(plan || "free");
-  window.location.href = q;
+  window.location.href = "signup.html?plan=" + encodeURIComponent(plan || "free");
 }
 
 function setBusy(el, on) {
@@ -62,23 +79,6 @@ function setBusy(el, on) {
   el.disabled = !!on;
   if (on) el.setAttribute("data-busy", "1");
   else el.removeAttribute("data-busy");
-}
-
-async function invoke(name, body) {
-  var session = await currentSession();
-  if (!session) return { status: 401, payload: { error: "Unauthorized", code: "unauthorized" } };
-  var sb = await getSb();
-  var inv = await sb.functions.invoke(name, { body: body || {} });
-  var payload = inv.data || {};
-  var status = 200;
-  if (inv.error) {
-    status = (inv.error.context && inv.error.context.status) || 500;
-    if (!payload.error && typeof inv.error.context?.json === "function") {
-      try { payload = await inv.error.context.json(); } catch (e) { /* ignore */ }
-    }
-    if (!payload.error) payload = { error: inv.error.message || "Request failed", code: "invoke_failed" };
-  }
-  return { status: payload.code === "payments_not_configured" ? 503 : status, payload: payload };
 }
 
 function toast(msg, ok) {
@@ -93,67 +93,49 @@ function toast(msg, ok) {
   box.textContent = msg;
 }
 
+function sessionIdentity(session) {
+  var user = (session && session.user) || {};
+  var email = user.email || (user.user_metadata && user.user_metadata.email) || "";
+  return { id: user.id || "", email: email };
+}
+
 async function startCheckout(lookup, btn) {
   if (!lookup) return;
+  var href = linkFor(lookup);
+  if (!href) {
+    toast("This plan is not available yet.", false);
+    return;
+  }
   var session = await currentSession();
   if (!session) {
     var plan = lookup.indexOf("topup_") === 0 ? "free" : lookup.split("_")[0];
     goSignup(lookup, plan);
     return;
   }
+  var ident = sessionIdentity(session);
   setBusy(btn, true);
   toast("Opening secure Stripe checkout…", true);
-  try {
-    var res = await invoke("create-checkout", { lookup_key: lookup });
-    if (res.status === 401) {
-      var plan2 = lookup.split("_")[0];
-      goSignup(lookup, plan2);
-      return;
-    }
-    if (res.status === 503 || res.payload.code === "payments_not_configured") {
-      toast("Payments are not configured yet. The site owner still needs to add the Stripe keys in Supabase.", false);
-      return;
-    }
-    if (res.status === 409 || res.payload.code === "already_subscribed") {
-      toast(res.payload.error || "You already have a subscription. Use Manage billing to change plans.", false);
-      return;
-    }
-    if (res.payload && res.payload.url) {
-      clearPending();
-      window.location.href = res.payload.url;
-      return;
-    }
-    toast(res.payload.error || "Checkout could not be started.", false);
-  } catch (e) {
-    toast("Checkout could not be started. Please try again.", false);
-  } finally {
-    setBusy(btn, false);
-  }
+  clearPending();
+  window.location.href = withParams(href, {
+    client_reference_id: ident.id,
+    prefilled_email: ident.email
+  });
 }
 
 async function startPortal(btn) {
+  var href = portalLoginUrl();
+  if (!href) {
+    toast("Billing portal is not available yet.", false);
+    return;
+  }
   var session = await currentSession();
   if (!session) {
     window.location.href = "login.html?next=dashboard.html";
     return;
   }
+  var ident = sessionIdentity(session);
   setBusy(btn, true);
-  try {
-    var res = await invoke("create-portal", {});
-    if (res.status === 503 || res.payload.code === "payments_not_configured") {
-      toast("Payments are not configured yet.", false);
-      return;
-    }
-    if (res.payload && res.payload.url) {
-      window.location.href = res.payload.url;
-      return;
-    }
-    toast(res.payload.error || "Billing portal could not be opened.", false);
-  } catch (e) {
-    toast("Billing portal could not be opened.", false);
-  } finally {
-    setBusy(btn, false);
-  }
+  window.location.href = withParams(href, { prefilled_email: ident.email });
 }
 
 function bind() {
@@ -189,7 +171,6 @@ async function resumePending() {
   if (!pending) return;
   var session = await currentSession();
   if (!session) return;
-  // Only auto-resume on dashboard or pricing after a successful sign-in.
   var page = (document.body && document.body.getAttribute("data-page")) || "";
   var path = location.pathname || "";
   if (page !== "dashboard" && page !== "pricing" && !/dashboard\.html|pricing\.html/.test(path)) return;

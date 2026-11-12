@@ -664,7 +664,7 @@ async function initDashboard() {
       else sub.textContent = "Free plan includes 5 one-time credits. Upgrade or buy a credit pack from Pricing — paid credits are applied after Stripe confirms payment.";
     }
     var bill = document.querySelector("[data-manage-billing]");
-    if (bill) bill.hidden = !(profile && profile.stripe_customer_id);
+    if (bill) bill.hidden = !(window.MS_STRIPE && window.MS_STRIPE.portalLoginUrl);
   }
   paintProfile(profile);
 
