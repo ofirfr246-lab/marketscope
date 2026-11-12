@@ -1,0 +1,5951 @@
+{
+  "as_of": "2026-11-12",
+  "as_of_label": "Nov 12, 2026",
+  "market": "United States",
+  "market_code": "US",
+  "source": "Google Shopping & Google Search via DataForSEO",
+  "label": "Live data snapshot \u00b7 Google Shopping & Search \u00b7 US \u00b7 Nov 12, 2026",
+  "estimated_provider_cost_usd": 0.6425,
+  "product_count": 6,
+  "products": [
+    {
+      "query": "magnetic phone mount",
+      "ticker": "MAGMOUNT-US",
+      "product": "magnetic phone mount",
+      "market": "United States",
+      "market_code": "US",
+      "category": "tech",
+      "category_name": "Tech Accessories",
+      "verdict": "HOLD",
+      "verdict_rule": "Opportunity \u2265 50, or demand \u2265 45 with competition \u2264 70.",
+      "scores": {
+        "demand": 76,
+        "saturation": 59,
+        "competition": 89,
+        "opportunity": 50
+      },
+      "advisor": "For \u201cmagnetic phone mount\u201d in United States, MarketScope measures about 8,100 monthly searches, with a stable 12-month trend. Demand scores 76/100, competition 89/100 and saturation 59/100, producing an Opportunity score of 50/100 and a verdict of HOLD (Opportunity \u2265 50, or demand \u2265 45 with competition \u2264 70.) We counted 65 Google Shopping listings from 26 sellers, priced from $6.68 to $69.00. A reasonable selling band is $13.17\u2013$19.99 (the 30th\u201350th percentile of visible Google Shopping prices, just below the median of $19.99). The leading visible seller is Best Buy with about 15% of listings. Paid and shopping units are fairly dense on the Google results page, so customer-acquisition costs may be material. This summary is generated from the scores and listing stats above \u2014 not from a language model.",
+      "opportunities": [
+        "Recommended selling band: $13.17\u2013$19.99.",
+        "Search interest looks stable over the last two quarters.",
+        "No single seller dominates the visible listing set."
+      ],
+      "risks": [
+        "Competition is high: many sellers and/or heavy review moats.",
+        "Noticeable ad density on the Google results page may lift acquisition costs.",
+        "Price and seller stats are from the current Google Shopping snapshot (up to 40 listings)."
+      ],
+      "demand_detail": {
+        "search_volume": 8100,
+        "trend_slope": 0.079,
+        "monthly_searches": [
+          {
+            "year": 2026,
+            "month": 10,
+            "search_volume": 9900
+          },
+          {
+            "year": 2026,
+            "month": 9,
+            "search_volume": 6600
+          },
+          {
+            "year": 2026,
+            "month": 8,
+            "search_volume": 8100
+          },
+          {
+            "year": 2026,
+            "month": 7,
+            "search_volume": 8100
+          },
+          {
+            "year": 2026,
+            "month": 6,
+            "search_volume": 6600
+          },
+          {
+            "year": 2026,
+            "month": 5,
+            "search_volume": 8100
+          },
+          {
+            "year": 2026,
+            "month": 4,
+            "search_volume": 6600
+          },
+          {
+            "year": 2026,
+            "month": 3,
+            "search_volume": 8100
+          },
+          {
+            "year": 2026,
+            "month": 2,
+            "search_volume": 8100
+          },
+          {
+            "year": 2026,
+            "month": 1,
+            "search_volume": 9900
+          },
+          {
+            "year": 2025,
+            "month": 12,
+            "search_volume": 9900
+          },
+          {
+            "year": 2025,
+            "month": 11,
+            "search_volume": 8100
+          }
+        ],
+        "competition": "HIGH",
+        "competition_index": 100,
+        "cpc": 1.21
+      },
+      "prices": {
+        "currency": "USD",
+        "min": 6.68,
+        "median": 19.99,
+        "max": 69,
+        "recommended_band": {
+          "low": 13.168,
+          "high": 19.99
+        },
+        "recommended_rule": "30th\u201350th percentile of visible Google Shopping prices (a band at or just below the median).",
+        "listing_count": 65,
+        "seller_count": 26,
+        "samples": [
+          6.68,
+          6.68,
+          7,
+          7.88,
+          8.63,
+          8.99,
+          9.95,
+          9.98,
+          9.98,
+          9.99,
+          9.99,
+          9.99,
+          9.99,
+          9.99,
+          10.99,
+          11.69,
+          11.89,
+          11.99,
+          12.49,
+          12.99,
+          13.88,
+          13.88,
+          14.95,
+          14.99,
+          14.99,
+          14.99,
+          16.99,
+          16.99,
+          17.5,
+          17.99,
+          19.99,
+          19.99,
+          19.99,
+          19.99,
+          19.99,
+          19.99,
+          19.99,
+          24.99,
+          25.99,
+          26.24,
+          26.24,
+          29.99,
+          29.99,
+          29.99,
+          34.99,
+          36.78,
+          36.78,
+          39.94,
+          39.94,
+          39.99,
+          39.99,
+          44.99,
+          44.99,
+          44.99,
+          44.99,
+          49.99,
+          49.99,
+          49.99,
+          49.99,
+          49.99,
+          49.99,
+          49.99,
+          59.99,
+          69,
+          69
+        ]
+      },
+      "competitors": [
+        {
+          "share": 0.154,
+          "domain": null,
+          "seller": "Best Buy",
+          "reviews": 2777,
+          "listings": 10,
+          "min_price": 11.89,
+          "median_price": 19.99
+        },
+        {
+          "share": 0.123,
+          "domain": null,
+          "seller": "Home Depot",
+          "reviews": 113,
+          "listings": 8,
+          "min_price": 6.68,
+          "median_price": 9.985
+        },
+        {
+          "share": 0.108,
+          "domain": null,
+          "seller": "Target",
+          "reviews": 343,
+          "listings": 7,
+          "min_price": 12.99,
+          "median_price": 44.99
+        },
+        {
+          "share": 0.077,
+          "domain": null,
+          "seller": "Rokform",
+          "reviews": 1535,
+          "listings": 5,
+          "min_price": 19.99,
+          "median_price": 19.99
+        },
+        {
+          "share": 0.062,
+          "domain": null,
+          "seller": "Walmart",
+          "reviews": 440,
+          "listings": 4,
+          "min_price": 7.88,
+          "median_price": 13.185
+        },
+        {
+          "share": 0.046,
+          "domain": null,
+          "seller": "Walmart - Scosche Industries",
+          "reviews": 41,
+          "listings": 3,
+          "min_price": 9.99,
+          "median_price": 9.99
+        },
+        {
+          "share": 0.046,
+          "domain": null,
+          "seller": "Tractor Supply Company",
+          "reviews": 600,
+          "listings": 3,
+          "min_price": 49.99,
+          "median_price": 49.99
+        },
+        {
+          "share": 0.031,
+          "domain": null,
+          "seller": "Mob Armor",
+          "reviews": 497,
+          "listings": 2,
+          "min_price": 49.99,
+          "median_price": 54.99
+        },
+        {
+          "share": 0.031,
+          "domain": null,
+          "seller": "Harbor Freight Tools",
+          "reviews": null,
+          "listings": 2,
+          "min_price": 9.99,
+          "median_price": 9.99
+        },
+        {
+          "share": 0.031,
+          "domain": null,
+          "seller": "CVS Pharmacy",
+          "reviews": null,
+          "listings": 2,
+          "min_price": 14.99,
+          "median_price": 14.99
+        }
+      ],
+      "listings": [
+        {
+          "title": "Tech and Go Magnetic Mobile Dash Mount",
+          "seller": "Home Depot",
+          "price": 9.98,
+          "currency": "USD",
+          "reviews_count": 35,
+          "rating": 2.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Mob Armor MobNetic Maxx Mount",
+          "seller": "Mob Armor",
+          "price": 49.99,
+          "currency": "USD",
+          "reviews_count": 200,
+          "rating": 4.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Rokform Low Pro Magnetic Car Dash Mount",
+          "seller": "Rokform",
+          "price": 19.99,
+          "currency": "USD",
+          "reviews_count": 313,
+          "rating": 4.4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Scosche Scosche MagSafe Car Mount",
+          "seller": "Walmart - Scosche Industries",
+          "price": 9.99,
+          "currency": "USD",
+          "reviews_count": 6,
+          "rating": 4.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "ohsnap Car Mount",
+          "seller": "Best Buy",
+          "price": 26.24,
+          "currency": "USD",
+          "reviews_count": 824,
+          "rating": 4.1,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Armor All Magnetic Phone Vent Mount",
+          "seller": "Home Depot",
+          "price": 6.68,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Universal Air Vent Magnetic Car Mount One Touch Lock Phone Holder, Size: Medium, Black",
+          "seller": "Walmart - LIGOU",
+          "price": 8.63,
+          "currency": "USD",
+          "reviews_count": 2,
+          "rating": 2.5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "iOttie iTap 3 MagSafe Compatible Air Vent Mount",
+          "seller": "Best Buy",
+          "price": 11.99,
+          "currency": "USD",
+          "reviews_count": 189,
+          "rating": 4.5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Armstrong Magnetic Air Vent Phone Mount",
+          "seller": "Harbor Freight Tools",
+          "price": 9.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Chargeworx Magnetic Air Vent Swivel Mount",
+          "seller": "Home Depot",
+          "price": 9.99,
+          "currency": "USD",
+          "reviews_count": 2,
+          "rating": 3.5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "iOttie iTap3 Magnetic Car Mount with Vacuum Suction",
+          "seller": "Best Buy",
+          "price": 19.99,
+          "currency": "USD",
+          "reviews_count": 48,
+          "rating": 4.3,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Mob Armor MobNetic Maxx Mount",
+          "seller": "Tractor Supply Company",
+          "price": 49.99,
+          "currency": "USD",
+          "reviews_count": 200,
+          "rating": 4.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Statik HyperMount Pro Vacuum Magnetic Phone Mount",
+          "seller": "Target",
+          "price": 44.99,
+          "currency": "USD",
+          "reviews_count": 27,
+          "rating": 3.4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Rokform Low Pro Magnetic Car Dash Mount",
+          "seller": "Rokform",
+          "price": 19.99,
+          "currency": "USD",
+          "reviews_count": 313,
+          "rating": 4.4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Scosche magicMOUNT Magnetic Mount for Mobile Devices MAGFM",
+          "seller": "Walmart - Scosche Industries",
+          "price": 10.99,
+          "currency": "USD",
+          "reviews_count": 29,
+          "rating": 4.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Ionix Universal Magnetic Phone Holder",
+          "seller": "CVS Pharmacy",
+          "price": 14.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Scosche Magdm MagicMount Universal Dash Mount for Mobile Devices",
+          "seller": "Walmart",
+          "price": 13.88,
+          "currency": "USD",
+          "reviews_count": 211,
+          "rating": 3.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Mob Armor MobNetic Maxx Mount",
+          "seller": "Tractor Supply Company",
+          "price": 49.99,
+          "currency": "USD",
+          "reviews_count": 200,
+          "rating": 4.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Statik HyperMount Pro Vacuum Magnetic Phone Mount",
+          "seller": "Target",
+          "price": 44.99,
+          "currency": "USD",
+          "reviews_count": 27,
+          "rating": 3.4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Aulumu G09 Infinite 360\u00b0 Magnetic Stand",
+          "seller": "aulumu",
+          "price": 36.78,
+          "currency": "USD",
+          "reviews_count": 237,
+          "rating": 4.8,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "MagBak Magnetic Car Mount & Charger",
+          "seller": "MagBak",
+          "price": 69,
+          "currency": "USD",
+          "reviews_count": 273,
+          "rating": 4.6,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Statik HyperMount Pro Vacuum Magnetic Phone Mount",
+          "seller": "Target",
+          "price": 44.99,
+          "currency": "USD",
+          "reviews_count": 27,
+          "rating": 3.4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "ToughTested 15-Watt Python Wireless-Charge MagTough Glass Mount",
+          "seller": "Walmart - Premier Brands Direct",
+          "price": 49.99,
+          "currency": "USD",
+          "reviews_count": 36,
+          "rating": 4.8,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Qi2-Certified Magnetic Wireless Charging Phone Holder",
+          "seller": "A-Tach Mounts",
+          "price": 39.94,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Rokform Magnetic Wireless Charging Stand",
+          "seller": "Rokform",
+          "price": 49.99,
+          "currency": "USD",
+          "reviews_count": 402,
+          "rating": 3.8,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Ionix Universal Magnetic Phone Holder",
+          "seller": "CVS Pharmacy",
+          "price": 14.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "ProClip USA MagnePro Magnetic Phone Holder",
+          "seller": "ProClip USA",
+          "price": 39.99,
+          "currency": "USD",
+          "reviews_count": 787,
+          "rating": 4.8,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Scosche Magdm MagicMount Universal Dash Mount for Mobile Devices",
+          "seller": "Walmart",
+          "price": 13.88,
+          "currency": "USD",
+          "reviews_count": 211,
+          "rating": 3.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "iOttie iTap3 Magnetic Car Mount with Vacuum Suction",
+          "seller": "Best Buy",
+          "price": 19.99,
+          "currency": "USD",
+          "reviews_count": 48,
+          "rating": 4.3,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Mob Armor MobNetic Maxx Mount",
+          "seller": "Tractor Supply Company",
+          "price": 49.99,
+          "currency": "USD",
+          "reviews_count": 200,
+          "rating": 4.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Statik HyperMount Pro Vacuum Magnetic Phone Mount",
+          "seller": "Target",
+          "price": 44.99,
+          "currency": "USD",
+          "reviews_count": 27,
+          "rating": 3.4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Onn Car Dash/Windshield Magnetic Universal Phone Mount",
+          "seller": "Walmart",
+          "price": 7.88,
+          "currency": "USD",
+          "reviews_count": 16,
+          "rating": 3.2,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Tech and Go Magnetic Mobile Dash Mount",
+          "seller": "Home Depot",
+          "price": 9.98,
+          "currency": "USD",
+          "reviews_count": 35,
+          "rating": 2.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Aulumu G09 Infinite 360\u00b0 Magnetic Stand",
+          "seller": "aulumu",
+          "price": 36.78,
+          "currency": "USD",
+          "reviews_count": 237,
+          "rating": 4.8,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Bracketron MagAlign Pro Mount",
+          "seller": "Best Buy",
+          "price": 29.99,
+          "currency": "USD",
+          "reviews_count": 443,
+          "rating": 4.1,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Arkon Mounts Magnetic Phone Mount Kit for 17mm Ball End Mounts",
+          "seller": "Arkon Mounts",
+          "price": 14.95,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "ToughTested Python MagTough Glass Windshield and Dash Mount",
+          "seller": "Home Depot",
+          "price": 39.99,
+          "currency": "USD",
+          "reviews_count": 29,
+          "rating": 4.8,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "MOB Armor MobNetic Maxx MS MagSafe Magnetic Phone Mount",
+          "seller": "Mob Armor",
+          "price": 59.99,
+          "currency": "USD",
+          "reviews_count": 297,
+          "rating": 4.8,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Case-Mate Stick It! Magnetic Suction Phone Mount",
+          "seller": "Target",
+          "price": 12.99,
+          "currency": "USD",
+          "reviews_count": 160,
+          "rating": 4.1,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "ohsnap Car Mount",
+          "seller": "Best Buy",
+          "price": 26.24,
+          "currency": "USD",
+          "reviews_count": 824,
+          "rating": 4.1,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Rokform Low Pro Magnetic Car Dash Mount",
+          "seller": "Rokform",
+          "price": 19.99,
+          "currency": "USD",
+          "reviews_count": 313,
+          "rating": 4.4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Magnetic Phone Mount for Car Dashboard",
+          "seller": "Walmart - FESVASDEE",
+          "price": 8.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Armor All Magnetic Phone Vent Mount",
+          "seller": "Home Depot",
+          "price": 6.68,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "MagBak Magnetic Car Mount & Charger",
+          "seller": "MagBak",
+          "price": 69,
+          "currency": "USD",
+          "reviews_count": 273,
+          "rating": 4.6,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "iOttie iTap 3 MagSafe Compatible Dashboard & Windshield Mount",
+          "seller": "Best Buy",
+          "price": 19.99,
+          "currency": "USD",
+          "reviews_count": 398,
+          "rating": 4.5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Armstrong Magnetic Air Vent Phone Mount",
+          "seller": "Harbor Freight Tools",
+          "price": 9.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "LISEN MagSafe Car Mount 360\u00b0 Rotation",
+          "seller": "LisenTech",
+          "price": 19.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "ChargeWorx MagSafe Drape Dash Mount",
+          "seller": "Home Depot",
+          "price": 17.5,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Scosche Scosche MagSafe Car Mount",
+          "seller": "Walmart - Scosche Industries",
+          "price": 9.99,
+          "currency": "USD",
+          "reviews_count": 6,
+          "rating": 4.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Vena Magsafe Car Phone Holder Mount, Suction Cup with Lock and Extendable Arm",
+          "seller": "Best Buy",
+          "price": 16.99,
+          "currency": "USD",
+          "reviews_count": 3,
+          "rating": 3.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Magnetic Phone Car Mount Syncwire Car Phone Holder for Dashboard Cell Phone Car Kits",
+          "seller": "syncwire.com",
+          "price": 25.99,
+          "currency": "USD",
+          "reviews_count": 144,
+          "rating": 4.9,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Magnus Magnetic Smartphone Mount for Tripods & Desktops",
+          "seller": "B&H Photo-Video-Audio",
+          "price": 9.95,
+          "currency": "USD",
+          "reviews_count": 26,
+          "rating": 4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Bracketron MagAlign Max Magnetic Magsafe Car Vent Phone Mount",
+          "seller": "Target",
+          "price": 29.99,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "360\u00b0 Magnetic Car Phone Holder | Ultra Durable Mount Extended",
+          "seller": "Magic John",
+          "price": 34.99,
+          "currency": "USD",
+          "reviews_count": 46,
+          "rating": 4.3,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Neewer - Dual-Sided Magnetic Phone Holder for Car & Gym, MagSafe Compatible - Black",
+          "seller": "Best Buy",
+          "price": 11.89,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "2-pack Magnetic Phone Holder for car, [ with 4 Metal Plate ] Cell Phone carmount for iPhone Magnetic [ 360 Rotation ] Universal Dashboard Adhesive Car",
+          "seller": "Walmart - Seller",
+          "price": 17.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Rokform Dual Magnet Aluminum Swivel Dash Mount",
+          "seller": "Rokform",
+          "price": 49.99,
+          "currency": "USD",
+          "reviews_count": 194,
+          "rating": 3.9,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "WixGear for MagSafe Car Mount Phone Holders for Your Car & Magnetic Phone Holder for Car",
+          "seller": "WixGear.com",
+          "price": 14.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Flexi Magnetic Phone Car Dashboard Mount",
+          "seller": "Five Below",
+          "price": 7,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Magnetic Car Phone Holder, 360\u00b0 Rotatable Vacuum Mount - Alloy Edition Black",
+          "seller": "K&F Concept",
+          "price": 16.99,
+          "currency": "USD",
+          "reviews_count": 24,
+          "rating": 4.9,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Scosche MagicMount MS 5-in-1",
+          "seller": "Target",
+          "price": 29.99,
+          "currency": "USD",
+          "reviews_count": 74,
+          "rating": 3.9,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Marcy Magnetic Phone Mount w/Dual Rotating Magnetic Heads for Gym, Selfies, and More",
+          "seller": "Walmart",
+          "price": 12.49,
+          "currency": "USD",
+          "reviews_count": 2,
+          "rating": 3.5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Tough Tested Mag Tough Mag Safe Car Mount With Non Slip Tray \u2013 Strong Magnetic Phone Holder For Your Car With 360\u00b0 Rotat",
+          "seller": "Best Buy",
+          "price": 24.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Armor All Magnetic Phone Mount for Car Dashboard & Windshield Phone Holder with Industrial Suction Cup for MagSafe Phones",
+          "seller": "Home Depot",
+          "price": 11.69,
+          "currency": "USD",
+          "reviews_count": 12,
+          "rating": 4.4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Qi2-Certified Magnetic Wireless Charging Phone Holder",
+          "seller": "A-Tach Mounts",
+          "price": 39.94,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        }
+      ],
+      "related_keywords": [
+        {
+          "cpc": 1.18,
+          "keyword": "magnetic phone mount",
+          "search_volume": 8100,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.87,
+          "keyword": "magnetic phone mount for car",
+          "search_volume": 6600,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.9,
+          "keyword": "heavy duty magnetic phone mount",
+          "search_volume": 390,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.57,
+          "keyword": "magnetic phone mount gym",
+          "search_volume": 140,
+          "competition_index": null
+        },
+        {
+          "cpc": 1.74,
+          "keyword": "magnetic phone mount charger",
+          "search_volume": 90,
+          "competition_index": null
+        },
+        {
+          "cpc": 1.4,
+          "keyword": "magnetic phone mount for filming",
+          "search_volume": 70,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.55,
+          "keyword": "magnetic phone mount for wall",
+          "search_volume": 10,
+          "competition_index": null
+        },
+        {
+          "cpc": null,
+          "keyword": "magnetic phone mount magsafe",
+          "search_volume": 10,
+          "competition_index": null
+        }
+      ],
+      "serp": {
+        "paid": 0,
+        "total": 16,
+        "organic": 6,
+        "related": [
+          "Magnetic phone mount for car",
+          "Magnetic phone holder for Android",
+          "Magnetic Phone Mount Gym",
+          "Best magnetic phone mount",
+          "Magnetic phone Mount for Mirror",
+          "Magnetic phone mount walmart",
+          "Magnetic Phone Mount for filming",
+          "Magnetic phone mount charger"
+        ],
+        "shopping": 4,
+        "ad_density": 0.25,
+        "top_domains": [
+          {
+            "count": 6,
+            "domain": "google.com"
+          }
+        ]
+      },
+      "sources": {
+        "plan": [
+          {
+            "id": "google_shopping",
+            "used": true,
+            "label": "Google Shopping",
+            "notes": "DataForSEO Merchant Google products, priority queue + task_get/advanced.",
+            "status": "ok",
+            "entitled": true,
+            "implemented": true
+          },
+          {
+            "id": "google_search",
+            "used": true,
+            "label": "Google Search",
+            "notes": "Google Ads search volume, DataForSEO Labs related keywords, Google organic SERP.",
+            "status": "ok",
+            "entitled": true,
+            "implemented": true
+          },
+          {
+            "id": "amazon",
+            "used": false,
+            "label": "Amazon",
+            "notes": "Planned: DataForSEO Amazon products / sellers (live/advanced). Hook: add a collector and set implemented true.",
+            "status": "planned",
+            "entitled": true,
+            "implemented": false
+          },
+          {
+            "id": "meta_ad_library",
+            "used": false,
+            "label": "Meta Ad Library",
+            "notes": "Not included in this plan.",
+            "status": "skipped",
+            "entitled": false,
+            "implemented": false
+          },
+          {
+            "id": "tiktok",
+            "used": false,
+            "label": "TikTok",
+            "notes": "Not included in this plan.",
+            "status": "skipped",
+            "entitled": false,
+            "implemented": false
+          },
+          {
+            "id": "aliexpress",
+            "used": false,
+            "label": "AliExpress",
+            "notes": "Not included in this plan.",
+            "status": "skipped",
+            "entitled": false,
+            "implemented": false
+          }
+        ],
+        "serp": "ok",
+        "shopping": "ok",
+        "search_volume": "ok",
+        "related_keywords": "ok"
+      },
+      "estimated_provider_cost_usd": 0.107,
+      "generated_at": "2026-11-12T17:38:04.981Z",
+      "latency_sec": 23.675119161605835
+    },
+    {
+      "query": "LED strip lights",
+      "ticker": "LEDSTRIP-US",
+      "product": "LED strip lights",
+      "market": "United States",
+      "market_code": "US",
+      "category": "home",
+      "category_name": "Home",
+      "verdict": "STRONG BUY",
+      "verdict_rule": "Override: demand \u2265 80, competition \u2264 40 and saturation \u2264 40.",
+      "scores": {
+        "demand": 94,
+        "saturation": 25,
+        "competition": 23,
+        "opportunity": 81
+      },
+      "advisor": "For \u201cLED strip lights\u201d in United States, MarketScope measures about 49,500 monthly searches, with a rising 12-month trend. Demand scores 94/100, competition 23/100 and saturation 25/100, producing an Opportunity score of 81/100 and a verdict of STRONG BUY (Override: demand \u2265 80, competition \u2264 40 and saturation \u2264 40.) We counted 0 Google Shopping listings from 0 sellers. There were not enough priced listings to recommend a selling band. Organic results still dominate the first page of Google, which is a slightly easier paid-acquisition backdrop. This summary is generated from the scores and listing stats above \u2014 not from a language model.",
+      "opportunities": [
+        "Collect more priced listings before setting a sell price.",
+        "Search interest has been rising over the last three months versus the prior three.",
+        "No single seller dominates the visible listing set."
+      ],
+      "risks": [
+        "Competition is moderate or lower on the current snapshot.",
+        "Ad density on the first Google page is relatively contained.",
+        "Google Shopping data was timeout \u2014 price and seller stats may be incomplete."
+      ],
+      "demand_detail": {
+        "search_volume": 49500,
+        "trend_slope": 0.223,
+        "monthly_searches": [
+          {
+            "year": 2026,
+            "month": 10,
+            "search_volume": 60500
+          },
+          {
+            "year": 2026,
+            "month": 9,
+            "search_volume": 49500
+          },
+          {
+            "year": 2026,
+            "month": 8,
+            "search_volume": 40500
+          },
+          {
+            "year": 2026,
+            "month": 7,
+            "search_volume": 40500
+          },
+          {
+            "year": 2026,
+            "month": 6,
+            "search_volume": 33100
+          },
+          {
+            "year": 2026,
+            "month": 5,
+            "search_volume": 49500
+          },
+          {
+            "year": 2026,
+            "month": 4,
+            "search_volume": 49500
+          },
+          {
+            "year": 2026,
+            "month": 3,
+            "search_volume": 49500
+          },
+          {
+            "year": 2026,
+            "month": 2,
+            "search_volume": 40500
+          },
+          {
+            "year": 2026,
+            "month": 1,
+            "search_volume": 60500
+          },
+          {
+            "year": 2025,
+            "month": 12,
+            "search_volume": 90500
+          },
+          {
+            "year": 2025,
+            "month": 11,
+            "search_volume": 90500
+          }
+        ],
+        "competition": "HIGH",
+        "competition_index": 100,
+        "cpc": 1.34
+      },
+      "prices": {
+        "currency": "USD",
+        "min": null,
+        "median": null,
+        "max": null,
+        "recommended_band": null,
+        "recommended_rule": "30th\u201350th percentile of visible Google Shopping prices (a band at or just below the median).",
+        "listing_count": 0,
+        "seller_count": 0,
+        "samples": []
+      },
+      "competitors": [],
+      "listings": [],
+      "related_keywords": [
+        {
+          "cpc": 1.32,
+          "keyword": "led strip lights",
+          "search_volume": 49500,
+          "competition_index": null
+        },
+        {
+          "cpc": 2,
+          "keyword": "led strip lights under cabinet",
+          "search_volume": 12100,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.83,
+          "keyword": "led strip lights 12v",
+          "search_volume": 4400,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.69,
+          "keyword": "led strip lights 100ft",
+          "search_volume": 1300,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.75,
+          "keyword": "amazon led strip lights for bedroom",
+          "search_volume": 320,
+          "competition_index": null
+        },
+        {
+          "cpc": 1.65,
+          "keyword": "led strip lights waterproof",
+          "search_volume": 140,
+          "competition_index": null
+        },
+        {
+          "cpc": 1.77,
+          "keyword": "led strip lights ks",
+          "search_volume": 110,
+          "competition_index": null
+        },
+        {
+          "cpc": 1.22,
+          "keyword": "led strip lights app",
+          "search_volume": 110,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.58,
+          "keyword": "led strip lights govee",
+          "search_volume": 90,
+          "competition_index": null
+        }
+      ],
+      "serp": {
+        "paid": 0,
+        "total": 16,
+        "organic": 9,
+        "related": [
+          "LED lights",
+          "Smart LED Strip lights",
+          "Amazon LED Strip Lights for Bedroom",
+          "LED Strip Lights 100ft",
+          "Amazon LED Strip Lights Outdoor",
+          "LED strip lights in concrete",
+          "Color Changing LED Strip Lights Waterproof",
+          "Full Spectrum LED Strip Lights"
+        ],
+        "shopping": 3,
+        "ad_density": 0.188,
+        "top_domains": [
+          {
+            "count": 9,
+            "domain": "google.com"
+          }
+        ]
+      },
+      "sources": {
+        "plan": [
+          {
+            "id": "google_shopping",
+            "used": true,
+            "label": "Google Shopping",
+            "notes": "DataForSEO Merchant Google products, priority queue + task_get/advanced.",
+            "status": "timeout",
+            "entitled": true,
+            "implemented": true
+          },
+          {
+            "id": "google_search",
+            "used": true,
+            "label": "Google Search",
+            "notes": "Google Ads search volume, DataForSEO Labs related keywords, Google organic SERP.",
+            "status": "ok",
+            "entitled": true,
+            "implemented": true
+          },
+          {
+            "id": "amazon",
+            "used": false,
+            "label": "Amazon",
+            "notes": "Planned: DataForSEO Amazon products / sellers (live/advanced). Hook: add a collector and set implemented true.",
+            "status": "planned",
+            "entitled": true,
+            "implemented": false
+          },
+          {
+            "id": "meta_ad_library",
+            "used": false,
+            "label": "Meta Ad Library",
+            "notes": "Not included in this plan.",
+            "status": "skipped",
+            "entitled": false,
+            "implemented": false
+          },
+          {
+            "id": "tiktok",
+            "used": false,
+            "label": "TikTok",
+            "notes": "Not included in this plan.",
+            "status": "skipped",
+            "entitled": false,
+            "implemented": false
+          },
+          {
+            "id": "aliexpress",
+            "used": false,
+            "label": "AliExpress",
+            "notes": "Not included in this plan.",
+            "status": "skipped",
+            "entitled": false,
+            "implemented": false
+          }
+        ],
+        "serp": "ok",
+        "shopping": "timeout",
+        "search_volume": "ok",
+        "related_keywords": "ok"
+      },
+      "estimated_provider_cost_usd": 0.1071,
+      "generated_at": "2026-11-12T17:39:06.799Z",
+      "latency_sec": 57.9114089012146
+    },
+    {
+      "query": "portable blender",
+      "ticker": "BLENDER-US",
+      "product": "portable blender",
+      "market": "United States",
+      "market_code": "US",
+      "category": "kitchen",
+      "category_name": "Kitchen",
+      "verdict": "UNDERPERFORM",
+      "verdict_rule": "Opportunity \u2265 35 but below the HOLD bar.",
+      "scores": {
+        "demand": 69,
+        "saturation": 61,
+        "competition": 92,
+        "opportunity": 46
+      },
+      "advisor": "For \u201cportable blender\u201d in United States, MarketScope measures about 18,100 monthly searches, with a softening 12-month trend. Demand scores 69/100, competition 92/100 and saturation 61/100, producing an Opportunity score of 46/100 and a verdict of UNDERPERFORM (Opportunity \u2265 35 but below the HOLD bar.) We counted 65 Google Shopping listings from 36 sellers, priced from $9.82 to $2,290. A reasonable selling band is $29.99\u2013$49.95 (the 30th\u201350th percentile of visible Google Shopping prices, just below the median of $49.95). The leading visible seller is Target with about 11% of listings. Paid and shopping units are fairly dense on the Google results page, so customer-acquisition costs may be material. This summary is generated from the scores and listing stats above \u2014 not from a language model.",
+      "opportunities": [
+        "Recommended selling band: $29.99\u2013$49.95.",
+        "Search interest has softened recently \u2014 treat demand as less durable.",
+        "No single seller dominates the visible listing set."
+      ],
+      "risks": [
+        "Competition is high: many sellers and/or heavy review moats.",
+        "Noticeable ad density on the Google results page may lift acquisition costs.",
+        "Price and seller stats are from the current Google Shopping snapshot (up to 40 listings)."
+      ],
+      "demand_detail": {
+        "search_volume": 18100,
+        "trend_slope": -0.229,
+        "monthly_searches": [
+          {
+            "year": 2026,
+            "month": 10,
+            "search_volume": 12100
+          },
+          {
+            "year": 2026,
+            "month": 9,
+            "search_volume": 9900
+          },
+          {
+            "year": 2026,
+            "month": 8,
+            "search_volume": 14800
+          },
+          {
+            "year": 2026,
+            "month": 7,
+            "search_volume": 14800
+          },
+          {
+            "year": 2026,
+            "month": 6,
+            "search_volume": 14800
+          },
+          {
+            "year": 2026,
+            "month": 5,
+            "search_volume": 18100
+          },
+          {
+            "year": 2026,
+            "month": 4,
+            "search_volume": 22200
+          },
+          {
+            "year": 2026,
+            "month": 3,
+            "search_volume": 22200
+          },
+          {
+            "year": 2026,
+            "month": 2,
+            "search_volume": 22200
+          },
+          {
+            "year": 2026,
+            "month": 1,
+            "search_volume": 22200
+          },
+          {
+            "year": 2025,
+            "month": 12,
+            "search_volume": 27100
+          },
+          {
+            "year": 2025,
+            "month": 11,
+            "search_volume": 22200
+          }
+        ],
+        "competition": "HIGH",
+        "competition_index": 100,
+        "cpc": 0.71
+      },
+      "prices": {
+        "currency": "USD",
+        "min": 9.82,
+        "median": 49.95,
+        "max": 2289.9,
+        "recommended_band": {
+          "low": 29.99,
+          "high": 49.95
+        },
+        "recommended_rule": "30th\u201350th percentile of visible Google Shopping prices (a band at or just below the median).",
+        "listing_count": 65,
+        "seller_count": 36,
+        "samples": [
+          9.82,
+          9.97,
+          14.05,
+          15.37,
+          15.79,
+          15.79,
+          15.79,
+          15.98,
+          17.99,
+          18.99,
+          19,
+          19.92,
+          19.99,
+          23.39,
+          24.97,
+          24.97,
+          24.97,
+          24.99,
+          29,
+          29.99,
+          29.99,
+          30.99,
+          35,
+          35.99,
+          36.9,
+          37,
+          38,
+          39.75,
+          39.99,
+          39.99,
+          46.45,
+          47,
+          49.95,
+          49.99,
+          49.99,
+          52,
+          55,
+          55,
+          59.95,
+          59.99,
+          64.9,
+          64.9,
+          64.9,
+          64.95,
+          65,
+          68.9,
+          79.99,
+          85.5,
+          89.98,
+          99.99,
+          99.99,
+          107.57,
+          109.99,
+          111.19,
+          114,
+          114.99,
+          114.99,
+          149.99,
+          150.79,
+          226.89,
+          275.34,
+          679,
+          762.9,
+          1937.4,
+          2289.9
+        ]
+      },
+      "competitors": [
+        {
+          "share": 0.108,
+          "domain": null,
+          "seller": "Target",
+          "reviews": 13497,
+          "listings": 7,
+          "min_price": 19.99,
+          "median_price": 49.99
+        },
+        {
+          "share": 0.077,
+          "domain": null,
+          "seller": "eBay",
+          "reviews": 20700,
+          "listings": 5,
+          "min_price": 39.75,
+          "median_price": 47
+        },
+        {
+          "share": 0.077,
+          "domain": null,
+          "seller": "4AllPromos.com",
+          "reviews": null,
+          "listings": 5,
+          "min_price": 226.89,
+          "median_price": 762.9
+        },
+        {
+          "share": 0.077,
+          "domain": null,
+          "seller": "Mercari",
+          "reviews": 294500,
+          "listings": 5,
+          "min_price": 19,
+          "median_price": 30.99
+        },
+        {
+          "share": 0.062,
+          "domain": null,
+          "seller": "Walmart",
+          "reviews": 1859,
+          "listings": 4,
+          "min_price": 19.92,
+          "median_price": 24.97
+        },
+        {
+          "share": 0.062,
+          "domain": null,
+          "seller": "TikTok Shop",
+          "reviews": 286500,
+          "listings": 4,
+          "min_price": 52,
+          "median_price": 64.9
+        },
+        {
+          "share": 0.046,
+          "domain": null,
+          "seller": "Home Depot",
+          "reviews": 706,
+          "listings": 3,
+          "min_price": 55,
+          "median_price": 55
+        },
+        {
+          "share": 0.031,
+          "domain": null,
+          "seller": "Best Buy",
+          "reviews": 1552,
+          "listings": 2,
+          "min_price": 29.99,
+          "median_price": 44.97
+        },
+        {
+          "share": 0.031,
+          "domain": null,
+          "seller": "SharkNinja",
+          "reviews": 4000,
+          "listings": 2,
+          "min_price": 99.99,
+          "median_price": 99.99
+        },
+        {
+          "share": 0.031,
+          "domain": null,
+          "seller": "Poshmark",
+          "reviews": 192000,
+          "listings": 2,
+          "min_price": 35,
+          "median_price": 36.5
+        }
+      ],
+      "listings": [
+        {
+          "title": "BLENDi Lite Portable Blender 17oz Rechargeable Smoothie Maker for Travel",
+          "seller": "Best Buy",
+          "price": 29.99,
+          "currency": "USD",
+          "reviews_count": 52,
+          "rating": 2.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Ninja Blast Portable Blender",
+          "seller": "Walmart - AMERICAN TOYZ",
+          "price": 39.99,
+          "currency": "USD",
+          "reviews_count": 5200,
+          "rating": 3.4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "NutriBullet Flex Portable Blender - Forest Green",
+          "seller": "Home Depot",
+          "price": 55,
+          "currency": "USD",
+          "reviews_count": 328,
+          "rating": 2.9,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Hamilton Beach Personal Blender with Travel Lid",
+          "seller": "Walmart",
+          "price": 19.92,
+          "currency": "USD",
+          "reviews_count": 1700,
+          "rating": 4.6,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Hamilton Beach Personal Blender with Travel Lid Teal",
+          "seller": "Target",
+          "price": 19.99,
+          "currency": "USD",
+          "reviews_count": 6400,
+          "rating": 3.8,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Cordless Portable Blender USB C Rechargeable 304 Stainless Steel Mini Mixer for Smoothies Shakes Travel Gym",
+          "seller": "Walmart - Amber Brook",
+          "price": 35.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Go Cordless Personal Blender KitchenAid",
+          "seller": "Home Depot",
+          "price": 79.99,
+          "currency": "USD",
+          "reviews_count": 50,
+          "rating": 4.1,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Blendi Portable Blender",
+          "seller": "Best Buy",
+          "price": 59.95,
+          "currency": "USD",
+          "reviews_count": 1500,
+          "rating": 3.4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Beautiful Portable To-Go Blender 2.0, 16 oz, Rose, Rechargeable Battery",
+          "seller": "Walmart",
+          "price": 24.97,
+          "currency": "USD",
+          "reviews_count": 53,
+          "rating": 3.5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Beast Health GO Cordless Portable and Rechargeable Blender Lilac",
+          "seller": "Target",
+          "price": 114.99,
+          "currency": "USD",
+          "reviews_count": 65,
+          "rating": 4.8,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Nutribullet McLaren Flex Portable Blender",
+          "seller": "nutribullet",
+          "price": 49.99,
+          "currency": "USD",
+          "reviews_count": 129,
+          "rating": 2.4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Beast Health GO Cordless Portable and Rechargeable Blender Lilac",
+          "seller": "Beast Health",
+          "price": 114,
+          "currency": "USD",
+          "reviews_count": 65,
+          "rating": 4.8,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Beautiful Portable To-Go Blender 2.0, 16 oz, Rose, Rechargeable Battery",
+          "seller": "Walmart",
+          "price": 24.97,
+          "currency": "USD",
+          "reviews_count": 53,
+          "rating": 3.5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "NutriBullet Flex Portable Blender - Gunmetal Gray",
+          "seller": "Target",
+          "price": 49.99,
+          "currency": "USD",
+          "reviews_count": 300,
+          "rating": 2.1,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Ninja Blast Max Portable Blender",
+          "seller": "SharkNinja",
+          "price": 99.99,
+          "currency": "USD",
+          "reviews_count": 2000,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Breville Blend Active Blender",
+          "seller": "McGrocer",
+          "price": 85.5,
+          "currency": "USD",
+          "reviews_count": 1500,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Biolomix Blender and Food Processor Combo, 700W Portable Juicer,Personal Blender,Meat Grinder,Food Processor and Blender,Coffee Spice Gri",
+          "seller": "Sears",
+          "price": 107.57,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "250ml Portable Mini Electric Food Processor 250w, One Touch Single Serve Blender with Safety Lock, Type-C Rechargeable Smoothie Puree Maker for Baby",
+          "seller": "Walmart - ZonggangNi",
+          "price": 15.37,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Velocity Ultra Blender/Food Processor with Travel Cups Cuisinart",
+          "seller": "NFM",
+          "price": 89.98,
+          "currency": "USD",
+          "reviews_count": 266,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Wireless Blender, Electric Food Chopper, Kitchen Food Processor, Portable Mixer, Replacement Blade, Home Cooking, Outdoor Travel, Light Sports, White",
+          "seller": "Walmart - saikai",
+          "price": 9.82,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Beast Health GO Cordless Portable and Rechargeable Blender Lilac",
+          "seller": "Target",
+          "price": 114.99,
+          "currency": "USD",
+          "reviews_count": 65,
+          "rating": 4.8,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "NutriBullet Flex Portable Blender - Forest Green",
+          "seller": "Home Depot",
+          "price": 55,
+          "currency": "USD",
+          "reviews_count": 328,
+          "rating": 2.9,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Ninja Blast Max Portable Blender",
+          "seller": "SharkNinja",
+          "price": 99.99,
+          "currency": "USD",
+          "reviews_count": 2000,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Beautiful Portable To-Go Blender 2.0, 16 oz, Rose, Rechargeable Battery",
+          "seller": "Walmart",
+          "price": 24.97,
+          "currency": "USD",
+          "reviews_count": 53,
+          "rating": 3.5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Hamilton Beach Personal Blender with Travel Lid Coral 51171",
+          "seller": "Target",
+          "price": 24.99,
+          "currency": "USD",
+          "reviews_count": 6400,
+          "rating": 2.2,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "BLACK+DECKER - Blender - Black - Aluminum - 6 Cups - 8 Speed - 700W - Pack of 2",
+          "seller": "Max Warehouse",
+          "price": 68.9,
+          "currency": "USD",
+          "reviews_count": 1100,
+          "rating": 3.6,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "2-pack Black+decker Black Aluminum Blender 7 Cups 8 Speed",
+          "seller": "eBay - ranzohardware_store",
+          "price": 111.19,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "APPLICA/SPECTRUM BRANDS 2S Immersion Blender, HB2401B - Min Qty 6",
+          "seller": "Zoro",
+          "price": 275.34,
+          "currency": "USD",
+          "reviews_count": 31,
+          "rating": 3.2,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Liquidificador Port\u00e1til Com Copo Grande Capacidade de 1300ml 45oz",
+          "seller": "eBay - winner20259",
+          "price": 23.39,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Hamilton Beach 56 oz 10 Speed Blender",
+          "seller": "eBay",
+          "price": 47,
+          "currency": "USD",
+          "reviews_count": 1300,
+          "rating": 3.9,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Beast Mighty 850 Plus Personal Blender, Xl Vessel, Mist, 850w",
+          "seller": "eBay - oakstreets4",
+          "price": 150.79,
+          "currency": "USD",
+          "reviews_count": 224,
+          "rating": 4.1,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "10 Printed Appliances - Low Minimum - nutribullet Portable Blender",
+          "seller": "4AllPromos.com",
+          "price": 762.9,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "BlendJet 2 Portable Blender",
+          "seller": "TikTok Shop",
+          "price": 64.9,
+          "currency": "USD",
+          "reviews_count": 96000,
+          "rating": 3.3,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Blendjet 2 Portable 16 Oz Blender, USB Rechargeable, Self-Cleaning, Black, NEW!! - New Home",
+          "seller": "Mercari",
+          "price": 29.99,
+          "currency": "USD",
+          "reviews_count": 96000,
+          "rating": 3.4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Blendjet 2 Portable Blender - Home",
+          "seller": "Mercari",
+          "price": 37,
+          "currency": "USD",
+          "reviews_count": 96000,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "BlendJet 2 Portable Cordless Blender Set - #1 Selling Rechargeable USB-C Blender for Smoothies, 16oz Compact Health-Conscious Machine with Plastic Cup",
+          "seller": "TikTok Shop",
+          "price": 64.9,
+          "currency": "USD",
+          "reviews_count": 96000,
+          "rating": 2.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Blendjet 2 Portable USB Rechargeable Self-Cleaning 16 Oz. Blender, Black, NEW!! - New Home",
+          "seller": "Mercari",
+          "price": 30.99,
+          "currency": "USD",
+          "reviews_count": 96000,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "30 Printed Appliances - Low Minimum - nutribullet Portable Blender - One-Day Rush Production",
+          "seller": "4AllPromos.com",
+          "price": 2289.9,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Revmix Personal Blender",
+          "seller": "Country Door",
+          "price": 15.79,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Hamilton Beach Portable Blender For Smoothies With 14 Oz. Travel Jar",
+          "seller": "eBay",
+          "price": 49.95,
+          "currency": "USD",
+          "reviews_count": 6500,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Revmix Personal Blender",
+          "seller": "Montgomery Ward",
+          "price": 14.05,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Revmix Personal Blender",
+          "seller": "Seventh Avenue",
+          "price": 15.79,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Healthy Living Revmix Personal Blender, Black",
+          "seller": "Healthy Living",
+          "price": 15.79,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 1,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Hamilton Beach Portable Blender For Smoothies With 14 Oz. Travel Jar",
+          "seller": "eBay",
+          "price": 46.45,
+          "currency": "USD",
+          "reviews_count": 6500,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Portable blender Personal 6 Blades Juicer Cup Household Fruit Mixer",
+          "seller": "Walmart - Sodopo",
+          "price": 17.99,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 2.8,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Licuadora Personal Para Batidos, Batidos Y Preparaci\u00f3n De Alimentos",
+          "seller": "eBay",
+          "price": 59.99,
+          "currency": "USD",
+          "reviews_count": 6400,
+          "rating": 4.2,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Hamilton Beach Personal Blender WITH CORD - New | Size: m",
+          "seller": "Mercari",
+          "price": 19,
+          "currency": "USD",
+          "reviews_count": 6500,
+          "rating": 3,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Beast Health Beast Blender Mighty 850 Plus",
+          "seller": "Target",
+          "price": 149.99,
+          "currency": "USD",
+          "reviews_count": 266,
+          "rating": 4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Nutribullet Portable Blender",
+          "seller": "TikTok Shop",
+          "price": 52,
+          "currency": "USD",
+          "reviews_count": 1500,
+          "rating": 3,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Nutribullet Turbo Personal Blender 1000-Watts, Storm Blue",
+          "seller": "Walmart - ENP Direct, Inc.",
+          "price": 109.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Qiyaa Personal Blender Portable Juicer Cup Maker with 380ml Bottles, Blades and USB Rechargeable for Shakes and Smoothies, Size: 380 mL, White",
+          "seller": "Walmart - QIYAA",
+          "price": 18.99,
+          "currency": "USD",
+          "reviews_count": 15,
+          "rating": 2.3,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Pretxorve Portable Blenders -Individual for Shakes - Fruit Usb Rechargeable with 6 Blades- Handheld Blenders for Sports Travel and Outdoors",
+          "seller": "Walmart - Pretxorve",
+          "price": 9.97,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Best of BlendJet Bundle - Colorful Ninjas",
+          "seller": "BlendJet",
+          "price": 64.95,
+          "currency": "USD",
+          "reviews_count": 96000,
+          "rating": 4.5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Mini Portable Blender,Smoothies Personal Blender Mini Shakes Juicer Cup USB Rechargeable With 6 blades",
+          "seller": "Walmart - Maining",
+          "price": 15.98,
+          "currency": "USD",
+          "reviews_count": 46,
+          "rating": 3.5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Hamilton Beach Portable Blender, 500ml BPA Free Jar, Blender for Smoothies, Black",
+          "seller": "Velan Store",
+          "price": 36.9,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Blendjet Dining | Blendjet 2 Portable Blender - Storm | Color: Purple | Size: Os | Hellokit38's Closet",
+          "seller": "Poshmark",
+          "price": 38,
+          "currency": "USD",
+          "reviews_count": 96000,
+          "rating": 4.3,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "30ct nutribullet Portable Blender - Blank",
+          "seller": "4AllPromos.com",
+          "price": 1937.4,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Laura Ashley Portable Smoothie Maker",
+          "seller": "Target",
+          "price": 39.99,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Ninja Nutri-Blender Pro With Auto-iQ - New Home",
+          "seller": "Mercari",
+          "price": 65,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Blendjet 2 Portable Blender Bundle",
+          "seller": "TikTok Shop",
+          "price": 64.9,
+          "currency": "USD",
+          "reviews_count": 93000,
+          "rating": 4.5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "10ct nutribullet Portable Blender - Blank",
+          "seller": "4AllPromos.com",
+          "price": 679,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Portable Blender Cordless Portable Blender for Shakes & Smoothies 17oz. USB-C Rechargeable",
+          "seller": "eBay",
+          "price": 39.75,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "BlendJet 2 The Original Portable Blender with Orbiter Drinking Lid",
+          "seller": "mercari.com",
+          "price": 29,
+          "currency": "USD",
+          "reviews_count": 96000,
+          "rating": 2.6,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Blendjet Kitchen | Blendjet 2 Cordless Personal Blender + Jetsetter Insulated Protector Sleeve | Color: Black | Size: Os | Pm-79236057's Closet",
+          "seller": "Poshmark",
+          "price": 35,
+          "currency": "USD",
+          "reviews_count": 96000,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "3ct nutribullet Portable Blender - Blank",
+          "seller": "4AllPromos.com",
+          "price": 226.89,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        }
+      ],
+      "related_keywords": [
+        {
+          "cpc": 0.71,
+          "keyword": "portable blender",
+          "search_volume": 18100,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.64,
+          "keyword": "portable blender smoothie",
+          "search_volume": 2400,
+          "competition_index": null
+        },
+        {
+          "cpc": 1,
+          "keyword": "best portable blender",
+          "search_volume": 1600,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.56,
+          "keyword": "portable blender cup",
+          "search_volume": 590,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.83,
+          "keyword": "portable blender rechargeable",
+          "search_volume": 390,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.39,
+          "keyword": "portable blender amazon",
+          "search_volume": 260,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.15,
+          "keyword": "portable blender walmart",
+          "search_volume": 170,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.67,
+          "keyword": "portable blender for travel",
+          "search_volume": 140,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.25,
+          "keyword": "portable blender in store",
+          "search_volume": 50,
+          "competition_index": null
+        }
+      ],
+      "serp": {
+        "paid": 0,
+        "total": 14,
+        "organic": 9,
+        "related": [
+          "Best portable blender",
+          "Portable blender amazon",
+          "Portable blender rechargeable",
+          "Portable blender walmart",
+          "Portable Blender Smoothie",
+          "Portable Blender for travel",
+          "Portable blender for camping",
+          "Nutriblend Portable Blender"
+        ],
+        "shopping": 3,
+        "ad_density": 0.214,
+        "top_domains": [
+          {
+            "count": 9,
+            "domain": "google.com"
+          }
+        ]
+      },
+      "sources": {
+        "plan": [
+          {
+            "id": "google_shopping",
+            "used": true,
+            "label": "Google Shopping",
+            "notes": "DataForSEO Merchant Google products, priority queue + task_get/advanced.",
+            "status": "ok",
+            "entitled": true,
+            "implemented": true
+          },
+          {
+            "id": "google_search",
+            "used": true,
+            "label": "Google Search",
+            "notes": "Google Ads search volume, DataForSEO Labs related keywords, Google organic SERP.",
+            "status": "ok",
+            "entitled": true,
+            "implemented": true
+          },
+          {
+            "id": "amazon",
+            "used": false,
+            "label": "Amazon",
+            "notes": "Planned: DataForSEO Amazon products / sellers (live/advanced). Hook: add a collector and set implemented true.",
+            "status": "planned",
+            "entitled": true,
+            "implemented": false
+          },
+          {
+            "id": "meta_ad_library",
+            "used": false,
+            "label": "Meta Ad Library",
+            "notes": "Not included in this plan.",
+            "status": "skipped",
+            "entitled": false,
+            "implemented": false
+          },
+          {
+            "id": "tiktok",
+            "used": false,
+            "label": "TikTok",
+            "notes": "Not included in this plan.",
+            "status": "skipped",
+            "entitled": false,
+            "implemented": false
+          },
+          {
+            "id": "aliexpress",
+            "used": false,
+            "label": "AliExpress",
+            "notes": "Not included in this plan.",
+            "status": "skipped",
+            "entitled": false,
+            "implemented": false
+          }
+        ],
+        "serp": "ok",
+        "shopping": "ok",
+        "search_volume": "ok",
+        "related_keywords": "ok"
+      },
+      "estimated_provider_cost_usd": 0.1071,
+      "generated_at": "2026-11-12T17:39:34.030Z",
+      "latency_sec": 25.08829092979431
+    },
+    {
+      "query": "posture corrector",
+      "ticker": "POSTURE-US",
+      "product": "posture corrector",
+      "market": "United States",
+      "market_code": "US",
+      "category": "fitness",
+      "category_name": "Fitness",
+      "verdict": "HOLD",
+      "verdict_rule": "Opportunity \u2265 50, or demand \u2265 45 with competition \u2264 70.",
+      "scores": {
+        "demand": 95,
+        "saturation": 61,
+        "competition": 86,
+        "opportunity": 58
+      },
+      "advisor": "For \u201cposture corrector\u201d in United States, MarketScope measures about 49,500 monthly searches, with a rising 12-month trend. Demand scores 95/100, competition 86/100 and saturation 61/100, producing an Opportunity score of 58/100 and a verdict of HOLD (Opportunity \u2265 50, or demand \u2265 45 with competition \u2264 70.) We counted 65 Google Shopping listings from 44 sellers, priced from $5.39 to $744. A reasonable selling band is $22.59\u2013$29.59 (the 30th\u201350th percentile of visible Google Shopping prices, just below the median of $29.59). The leading visible seller is Mercari with about 8% of listings. Organic results still dominate the first page of Google, which is a slightly easier paid-acquisition backdrop. This summary is generated from the scores and listing stats above \u2014 not from a language model.",
+      "opportunities": [
+        "Recommended selling band: $22.59\u2013$29.59.",
+        "Search interest has been rising over the last three months versus the prior three.",
+        "No single seller dominates the visible listing set."
+      ],
+      "risks": [
+        "Competition is high: many sellers and/or heavy review moats.",
+        "Ad density on the first Google page is relatively contained.",
+        "Price and seller stats are from the current Google Shopping snapshot (up to 40 listings)."
+      ],
+      "demand_detail": {
+        "search_volume": 49500,
+        "trend_slope": 0.239,
+        "monthly_searches": [
+          {
+            "year": 2026,
+            "month": 10,
+            "search_volume": 60500
+          },
+          {
+            "year": 2026,
+            "month": 9,
+            "search_volume": 40500
+          },
+          {
+            "year": 2026,
+            "month": 8,
+            "search_volume": 49500
+          },
+          {
+            "year": 2026,
+            "month": 7,
+            "search_volume": 40500
+          },
+          {
+            "year": 2026,
+            "month": 6,
+            "search_volume": 40500
+          },
+          {
+            "year": 2026,
+            "month": 5,
+            "search_volume": 40500
+          },
+          {
+            "year": 2026,
+            "month": 4,
+            "search_volume": 49500
+          },
+          {
+            "year": 2026,
+            "month": 3,
+            "search_volume": 60500
+          },
+          {
+            "year": 2026,
+            "month": 2,
+            "search_volume": 49500
+          },
+          {
+            "year": 2026,
+            "month": 1,
+            "search_volume": 49500
+          },
+          {
+            "year": 2025,
+            "month": 12,
+            "search_volume": 49500
+          },
+          {
+            "year": 2025,
+            "month": 11,
+            "search_volume": 49500
+          }
+        ],
+        "competition": "HIGH",
+        "competition_index": 100,
+        "cpc": 1.31
+      },
+      "prices": {
+        "currency": "USD",
+        "min": 5.39,
+        "median": 29.59,
+        "max": 744,
+        "recommended_band": {
+          "low": 22.589999999999996,
+          "high": 29.59
+        },
+        "recommended_rule": "30th\u201350th percentile of visible Google Shopping prices (a band at or just below the median).",
+        "listing_count": 65,
+        "seller_count": 44,
+        "samples": [
+          5.39,
+          8.12,
+          11.95,
+          11.99,
+          13.75,
+          13.99,
+          14.59,
+          14.95,
+          14.98,
+          15.99,
+          15.99,
+          16,
+          16.94,
+          17.88,
+          18,
+          18.99,
+          19.39,
+          20,
+          20.8,
+          22.49,
+          22.99,
+          22.99,
+          22.99,
+          24.95,
+          24.99,
+          24.99,
+          24.99,
+          24.99,
+          25,
+          26.49,
+          26.79,
+          27.35,
+          29.59,
+          29.99,
+          29.99,
+          30,
+          31.94,
+          34.99,
+          37.99,
+          37.99,
+          42.46,
+          44,
+          48,
+          49.99,
+          57.99,
+          64.99,
+          84.99,
+          89.99,
+          95.99,
+          96.9,
+          109,
+          109,
+          119,
+          179.99,
+          179.99,
+          187.99,
+          190.65,
+          192,
+          205.2,
+          215.2,
+          288.21,
+          299.99,
+          299.99,
+          359.99,
+          744
+        ]
+      },
+      "competitors": [
+        {
+          "share": 0.077,
+          "domain": null,
+          "seller": "Mercari",
+          "reviews": 1879,
+          "listings": 5,
+          "min_price": 8.12,
+          "median_price": 20
+        },
+        {
+          "share": 0.062,
+          "domain": null,
+          "seller": "Walmart - Seller",
+          "reviews": null,
+          "listings": 4,
+          "min_price": 14.59,
+          "median_price": 24.99
+        },
+        {
+          "share": 0.062,
+          "domain": null,
+          "seller": "eBay",
+          "reviews": 779,
+          "listings": 4,
+          "min_price": 5.39,
+          "median_price": 36.995000000000005
+        },
+        {
+          "share": 0.046,
+          "domain": null,
+          "seller": "Sunaofe",
+          "reviews": 359,
+          "listings": 3,
+          "min_price": 179.99,
+          "median_price": 179.99
+        },
+        {
+          "share": 0.046,
+          "domain": null,
+          "seller": "GoSupps.com",
+          "reviews": 157,
+          "listings": 3,
+          "min_price": 64.99,
+          "median_price": 84.99
+        },
+        {
+          "share": 0.031,
+          "domain": null,
+          "seller": "thenaturalposture.com",
+          "reviews": 99,
+          "listings": 2,
+          "min_price": 37.99,
+          "median_price": 37.99
+        },
+        {
+          "share": 0.031,
+          "domain": null,
+          "seller": "Kohl's",
+          "reviews": 371,
+          "listings": 2,
+          "min_price": 109,
+          "median_price": 109
+        },
+        {
+          "share": 0.031,
+          "domain": null,
+          "seller": "Leonisa United States",
+          "reviews": 1173,
+          "listings": 2,
+          "min_price": 18,
+          "median_price": 33
+        },
+        {
+          "share": 0.031,
+          "domain": null,
+          "seller": "Target",
+          "reviews": 288,
+          "listings": 2,
+          "min_price": 22.99,
+          "median_price": 26.49
+        },
+        {
+          "share": 0.031,
+          "domain": null,
+          "seller": "BEK Medical",
+          "reviews": 54,
+          "listings": 2,
+          "min_price": 11.95,
+          "median_price": 11.969999999999999
+        }
+      ],
+      "listings": [
+        {
+          "title": "2025 Upgraded Posture Corrector, Back Brace for Men and Women, New Version Lumbar Support for Posture Improving and Pain Relief",
+          "seller": "Walmart - Infidev",
+          "price": 19.39,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Back Support Brace The Natural Posture",
+          "seller": "thenaturalposture.com",
+          "price": 37.99,
+          "currency": "USD",
+          "reviews_count": 71,
+          "rating": 3.4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Corrects Posture & Back Pain, Black / L",
+          "seller": "Belro",
+          "price": 24.95,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Upgraded Posture Corrector Back Brace for Men and Women, New Version Lumbar Support for Posture Improving and Pain Relief",
+          "seller": "Walmart - Seller",
+          "price": 14.59,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "The Natural Posture Back Support Brace Posture",
+          "seller": "thenaturalposture.com",
+          "price": 37.99,
+          "currency": "USD",
+          "reviews_count": 28,
+          "rating": 2.8,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "FLA Orthopedics FLA Posture Control Shoulder Brace",
+          "seller": "DiscountSurgical.com",
+          "price": 31.94,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Kvmzazn Adjustable Posture Corrector for Women and Men Breathable Back Brace Support Hunchback",
+          "seller": "Walmart - Seller",
+          "price": 24.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Vive Health Posture Corrector - Large",
+          "seller": "simplyrenting.com",
+          "price": 18.99,
+          "currency": "USD",
+          "reviews_count": 55,
+          "rating": 4.1,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Kvmzazn Posture Corrector for Women and Men - Adjustable Back Brace & Shoulder Straightener, Breathable Lightweight Support for Hunchback & Scoliosis,",
+          "seller": "Walmart - Seller",
+          "price": 24.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "CVS Adjustable Shoulder & Back Posture Corrector",
+          "seller": "CVS Pharmacy",
+          "price": 26.79,
+          "currency": "USD",
+          "reviews_count": 139,
+          "rating": 4.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Forme Men's Smart Tee Stand Taller",
+          "seller": "Macy's",
+          "price": 192,
+          "currency": "USD",
+          "reviews_count": 86,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "YoungLA Men's 4282 Posture Compression Tees",
+          "seller": "YoungLA",
+          "price": 44,
+          "currency": "USD",
+          "reviews_count": 132,
+          "rating": 2.5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Men Alignmed Posture Shirt 2.0 Zipper",
+          "seller": "Kohl's",
+          "price": 109,
+          "currency": "USD",
+          "reviews_count": 154,
+          "rating": 3.5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Alignmed Women Tops Alignmed Posture Shirt 2.0 Postural Fitness Nwt",
+          "seller": "Kohl's",
+          "price": 109,
+          "currency": "USD",
+          "reviews_count": 217,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Underworks Mens Posture Corrector Body Shaper Compression Shirt",
+          "seller": "Underworks",
+          "price": 29.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Leonisa Stretch Cotton Posture Corrector Wireless Bra",
+          "seller": "Leonisa United States",
+          "price": 48,
+          "currency": "USD",
+          "reviews_count": 212,
+          "rating": 4.1,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Leonisa Posture Corrector Back Support Wireless Bra, Black (011473) 40D",
+          "seller": "Walmart - VRMI",
+          "price": 49.99,
+          "currency": "USD",
+          "reviews_count": 4100,
+          "rating": 4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Women's Truekind Daily Comfort Posture Bra",
+          "seller": "Shapermint",
+          "price": 34.99,
+          "currency": "USD",
+          "reviews_count": 1800,
+          "rating": 2.4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Posture Bra Wireless Lift Up - Black / S",
+          "seller": "Magic Bra",
+          "price": 29.59,
+          "currency": "USD",
+          "reviews_count": 484,
+          "rating": 3.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Leonisa Wireless Posture Corrector Bra 011936",
+          "seller": "Leonisa United States",
+          "price": 18,
+          "currency": "USD",
+          "reviews_count": 961,
+          "rating": 2.6,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Resistance Series Chair Support",
+          "seller": "Sunaofe",
+          "price": 179.99,
+          "currency": "USD",
+          "reviews_count": 186,
+          "rating": 4.4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Gray",
+          "seller": "Sunaofe",
+          "price": 179.99,
+          "currency": "USD",
+          "reviews_count": 90,
+          "rating": 3.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "FlexiSpot C7 Best Ergonomic Office Chair for Back Pain Self-Adaptive & Adjustable Lumbar Support Perfect for Long Time Sitting Comfort",
+          "seller": "FlexiSpot.com",
+          "price": 299.99,
+          "currency": "USD",
+          "reviews_count": 628,
+          "rating": 2.9,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Vernal Arc Ergonomic Office Chair with Headrest for Spine Support & Posture Alignment",
+          "seller": "vernalspace.com",
+          "price": 299.99,
+          "currency": "USD",
+          "reviews_count": 14,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Ergonomic Office Chair with Lumbar Support",
+          "seller": "Sunaofe",
+          "price": 359.99,
+          "currency": "USD",
+          "reviews_count": 83,
+          "rating": 4.5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "DMI Cervical Traction",
+          "seller": "Target",
+          "price": 29.99,
+          "currency": "USD",
+          "reviews_count": 87,
+          "rating": 3.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Firm Foam Cervical Collar 2-1/2\"",
+          "seller": "BEK Medical",
+          "price": 11.95,
+          "currency": "USD",
+          "reviews_count": 53,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "2-1/2\" Soft Foam Cervical Collar Large",
+          "seller": "BEK Medical",
+          "price": 11.99,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Copper Fit Back Support - New Sports & outdoors",
+          "seller": "Mercari",
+          "price": 25,
+          "currency": "USD",
+          "reviews_count": 734,
+          "rating": 3.2,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Copper Fit Rapid Relief Back Support - New | Color: Black",
+          "seller": "Mercari",
+          "price": 30,
+          "currency": "USD",
+          "reviews_count": 571,
+          "rating": 4.4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Copper Fit Rapid Relief 3-in-1 Hot/cold Therapy Back Support One Size",
+          "seller": "eBay",
+          "price": 5.39,
+          "currency": "USD",
+          "reviews_count": 756,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Mil Core Posture Cushioned Wedge;blue",
+          "seller": "eBay - bits_n-pieces",
+          "price": 96.9,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Copper Fit Back Suport RAPID RELIEF - New - New Sports & outdoors | Color: Black",
+          "seller": "Mercari",
+          "price": 17.88,
+          "currency": "USD",
+          "reviews_count": 574,
+          "rating": 2.9,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Core Products # LTC-5403-BK",
+          "seller": "MAP Medical",
+          "price": 288.21,
+          "currency": "USD",
+          "reviews_count": 84,
+          "rating": 2.8,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Bauerfeind Sports Back Support Rivera / MED",
+          "seller": "CSA Medical Supply",
+          "price": 119,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 4.5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Core Products Spine Saver Posture Wedge, 15in x 15.5in x 3.75in | MARS",
+          "seller": "Medical Application Repair & Sales",
+          "price": 215.2,
+          "currency": "USD",
+          "reviews_count": 26,
+          "rating": 3.2,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Copper Fit Live Limitless Back Support Belt - Tools",
+          "seller": "Mercari",
+          "price": 8.12,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Core Products Posture Wedge",
+          "seller": "MFI Medical",
+          "price": 190.65,
+          "currency": "USD",
+          "reviews_count": 81,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Core Products LTC-5403-BK Spine Saver Posture Wedge Black 15\" x",
+          "seller": "reLink Medical",
+          "price": 744,
+          "currency": "USD",
+          "reviews_count": 118,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Core Products Spine Saver Posture Wedge, Black, 15\" x 15.5\" x 3.75\", 4/cs | DuraPro Health / Dental Planet",
+          "seller": "DuraPro Health",
+          "price": 205.2,
+          "currency": "USD",
+          "reviews_count": 21,
+          "rating": 4.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Shock Doctor Sport Performance Back Support Compression Wrap L/xl",
+          "seller": "eBay - imjussurfin",
+          "price": 24.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Small Posture Corrector For Woman/child, Posture Corrector Upper Back",
+          "seller": "eBay",
+          "price": 16,
+          "currency": "USD",
+          "reviews_count": 22,
+          "rating": 2.9,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "UPRIGHT Enthra Posture Corrector For Women And Men - New",
+          "seller": "Mercari",
+          "price": 20,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "2 Premium | Posture Trainer & Tracker For Women & Men With Smart App",
+          "seller": "eBay",
+          "price": 95.99,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Upright Go 2 Premium Smart Posture Corrector Wireless Trainer Tracker",
+          "seller": "eBay",
+          "price": 57.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Wsbart Posture Corrector for Men & Women - Back Brace for Lumbar Support and Upright - Breathable Back Straightener - Posture Improve and Neck, Back,",
+          "seller": "Walmart - WSBArt Store",
+          "price": 22.99,
+          "currency": "USD",
+          "reviews_count": 32,
+          "rating": 2.2,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Dmi Posture Corrector - Large",
+          "seller": "eBay - bpmedicalsupplies21",
+          "price": 22.99,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 4.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Posture Support Small",
+          "seller": "GoSupps.com",
+          "price": 84.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "2 Premium | Posture Trainer & Tracker For Women & Men With Smart App",
+          "seller": "eBay - ragazabionda",
+          "price": 187.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "DMI Posture Corrector",
+          "seller": "Target",
+          "price": 22.99,
+          "currency": "USD",
+          "reviews_count": 201,
+          "rating": 3.1,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "POSTURE CORRECTOR",
+          "seller": "nationalmedicaldme.com",
+          "price": 14.95,
+          "currency": "USD",
+          "reviews_count": 54,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "DMI Posture Corrector for Men and Women Adjustable Criss-Cross Support for Reducing Back Pain and Strain Comfortable and Breathable Machine Washable",
+          "seller": "GoSupps.com",
+          "price": 64.99,
+          "currency": "USD",
+          "reviews_count": 157,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Str8-n-Up Posture Support",
+          "seller": "GoSupps.com",
+          "price": 89.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Pototlls Back Brace Posture Corrector for Women and Men, S to 5xl, Adjustable Lumbar Support Belt for Upper and Lower Back Pain Relief",
+          "seller": "Walmart - Potottls mall",
+          "price": 14.98,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 4.1,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "DMI Adjustable Lumbar Support Back Brace, Small, White",
+          "seller": "Walmart",
+          "price": 20.8,
+          "currency": "USD",
+          "reviews_count": 116,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Owlprince Neck Brace for Pain Relief & Neck Support Cervical Spine Alignment Neck Collar",
+          "seller": "Walmart - Seller",
+          "price": 27.35,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Pototlls Back Brace Posture Corrector for Women and Men, S to 5xl, Adjustable Lumbar Support Belt for Upper and Lower Back Pain Relief",
+          "seller": "Walmart - Potottls mall",
+          "price": 13.75,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 4.1,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Copper Fit Back Pro Black Power X Straps Technology Compression Back Support Belt",
+          "seller": "Menards",
+          "price": 24.99,
+          "currency": "USD",
+          "reviews_count": 85,
+          "rating": 4.2,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "XXL Size Women Adjustable Shoulder Back Posture Correct Chest Brace Support Belt",
+          "seller": "Walmart - Tasharina Corp",
+          "price": 13.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Posture Corrector - Medium",
+          "seller": "Faith Mobility",
+          "price": 15.99,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 2.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "DMI Posture Corrector, 2XL Cotton/Elastic, 632-6224-1936 - Min Qty 2",
+          "seller": "Zoro",
+          "price": 42.46,
+          "currency": "USD",
+          "reviews_count": 197,
+          "rating": 4.5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Futuro Comfort Compression Back Support",
+          "seller": "WebstaurantStore.com",
+          "price": 26.49,
+          "currency": "USD",
+          "reviews_count": 304,
+          "rating": 2.8,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Unisex Posture Corrector Back Shoulder Waist Support Brace Belt",
+          "seller": "Walmart - Luo885",
+          "price": 16.94,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Musicozy Back Brace Posture Corrector for Women, Back Straightener Posture Corrector, Scoliosis and Hunchback Correction",
+          "seller": "Walmart - MUSICOZY",
+          "price": 22.49,
+          "currency": "USD",
+          "reviews_count": 197,
+          "rating": 2.8,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Posture Corrector - Small",
+          "seller": "Faith Mobility",
+          "price": 15.99,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 4.5,
+          "sponsored": false,
+          "domain": null
+        }
+      ],
+      "related_keywords": [
+        {
+          "cpc": 1.43,
+          "keyword": "posture corrector",
+          "search_volume": 49500,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.89,
+          "keyword": "do posture correctors work",
+          "search_volume": 5400,
+          "competition_index": null
+        },
+        {
+          "cpc": 1.11,
+          "keyword": "posture corrector men",
+          "search_volume": 5400,
+          "competition_index": null
+        },
+        {
+          "cpc": 2.06,
+          "keyword": "best posture corrector",
+          "search_volume": 2900,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.64,
+          "keyword": "posture corrector exercises",
+          "search_volume": 1900,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.46,
+          "keyword": "posture corrector amazon",
+          "search_volume": 1000,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.78,
+          "keyword": "posture corrector near me",
+          "search_volume": 590,
+          "competition_index": null
+        },
+        {
+          "cpc": 1.41,
+          "keyword": "best posture corrector recommended by doctors",
+          "search_volume": 480,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.73,
+          "keyword": "posture corrector reddit",
+          "search_volume": 390,
+          "competition_index": null
+        }
+      ],
+      "serp": {
+        "paid": 0,
+        "total": 13,
+        "organic": 6,
+        "related": [
+          "Do posture correctors work",
+          "Posture Corrector Men",
+          "Posture corrector exercises",
+          "Best posture corrector recommended by doctors",
+          "Posture Corrector Amazon",
+          "Posture corrector side effects",
+          "Hunchback posture Corrector",
+          "Best posture corrector Consumer Reports"
+        ],
+        "shopping": 0,
+        "ad_density": 0,
+        "top_domains": [
+          {
+            "count": 6,
+            "domain": "google.com"
+          }
+        ]
+      },
+      "sources": {
+        "plan": [
+          {
+            "id": "google_shopping",
+            "used": true,
+            "label": "Google Shopping",
+            "notes": "DataForSEO Merchant Google products, priority queue + task_get/advanced.",
+            "status": "ok",
+            "entitled": true,
+            "implemented": true
+          },
+          {
+            "id": "google_search",
+            "used": true,
+            "label": "Google Search",
+            "notes": "Google Ads search volume, DataForSEO Labs related keywords, Google organic SERP.",
+            "status": "ok",
+            "entitled": true,
+            "implemented": true
+          },
+          {
+            "id": "amazon",
+            "used": false,
+            "label": "Amazon",
+            "notes": "Planned: DataForSEO Amazon products / sellers (live/advanced). Hook: add a collector and set implemented true.",
+            "status": "planned",
+            "entitled": true,
+            "implemented": false
+          },
+          {
+            "id": "meta_ad_library",
+            "used": false,
+            "label": "Meta Ad Library",
+            "notes": "Not included in this plan.",
+            "status": "skipped",
+            "entitled": false,
+            "implemented": false
+          },
+          {
+            "id": "tiktok",
+            "used": false,
+            "label": "TikTok",
+            "notes": "Not included in this plan.",
+            "status": "skipped",
+            "entitled": false,
+            "implemented": false
+          },
+          {
+            "id": "aliexpress",
+            "used": false,
+            "label": "AliExpress",
+            "notes": "Not included in this plan.",
+            "status": "skipped",
+            "entitled": false,
+            "implemented": false
+          }
+        ],
+        "serp": "ok",
+        "shopping": "ok",
+        "search_volume": "ok",
+        "related_keywords": "ok"
+      },
+      "estimated_provider_cost_usd": 0.1071,
+      "generated_at": "2026-11-12T17:39:56.813Z",
+      "latency_sec": 19.9467613697052
+    },
+    {
+      "query": "pet hair remover",
+      "ticker": "PETHAIR-US",
+      "product": "pet hair remover",
+      "market": "United States",
+      "market_code": "US",
+      "category": "pet",
+      "category_name": "Pet",
+      "verdict": "UNDERPERFORM",
+      "verdict_rule": "Opportunity \u2265 35 but below the HOLD bar.",
+      "scores": {
+        "demand": 67,
+        "saturation": 63,
+        "competition": 93,
+        "opportunity": 45
+      },
+      "advisor": "For \u201cpet hair remover\u201d in United States, MarketScope measures about 8,100 monthly searches, with a softening 12-month trend. Demand scores 67/100, competition 93/100 and saturation 63/100, producing an Opportunity score of 45/100 and a verdict of UNDERPERFORM (Opportunity \u2265 35 but below the HOLD bar.) We counted 65 Google Shopping listings from 41 sellers, priced from $1.33 to $299. A reasonable selling band is $13.19\u2013$17.58 (the 30th\u201350th percentile of visible Google Shopping prices, just below the median of $17.58). The leading visible seller is Chewy.com with about 11% of listings. Paid and shopping units are fairly dense on the Google results page, so customer-acquisition costs may be material. This summary is generated from the scores and listing stats above \u2014 not from a language model.",
+      "opportunities": [
+        "Recommended selling band: $13.19\u2013$17.58.",
+        "Search interest has softened recently \u2014 treat demand as less durable.",
+        "No single seller dominates the visible listing set."
+      ],
+      "risks": [
+        "Competition is high: many sellers and/or heavy review moats.",
+        "Noticeable ad density on the Google results page may lift acquisition costs.",
+        "Price and seller stats are from the current Google Shopping snapshot (up to 40 listings)."
+      ],
+      "demand_detail": {
+        "search_volume": 8100,
+        "trend_slope": -0.131,
+        "monthly_searches": [
+          {
+            "year": 2026,
+            "month": 10,
+            "search_volume": 8100
+          },
+          {
+            "year": 2026,
+            "month": 9,
+            "search_volume": 6600
+          },
+          {
+            "year": 2026,
+            "month": 8,
+            "search_volume": 9900
+          },
+          {
+            "year": 2026,
+            "month": 7,
+            "search_volume": 12100
+          },
+          {
+            "year": 2026,
+            "month": 6,
+            "search_volume": 8100
+          },
+          {
+            "year": 2026,
+            "month": 5,
+            "search_volume": 8100
+          },
+          {
+            "year": 2026,
+            "month": 4,
+            "search_volume": 9900
+          },
+          {
+            "year": 2026,
+            "month": 3,
+            "search_volume": 9900
+          },
+          {
+            "year": 2026,
+            "month": 2,
+            "search_volume": 8100
+          },
+          {
+            "year": 2026,
+            "month": 1,
+            "search_volume": 8100
+          },
+          {
+            "year": 2025,
+            "month": 12,
+            "search_volume": 8100
+          },
+          {
+            "year": 2025,
+            "month": 11,
+            "search_volume": 8100
+          }
+        ],
+        "competition": "HIGH",
+        "competition_index": 100,
+        "cpc": 1.16
+      },
+      "prices": {
+        "currency": "USD",
+        "min": 1.33,
+        "median": 17.58,
+        "max": 299,
+        "recommended_band": {
+          "low": 13.192,
+          "high": 17.58
+        },
+        "recommended_rule": "30th\u201350th percentile of visible Google Shopping prices (a band at or just below the median).",
+        "listing_count": 65,
+        "seller_count": 41,
+        "samples": [
+          1.33,
+          2.59,
+          3,
+          3.59,
+          5.24,
+          5.4,
+          6.79,
+          6.79,
+          6.79,
+          6.99,
+          7.64,
+          8.19,
+          10.99,
+          10.99,
+          10.99,
+          10.99,
+          12.28,
+          12.99,
+          12.99,
+          12.99,
+          14,
+          14,
+          14.95,
+          14.99,
+          15.95,
+          15.99,
+          16.94,
+          16.94,
+          16.94,
+          16.99,
+          16.99,
+          17.22,
+          17.58,
+          17.99,
+          18,
+          19.99,
+          19.99,
+          21.9,
+          21.99,
+          22.77,
+          24,
+          24.1,
+          24.99,
+          24.99,
+          25.45,
+          25.45,
+          25.98,
+          26.82,
+          27.98,
+          28,
+          28.33,
+          28.99,
+          31.99,
+          34.92,
+          35.1,
+          35.68,
+          47.82,
+          50.96,
+          57.6,
+          63.99,
+          84.99,
+          89.99,
+          204,
+          269.99,
+          299
+        ]
+      },
+      "competitors": [
+        {
+          "share": 0.108,
+          "domain": null,
+          "seller": "Chewy.com",
+          "reviews": 463,
+          "listings": 7,
+          "min_price": 5.4,
+          "median_price": 16.99
+        },
+        {
+          "share": 0.092,
+          "domain": null,
+          "seller": "eBay",
+          "reviews": 8420,
+          "listings": 6,
+          "min_price": 19.99,
+          "median_price": 26.545
+        },
+        {
+          "share": 0.062,
+          "domain": null,
+          "seller": "Walmart",
+          "reviews": 60000,
+          "listings": 4,
+          "min_price": 16.94,
+          "median_price": 16.94
+        },
+        {
+          "share": 0.062,
+          "domain": null,
+          "seller": "Target",
+          "reviews": 5259,
+          "listings": 4,
+          "min_price": 6.79,
+          "median_price": 6.79
+        },
+        {
+          "share": 0.046,
+          "domain": null,
+          "seller": "Tractor Supply Company",
+          "reviews": 2928,
+          "listings": 3,
+          "min_price": 12.99,
+          "median_price": 12.99
+        },
+        {
+          "share": 0.046,
+          "domain": null,
+          "seller": "Mercari",
+          "reviews": 5500,
+          "listings": 3,
+          "min_price": 7.64,
+          "median_price": 18
+        },
+        {
+          "share": 0.046,
+          "domain": null,
+          "seller": "TikTok Shop",
+          "reviews": 10021,
+          "listings": 3,
+          "min_price": 12.99,
+          "median_price": 24.99
+        },
+        {
+          "share": 0.031,
+          "domain": null,
+          "seller": "Walmart - Jewyow",
+          "reviews": 2,
+          "listings": 2,
+          "min_price": 10.99,
+          "median_price": 10.99
+        },
+        {
+          "share": 0.015,
+          "domain": null,
+          "seller": "Walmart - Seller",
+          "reviews": null,
+          "listings": 1,
+          "min_price": 31.99,
+          "median_price": 31.99
+        },
+        {
+          "share": 0.015,
+          "domain": null,
+          "seller": "furfreeride.com",
+          "reviews": null,
+          "listings": 1,
+          "min_price": 14.95,
+          "median_price": 14.95
+        }
+      ],
+      "listings": [
+        {
+          "title": "Reusable Pet Hair Remover for Furniture & Clothing - Includes Travel Brush & Self-Cleaning Base - 2 Pack",
+          "seller": "Walmart - Seller",
+          "price": 31.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "FurZapper Pet Hair Remover",
+          "seller": "Tractor Supply Company",
+          "price": 12.99,
+          "currency": "USD",
+          "reviews_count": 914,
+          "rating": 2.8,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Reusable Pet Hair Remover Glove for Clothes & Upholstery",
+          "seller": "furfreeride.com",
+          "price": 14.95,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Uproot Cleaner Pro Pet Hair Remover",
+          "seller": "Walmart",
+          "price": 16.94,
+          "currency": "USD",
+          "reviews_count": 17000,
+          "rating": 3,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Evercare Duo Pet Hair & Lint Remover",
+          "seller": "Target",
+          "price": 6.79,
+          "currency": "USD",
+          "reviews_count": 453,
+          "rating": 2.6,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Shark Stratos Upright Vacuum with DuoClean PowerFins",
+          "seller": "Walmart - Beach Camera",
+          "price": 299,
+          "currency": "USD",
+          "reviews_count": 2300,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "EyeVac Touchless Pet Vacuum",
+          "seller": "Home Depot",
+          "price": 204,
+          "currency": "USD",
+          "reviews_count": 170,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Bissell Pet Hair Eraser Turbo Rewind Upright Vacuum",
+          "seller": "Abt Electronics & Appliances",
+          "price": 269.99,
+          "currency": "USD",
+          "reviews_count": 821,
+          "rating": 3.4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Bissell Pet Hair Eraser Lithium Ion Cordless Hand Vacuum 2390",
+          "seller": "Target",
+          "price": 89.99,
+          "currency": "USD",
+          "reviews_count": 3900,
+          "rating": 4.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "OneIsAll LM5 Low-Noise Dog Hair Vacuum & Grooming Kit",
+          "seller": "Chewy.com",
+          "price": 63.99,
+          "currency": "USD",
+          "reviews_count": 131,
+          "rating": 4.5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "At Home Pet Hair Remover Roller 7.5 inch W x 7.25 inch H",
+          "seller": "At Home",
+          "price": 6.99,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 4.9,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Uproot Cleaner Pro Pet Hair Remover",
+          "seller": "Walmart",
+          "price": 16.94,
+          "currency": "USD",
+          "reviews_count": 17000,
+          "rating": 3,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "ProElite Pet Hair Brush 176400 at AutoZone",
+          "seller": "AutoZone",
+          "price": 8.19,
+          "currency": "USD",
+          "reviews_count": 105,
+          "rating": 3.1,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "ACE2ACE Pet Hair Remover Roller",
+          "seller": "Chewy.com",
+          "price": 16.99,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Evercare Duo Pet Hair & Lint Remover",
+          "seller": "Target",
+          "price": 6.79,
+          "currency": "USD",
+          "reviews_count": 453,
+          "rating": 2.6,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Reusable Washing Machine Pet Hair Remover Reusable Pet Remover For Laundry 4Pcs Lint Catcher For Washing Machine",
+          "seller": "Walmart - Pxl8sd",
+          "price": 1.33,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Laundry Washing Machine Pet Hair Remover Net",
+          "seller": "Pepita.com",
+          "price": 5.24,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Weiweigg Pet Hair Remover Washing Machine - Lint And Fur Collector for Laundry, Removes Dog Cat Hair from Fabric Clothes, Dryer Sheets Alternative,",
+          "seller": "Walmart - WEIWEIGG",
+          "price": 2.59,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "FurZapper Pet Hair Remover",
+          "seller": "Tractor Supply Company",
+          "price": 12.99,
+          "currency": "USD",
+          "reviews_count": 914,
+          "rating": 2.8,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Pet Hair Remover For Washing Machine, Reusable Laundry Lint Catcher Lint Remover For Dog Cat Hair, Hair Catcher Hair Removal Filter Sponge Hair",
+          "seller": "Walmart - GATHERLIGHT",
+          "price": 3.59,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "BLACK+DECKER Pet Hair Remover",
+          "seller": "Tractor Supply Company",
+          "price": 17.99,
+          "currency": "USD",
+          "reviews_count": 1100,
+          "rating": 2.6,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Angry Orange Chomchom Roller Pet Hair Remover, Size: 1-Pack | PetSmart",
+          "seller": "Petco.com",
+          "price": 15.99,
+          "currency": "USD",
+          "reviews_count": 133,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Lilly Brush Mini Pet Hair Detailer",
+          "seller": "Theisen's",
+          "price": 10.99,
+          "currency": "USD",
+          "reviews_count": 324,
+          "rating": 4.2,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Uproot Cleaner Pro Pet Hair Remover",
+          "seller": "Walmart",
+          "price": 16.94,
+          "currency": "USD",
+          "reviews_count": 17000,
+          "rating": 3,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Evercare Duo Pet Hair & Lint Remover",
+          "seller": "Target",
+          "price": 6.79,
+          "currency": "USD",
+          "reviews_count": 453,
+          "rating": 2.6,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "2x-swiffer Sweeper Pet Heavy Duty Multi-Surface Dry Cloth Refills - 32 ct",
+          "seller": "Walmart - METROGOODS USA",
+          "price": 57.6,
+          "currency": "USD",
+          "reviews_count": 1800,
+          "rating": 3.5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Swiffer Sweeper Pet, Heavy Duty Dry Sweeping Cloth Refills with Febreze Odor Defense, 32 Count",
+          "seller": "GoSupps.com",
+          "price": 84.99,
+          "currency": "USD",
+          "reviews_count": 1800,
+          "rating": 4.4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Swiffer Sweeper Pet Heavy Duty Dry Sweeping Cloth Pad Refills (32 Count) - New Home",
+          "seller": "Mercari",
+          "price": 28,
+          "currency": "USD",
+          "reviews_count": 1800,
+          "rating": 3.8,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Swiffer Sweeper Pet Heavy Duty Dry Sweeping Cloth Pad Refills (32 Count) - New Home",
+          "seller": "Mercari",
+          "price": 7.64,
+          "currency": "USD",
+          "reviews_count": 1800,
+          "rating": 3.8,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Swiffer Heavy Duty Pet Dry Sweeping Cloth 20-Count Box - Case of 4",
+          "seller": "StockUpExpress",
+          "price": 35.68,
+          "currency": "USD",
+          "reviews_count": 1800,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "3pk Swiffer Heavy Duty Pet Dry Sweeping Cloths W/febreze, 30 Cloths",
+          "seller": "eBay",
+          "price": 19.99,
+          "currency": "USD",
+          "reviews_count": 1900,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Swiffer Heavy Duty Pet Dry Sweeping Cloth Pad Refills, Febreze (20 Count) - New Home",
+          "seller": "Mercari",
+          "price": 18,
+          "currency": "USD",
+          "reviews_count": 1900,
+          "rating": 4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Swiffer Heavy Duty Pet Dry Sweeping Cloths W/ Febreze Odor Defense Dry",
+          "seller": "eBay - high51slugger49",
+          "price": 3,
+          "currency": "USD",
+          "reviews_count": 1900,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "2 Pack - Swiffer Hair Magnet Heavy Duty Pet Refills, Odor Defense, 32",
+          "seller": "eBay",
+          "price": 47.82,
+          "currency": "USD",
+          "reviews_count": 1900,
+          "rating": 4.2,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "3 Swiffer Sweeper Heavy Duty Pet Dry Cloths 10 Pack. Trap Lock Dog/Cat Hair",
+          "seller": "eBay - txpic96",
+          "price": 35.1,
+          "currency": "USD",
+          "reviews_count": 1800,
+          "rating": 3.6,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "(2 pack) Bounce Mega Dryer Sheets Pet Hair and Lint Guard, Fresh Scent, 180 Count, Size: 8.7 inch x 12.6 inch",
+          "seller": "Walmart",
+          "price": 27.98,
+          "currency": "USD",
+          "reviews_count": 9000,
+          "rating": 2.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "3-New Swiffer Sweeper Heavy Duty Pet Dry Cloths 10 Pack. Trap Lock Dog/Cat Hair",
+          "seller": "eBay",
+          "price": 34.92,
+          "currency": "USD",
+          "reviews_count": 1900,
+          "rating": 2.9,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Bounce Pet Hair & Lint Guard Dryer Sheets 130ct - Dryer Sheets, for Pet Hair Lint, 130ct, Anti-Static, Fresh Scent, for Pet Owners",
+          "seller": "TikTok Shop",
+          "price": 25.98,
+          "currency": "USD",
+          "reviews_count": 9000,
+          "rating": 4.6,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Bounce PET Hair & Lint Guard Mega Dryer Sheets (Pack of 5), Size: 1 ct",
+          "seller": "Walmart - Overstock Drugstore",
+          "price": 50.96,
+          "currency": "USD",
+          "reviews_count": 8800,
+          "rating": 3,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Reusable Pet Hair Remover Ball for Washing Machine and Dryer",
+          "seller": "Walmart - LIRUA Living Store",
+          "price": 10.99,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Evercare Pet Hair Lint Rollers All Purpose Use 100 Easy-tear Sheets",
+          "seller": "eBay - vantorastore",
+          "price": 21.9,
+          "currency": "USD",
+          "reviews_count": 164,
+          "rating": 3.6,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Pikkii Hair Remover",
+          "seller": "Marley's Monsters",
+          "price": 14,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 4.3,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Furzapper Pet Hair Remover 6 Count",
+          "seller": "eBay",
+          "price": 28.99,
+          "currency": "USD",
+          "reviews_count": 898,
+          "rating": 3.2,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Furzapper Pet Hair Remover 6 Count",
+          "seller": "eBay",
+          "price": 24.1,
+          "currency": "USD",
+          "reviews_count": 898,
+          "rating": 3.2,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Evercare Pet Lint Roller 100 Layer, 200 Total Layers (2 pack)",
+          "seller": "Shipabob",
+          "price": 17.22,
+          "currency": "USD",
+          "reviews_count": 263,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "FURemover Pet Hair Removal & Lint Brush, Color Varies",
+          "seller": "Chewy.com",
+          "price": 5.4,
+          "currency": "USD",
+          "reviews_count": 94,
+          "rating": 2.1,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "ChomChom Roller Pet Hair Remover Original Size Reusable Lint Roller for Cat & Dog Hair on Furniture",
+          "seller": "TikTok Shop",
+          "price": 24.99,
+          "currency": "USD",
+          "reviews_count": 986,
+          "rating": 2.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Black+decker Pet Hair Remover, Roller, Remove Dog Hair And Cat Hair",
+          "seller": "eBay - shoppinysl",
+          "price": 25.45,
+          "currency": "USD",
+          "reviews_count": 1000,
+          "rating": 4.9,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Black+decker Pet Hair Remover, Roller, Remove Dog Hair And Cat Hair",
+          "seller": "eBay - ariks71",
+          "price": 25.45,
+          "currency": "USD",
+          "reviews_count": 1000,
+          "rating": 4.9,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Black+decker Pet Hair Remover, Roller, Remove Dog Hair And Cat Hair",
+          "seller": "eBay - true.deal.supply",
+          "price": 22.77,
+          "currency": "USD",
+          "reviews_count": 1000,
+          "rating": 4.9,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Pet Hair Lint Roller 50% More Pickup Easy Peel All Purpose Refillable Sheets",
+          "seller": "eBay - tplinkstore",
+          "price": 17.58,
+          "currency": "USD",
+          "reviews_count": 103,
+          "rating": 4.2,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Black+decker Pet Hair Remover, Roller, Remove Dog Hair And Cat Hair",
+          "seller": "eBay - lefast0",
+          "price": 28.33,
+          "currency": "USD",
+          "reviews_count": 1000,
+          "rating": 4.9,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Black+decker Pet Hair Remover, Roller, Remove Dog Hair And Cat Hair",
+          "seller": "eBay - itsontheflow4real",
+          "price": 24.99,
+          "currency": "USD",
+          "reviews_count": 1000,
+          "rating": 4.9,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Jewyow Pet Hair Remover Brush Efficient Dog & Cat Hair Removal Furniture",
+          "seller": "Walmart - Jewyow",
+          "price": 10.99,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 3.6,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "ACE2ACE Pet Hair Remover Roller",
+          "seller": "Chewy.com",
+          "price": 16.99,
+          "currency": "USD",
+          "reviews_count": 125,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Pet Hair Remover Roller Reusable Dog And Cat Hair Cleaner For Sofa Car",
+          "seller": "eBay - abalm86",
+          "price": 26.82,
+          "currency": "USD",
+          "reviews_count": 1100,
+          "rating": 3.1,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Reusable Pet Hair Remover",
+          "seller": "DOG & CO.",
+          "price": 14,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 4.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Jewyow Pet Hair Remover Brush Efficient Dog & Cat Hair Removal Furniture",
+          "seller": "Walmart - Jewyow",
+          "price": 10.99,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 3.6,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "FurZapper All Pets Assorted Colors Pet Hair Lifter, Pack of 2 | 0634871032398 | Multicolor | Hair Remover",
+          "seller": "eBay - yjoerwak",
+          "price": 24,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Pets Know Best Pet Hair Remover",
+          "seller": "Chewy.com",
+          "price": 19.99,
+          "currency": "USD",
+          "reviews_count": 45,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Furzapper Pet Hair Remover 4 Pack",
+          "seller": "eBay",
+          "price": 21.99,
+          "currency": "USD",
+          "reviews_count": 924,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Yeewayveh Electrostatic Pet Hair Removal Gloves",
+          "seller": "Walmart - YeewayVeh Store",
+          "price": 14.99,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 3.4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Fido Fave MAX Pet Hair Remover",
+          "seller": "Chewy.com",
+          "price": 12.28,
+          "currency": "USD",
+          "reviews_count": 7,
+          "rating": 3.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "FurDozer X6 & X3 Pet Hair Remover & Auto Detailing Tool",
+          "seller": "TikTok Shop",
+          "price": 12.99,
+          "currency": "USD",
+          "reviews_count": 35,
+          "rating": 4.2,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Mini & Max Pet Hair Remover Bundle",
+          "seller": "Chewy.com",
+          "price": 15.95,
+          "currency": "USD",
+          "reviews_count": 60,
+          "rating": 4.6,
+          "sponsored": false,
+          "domain": null
+        }
+      ],
+      "related_keywords": [
+        {
+          "cpc": 1.41,
+          "keyword": "pet hair remover",
+          "search_volume": 8100,
+          "competition_index": null
+        },
+        {
+          "cpc": 1.17,
+          "keyword": "pet hair remover tool",
+          "search_volume": 4400,
+          "competition_index": null
+        },
+        {
+          "cpc": 1.06,
+          "keyword": "pet hair remover for furniture",
+          "search_volume": 1000,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.68,
+          "keyword": "pet hair remover for car",
+          "search_volume": 720,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.8,
+          "keyword": "pet hair remover for clothes",
+          "search_volume": 590,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.8,
+          "keyword": "pet hair remover for carpet",
+          "search_volume": 590,
+          "competition_index": null
+        },
+        {
+          "cpc": 1.34,
+          "keyword": "pet hair remover vacuum",
+          "search_volume": 170,
+          "competition_index": null
+        },
+        {
+          "cpc": 1.4,
+          "keyword": "pet hair remover machine",
+          "search_volume": 50,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.58,
+          "keyword": "pet hair remover for dogs",
+          "search_volume": 10,
+          "competition_index": null
+        }
+      ],
+      "serp": {
+        "paid": 0,
+        "total": 15,
+        "organic": 8,
+        "related": [
+          "Pet hair remover for cats",
+          "Pet hair remover for dogs",
+          "Pet hair Remover for Clothes",
+          "Best pet hair remover",
+          "Pet hair remover nearby",
+          "Pet hair remover reviews",
+          "Pet hair Remover tool",
+          "Pet hair Remover for Furniture"
+        ],
+        "shopping": 3,
+        "ad_density": 0.2,
+        "top_domains": [
+          {
+            "count": 8,
+            "domain": "google.com"
+          }
+        ]
+      },
+      "sources": {
+        "plan": [
+          {
+            "id": "google_shopping",
+            "used": true,
+            "label": "Google Shopping",
+            "notes": "DataForSEO Merchant Google products, priority queue + task_get/advanced.",
+            "status": "ok",
+            "entitled": true,
+            "implemented": true
+          },
+          {
+            "id": "google_search",
+            "used": true,
+            "label": "Google Search",
+            "notes": "Google Ads search volume, DataForSEO Labs related keywords, Google organic SERP.",
+            "status": "ok",
+            "entitled": true,
+            "implemented": true
+          },
+          {
+            "id": "amazon",
+            "used": false,
+            "label": "Amazon",
+            "notes": "Planned: DataForSEO Amazon products / sellers (live/advanced). Hook: add a collector and set implemented true.",
+            "status": "planned",
+            "entitled": true,
+            "implemented": false
+          },
+          {
+            "id": "meta_ad_library",
+            "used": false,
+            "label": "Meta Ad Library",
+            "notes": "Not included in this plan.",
+            "status": "skipped",
+            "entitled": false,
+            "implemented": false
+          },
+          {
+            "id": "tiktok",
+            "used": false,
+            "label": "TikTok",
+            "notes": "Not included in this plan.",
+            "status": "skipped",
+            "entitled": false,
+            "implemented": false
+          },
+          {
+            "id": "aliexpress",
+            "used": false,
+            "label": "AliExpress",
+            "notes": "Not included in this plan.",
+            "status": "skipped",
+            "entitled": false,
+            "implemented": false
+          }
+        ],
+        "serp": "ok",
+        "shopping": "ok",
+        "search_volume": "ok",
+        "related_keywords": "ok"
+      },
+      "estimated_provider_cost_usd": 0.1071,
+      "generated_at": "2026-11-12T17:40:37.983Z",
+      "latency_sec": 38.283098220825195
+    },
+    {
+      "query": "sunset lamp",
+      "ticker": "SUNSET-US",
+      "product": "sunset lamp",
+      "market": "United States",
+      "market_code": "US",
+      "category": "home",
+      "category_name": "Home",
+      "verdict": "HOLD",
+      "verdict_rule": "Opportunity \u2265 50, or demand \u2265 45 with competition \u2264 70.",
+      "scores": {
+        "demand": 99,
+        "saturation": 67,
+        "competition": 78,
+        "opportunity": 60
+      },
+      "advisor": "For \u201csunset lamp\u201d in United States, MarketScope measures about 27,100 monthly searches, with a rising 12-month trend. Demand scores 99/100, competition 78/100 and saturation 67/100, producing an Opportunity score of 60/100 and a verdict of HOLD (Opportunity \u2265 50, or demand \u2265 45 with competition \u2264 70.) We counted 65 Google Shopping listings from 33 sellers, priced from $5.20 to $95.00. A reasonable selling band is $14.82\u2013$16.82 (the 30th\u201350th percentile of visible Google Shopping prices, just below the median of $16.82). The leading visible seller is Walmart with about 11% of listings. Organic results still dominate the first page of Google, which is a slightly easier paid-acquisition backdrop. This summary is generated from the scores and listing stats above \u2014 not from a language model.",
+      "opportunities": [
+        "Recommended selling band: $14.82\u2013$16.82.",
+        "Search interest has been rising over the last three months versus the prior three.",
+        "No single seller dominates the visible listing set."
+      ],
+      "risks": [
+        "Competition is high: many sellers and/or heavy review moats.",
+        "Ad density on the first Google page is relatively contained.",
+        "Price and seller stats are from the current Google Shopping snapshot (up to 40 listings)."
+      ],
+      "demand_detail": {
+        "search_volume": 27100,
+        "trend_slope": 0.492,
+        "monthly_searches": [
+          {
+            "year": 2026,
+            "month": 10,
+            "search_volume": 33100
+          },
+          {
+            "year": 2026,
+            "month": 9,
+            "search_volume": 33100
+          },
+          {
+            "year": 2026,
+            "month": 8,
+            "search_volume": 40500
+          },
+          {
+            "year": 2026,
+            "month": 7,
+            "search_volume": 27100
+          },
+          {
+            "year": 2026,
+            "month": 6,
+            "search_volume": 22200
+          },
+          {
+            "year": 2026,
+            "month": 5,
+            "search_volume": 22200
+          },
+          {
+            "year": 2026,
+            "month": 4,
+            "search_volume": 18100
+          },
+          {
+            "year": 2026,
+            "month": 3,
+            "search_volume": 22200
+          },
+          {
+            "year": 2026,
+            "month": 2,
+            "search_volume": 22200
+          },
+          {
+            "year": 2026,
+            "month": 1,
+            "search_volume": 27100
+          },
+          {
+            "year": 2025,
+            "month": 12,
+            "search_volume": 40500
+          },
+          {
+            "year": 2025,
+            "month": 11,
+            "search_volume": 40500
+          }
+        ],
+        "competition": "HIGH",
+        "competition_index": 96,
+        "cpc": 0.77
+      },
+      "prices": {
+        "currency": "USD",
+        "min": 5.2,
+        "median": 16.82,
+        "max": 95,
+        "recommended_band": {
+          "low": 14.82,
+          "high": 16.82
+        },
+        "recommended_rule": "30th\u201350th percentile of visible Google Shopping prices (a band at or just below the median).",
+        "listing_count": 65,
+        "seller_count": 33,
+        "samples": [
+          5.2,
+          6.21,
+          6.21,
+          6.21,
+          7,
+          7,
+          7,
+          7,
+          9.99,
+          10.48,
+          10.78,
+          11.99,
+          11.99,
+          12.34,
+          12.95,
+          12.95,
+          12.99,
+          13.99,
+          14.82,
+          14.82,
+          14.82,
+          14.82,
+          14.82,
+          15,
+          15,
+          15,
+          15.19,
+          15.19,
+          15.19,
+          15.19,
+          16.19,
+          16.82,
+          16.82,
+          18,
+          20.41,
+          21.26,
+          23.17,
+          24,
+          24.99,
+          25.64,
+          25.91,
+          27.72,
+          27.72,
+          27.72,
+          28.98,
+          29.95,
+          29.95,
+          29.95,
+          32.99,
+          37.4,
+          37.5,
+          37.99,
+          43.53,
+          45.99,
+          45.99,
+          52.99,
+          59.71,
+          59.71,
+          59.71,
+          59.99,
+          59.99,
+          59.99,
+          60.56,
+          88.88,
+          95
+        ]
+      },
+      "competitors": [
+        {
+          "share": 0.108,
+          "domain": null,
+          "seller": "Walmart",
+          "reviews": 479,
+          "listings": 7,
+          "min_price": 14.82,
+          "median_price": 14.82
+        },
+        {
+          "share": 0.077,
+          "domain": null,
+          "seller": "Walmart - Seller",
+          "reviews": null,
+          "listings": 5,
+          "min_price": 6.21,
+          "median_price": 6.21
+        },
+        {
+          "share": 0.062,
+          "domain": null,
+          "seller": "Five Below",
+          "reviews": null,
+          "listings": 4,
+          "min_price": 7,
+          "median_price": 7
+        },
+        {
+          "share": 0.062,
+          "domain": null,
+          "seller": "eBay - danybd5",
+          "reviews": null,
+          "listings": 4,
+          "min_price": 15.19,
+          "median_price": 15.19
+        },
+        {
+          "share": 0.046,
+          "domain": null,
+          "seller": "88printers.com",
+          "reviews": 12,
+          "listings": 3,
+          "min_price": 29.95,
+          "median_price": 29.95
+        },
+        {
+          "share": 0.046,
+          "domain": null,
+          "seller": "HighPeak",
+          "reviews": null,
+          "listings": 3,
+          "min_price": 27.72,
+          "median_price": 27.72
+        },
+        {
+          "share": 0.046,
+          "domain": null,
+          "seller": "Wayfair",
+          "reviews": null,
+          "listings": 3,
+          "min_price": 59.71,
+          "median_price": 59.71
+        },
+        {
+          "share": 0.046,
+          "domain": null,
+          "seller": "Target",
+          "reviews": 177,
+          "listings": 3,
+          "min_price": 15,
+          "median_price": 15
+        },
+        {
+          "share": 0.046,
+          "domain": null,
+          "seller": "TikTok Shop",
+          "reviews": null,
+          "listings": 3,
+          "min_price": 5.2,
+          "median_price": 10.48
+        },
+        {
+          "share": 0.031,
+          "domain": null,
+          "seller": "eBay - fic_5165",
+          "reviews": null,
+          "listings": 2,
+          "min_price": 11.99,
+          "median_price": 11.99
+        }
+      ],
+      "listings": [
+        {
+          "title": "Tsrarey Sunset Lamp Projector 180 Degree Rotation Sunset Projection Light Led Night",
+          "seller": "eBay - fic_5165",
+          "price": 11.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Pursonic Sunset Projector Table Lamp",
+          "seller": "88printers.com",
+          "price": 29.95,
+          "currency": "USD",
+          "reviews_count": 4,
+          "rating": 4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Multi-Color Changing Sunset Lamp",
+          "seller": "Five Below",
+          "price": 7,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Itek Sunset Projector Lamp",
+          "seller": "Walmart - Most Anything",
+          "price": 12.95,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "HighPeak Sunset Lamp",
+          "seller": "HighPeak",
+          "price": 27.72,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Urban Shop Color Changing LED Sunset Projector Lamp 10.23 inch H",
+          "seller": "Walmart",
+          "price": 16.82,
+          "currency": "USD",
+          "reviews_count": 85,
+          "rating": 3.6,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Spacenight Sunset Lamp Projector Multi-Color Multi-Mode Dimmable Timing Music",
+          "seller": "eBay - danybd5",
+          "price": 15.19,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Multi-Color Changing Sunset Lamp",
+          "seller": "Five Below",
+          "price": 7,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Urban Shop Ultra Violet LED Sunset Projector Lamp",
+          "seller": "Walmart",
+          "price": 14.82,
+          "currency": "USD",
+          "reviews_count": 56,
+          "rating": 4.3,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset Lamp Projection, Not Only 21 Colors Sunset Lights, 180 Degree Rotation Led Light, Push Button Switch & APP Control Projector For Party Bedroom",
+          "seller": "Wayfair",
+          "price": 59.71,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Rgb Sunset Projector Light with Remote",
+          "seller": "Target",
+          "price": 15,
+          "currency": "USD",
+          "reviews_count": 59,
+          "rating": 1.9,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Spacenight Sunset Lamp Projector Multi-Color Multi-Mode Dimmable Timing Music",
+          "seller": "eBay - danybd5",
+          "price": 15.19,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Urban Shop Ultra Violet LED Sunset Projector Lamp",
+          "seller": "Walmart",
+          "price": 14.82,
+          "currency": "USD",
+          "reviews_count": 56,
+          "rating": 4.3,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Pursonic Sunset Projector Table Lamp",
+          "seller": "88printers.com",
+          "price": 29.95,
+          "currency": "USD",
+          "reviews_count": 4,
+          "rating": 4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "HighPeak Sunset Lamp \u2013 Ambient Mood Light for Any Room",
+          "seller": "HighPeak",
+          "price": 27.72,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Rgb Sunset Projector Light with Remote",
+          "seller": "Target",
+          "price": 15,
+          "currency": "USD",
+          "reviews_count": 59,
+          "rating": 1.9,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset Projection with Remote Control Endless Color Sunset Projection LED APP Floor Lamp Christmas Gift/Party/Bedroom",
+          "seller": "Walmart - Seller",
+          "price": 28.98,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset Light Lamp With Remote Control Led Rgb Usb Powered Projector",
+          "seller": "eBay - ledecommerce21",
+          "price": 20.41,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset Lamp with Remote - Fancy LEDs, 16 Colors, 4 Mode Setting, Stepless Dimmable, 360\u00b0 Rotatable, Energy-Saving USB A Power, Night Light, Selfie",
+          "seller": "TikTok Shop",
+          "price": 37.4,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset Lamp with Remote, 16 RGB Colors \u2013 Perfect Gift",
+          "seller": "VXB.com Bearings",
+          "price": 88.88,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Urban Shop Ultra Violet LED Sunset Projector Lamp",
+          "seller": "Walmart",
+          "price": 14.82,
+          "currency": "USD",
+          "reviews_count": 56,
+          "rating": 4.3,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Best Portable Sunset Projection Lamp USB Powered voice control |Quntis",
+          "seller": "Quntis",
+          "price": 45.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Spacenight Sunset Lamp Projector Multi-Color Multi-Mode Dimmable Timing Music",
+          "seller": "eBay - danybd5",
+          "price": 15.19,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Multi-Color Changing Sunset Lamp",
+          "seller": "Five Below",
+          "price": 7,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset Projection Lamp, Portable Usb Lamp for Photo Light, Featuring Ambient Light, Home Decor, Photo And Video Scenes, Atmosphere Lighting, for Home",
+          "seller": "Walmart - Seller",
+          "price": 6.21,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Urban Shop Ultra Violet LED Sunset Projector Lamp",
+          "seller": "Walmart",
+          "price": 14.82,
+          "currency": "USD",
+          "reviews_count": 56,
+          "rating": 4.3,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Rgb Sunset Projector Light with Remote",
+          "seller": "Target",
+          "price": 15,
+          "currency": "USD",
+          "reviews_count": 59,
+          "rating": 1.9,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Urban Shop Other Sunset Light New In Box",
+          "seller": "Walmart",
+          "price": 14.82,
+          "currency": "USD",
+          "reviews_count": 85,
+          "rating": 3.6,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Vivitar Led Sunset Lamp",
+          "seller": "eBay",
+          "price": 10.78,
+          "currency": "USD",
+          "reviews_count": 12,
+          "rating": 4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Pursonic Sunset Projector Table Lamp",
+          "seller": "88printers.com",
+          "price": 29.95,
+          "currency": "USD",
+          "reviews_count": 4,
+          "rating": 4,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Urban Shop Color Changing LED Sunset Projector Lamp 10.23 inch H",
+          "seller": "Walmart",
+          "price": 16.82,
+          "currency": "USD",
+          "reviews_count": 85,
+          "rating": 3.6,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Knojodu LED Sunset Projector Lamp with 180 Degree Rotation and APP Control for Bedroom Party Decor",
+          "seller": "Lowe's",
+          "price": 60.56,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Multi-Color Changing Sunset Lamp",
+          "seller": "Five Below",
+          "price": 7,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Tsrarey Sunset Lamp Projector 180 Degree Rotation Sunset Projection Light Led Night",
+          "seller": "eBay - fic_5165",
+          "price": 11.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Best Portable Sunset Projection Lamp USB Powered voice control |Quntis",
+          "seller": "Quntis",
+          "price": 45.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "HighPeak Sunset Lamp",
+          "seller": "HighPeak",
+          "price": 27.72,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset Projection Lamp with Multicolor LED Lighting",
+          "seller": "Exult Planet SRL",
+          "price": 32.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Itek Sunset Projector Lamp",
+          "seller": "Walmart - Most Anything",
+          "price": 12.95,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset Lamp Projector Led Lights For Bedroom Night Light RGB Lights Sun Sunlight Sunrise Lamp 10W 360\u00b0 Rotation Mood Lighting Home/Room Decor",
+          "seller": "Wayfair",
+          "price": 59.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "heyday Sunset Lamp",
+          "seller": "eBay - gfn-international",
+          "price": 9.99,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Adrinfly Multi-Color Sunset Lights, 180\u00b0 Rotation Integrated Led Light with App Control and Push Button Switch",
+          "seller": "Home Depot",
+          "price": 59.71,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Lampe de table LED \u00e0 projection Sunset \u2013 \u2205 8cm x H 13cm (Rouge coucher de soleil) / Blanc / Prise USB",
+          "seller": "Vakkerlight",
+          "price": 95,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Mini Sunset Projection Table Lamp (16-Color Remote Controlled Edition) - Compact 3.9\" / 10cm Optical Lens Mood Light with 180-Degree Tilt Head",
+          "seller": "Casa Di Lumo",
+          "price": 59.99,
+          "currency": "USD",
+          "reviews_count": 7,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "richgv Sunset Lamp Projection for Christmas Decorations, Party, Home & Bedroom, 16 Color Changing LED Floor Lamp with 360\u00b0 Rotation",
+          "seller": "Walmart - Richgv",
+          "price": 13.99,
+          "currency": "USD",
+          "reviews_count": 45,
+          "rating": 4.1,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset Lamp Projection, Not Only 21 Colors Sunset Lights, 180 Degree Rotation Led Light, Push Button Switch & APP Control Projector For Party Bedroom",
+          "seller": "Wayfair",
+          "price": 59.71,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Spacenight Sunset Lamp Projector Multi-Color Multi-Mode Dimmable Timing Music",
+          "seller": "eBay - danybd5",
+          "price": 15.19,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset Lamp LED Sunset Projection Lamp 180 Degree Rotation Adjustable Height",
+          "seller": "mercari.com",
+          "price": 24,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Kaipara Sunset Standing Floor Lamp with Ocean Wave Effect 360 Rotation 16 Color Filters",
+          "seller": "Walmart - AMRSM",
+          "price": 25.64,
+          "currency": "USD",
+          "reviews_count": 7,
+          "rating": 3.3,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset Lamp With 16 Colors - Create Cozy Vibes",
+          "seller": "VXB.com Bearings",
+          "price": 59.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset Projection Lamp With Remote Control, 16 Color Options, 360\u00b0 Rotation, 4 Lighting Modes For Photography, Selfie, Party, And Home Decor Wrought",
+          "seller": "eBay - dss_discounters",
+          "price": 25.91,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset Projector Lamp - Forma Metal Table Lamp 12 Inch",
+          "seller": "Vessel Object",
+          "price": 52.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset LED Table Lamp, Creative Projection Night Light, Induction Desk Lamp, Ideal Birthday Gift for Girlfriend Women Home Decor",
+          "seller": "Walmart - Seller",
+          "price": 16.19,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "RGB Sunset Lamp - Adjustable Height, USB Powered Mood Light",
+          "seller": "Etsy - Seller",
+          "price": 37.5,
+          "currency": "USD",
+          "reviews_count": 1,
+          "rating": 5,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Exnemav Sunset Lamp Night Light 16 Colors & 4 Modes Sunset Projection Lamp with Remote",
+          "seller": "eBay - mazilbe",
+          "price": 21.26,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset Lamp Projector Multicolor Changing LED Projection Lamps | 360\u00b0 Rotation,Switch Button & APP Control Sunlight Lamps for Bedroom,Photography,Part",
+          "seller": "Newegg.com - BrightMart Shop",
+          "price": 37.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Cpeelsdo Sunset Lamp Projector Changing LED Lights Bedroom",
+          "seller": "Walmart - Ouxin Direct",
+          "price": 12.34,
+          "currency": "USD",
+          "reviews_count": 50,
+          "rating": 4.7,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset Lamp Night Light, 4 Modes, Sunset Projection Lamp with Remote, Color Changing Rainbow Light, Romantic LED Projector for Photography, Room Decor",
+          "seller": "TikTok Shop",
+          "price": 10.48,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Iconic Other Iconic Sunset Atmosphere Lamp Black With Golden Sunset Light",
+          "seller": "eBay - kingarthurfinds",
+          "price": 12.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset Lamp Projector",
+          "seller": "Rainbow Spaces",
+          "price": 18,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset Projection Lamp, Portable Usb Lamp for Photo Light, Featuring Ambient Light, Home Decor, Photo And Video Scenes, Atmosphere Lighting, for Home",
+          "seller": "Walmart - Seller",
+          "price": 6.21,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Grundig Sunset Projection Lamp with Remote Control 16-Color RGB & Warm White LED Table/Bedside Lamp",
+          "seller": "Fishpond.com",
+          "price": 43.53,
+          "currency": "USD",
+          "reviews_count": 55,
+          "rating": 4.2,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset Projection Lamp Led Mood Light \u2013 Aesthetic Room Decor",
+          "seller": "eBay",
+          "price": 24.99,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "USB Sunset Projection Lamp, Orange Halo for Photos and Mood Lighting, Bedroom Decor",
+          "seller": "Etsy - Seller",
+          "price": 23.17,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset light projector, RGB 16-color sunset projection light with remote control, 180 \u00b0 rotating USBLED ambient light, fill light, suitable for makeup",
+          "seller": "TikTok Shop",
+          "price": 5.2,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        },
+        {
+          "title": "Sunset Projection Lamp for Photo Light, Home Decor, Ambient Light, Portable Usb Lamp And",
+          "seller": "Walmart - Seller",
+          "price": 6.21,
+          "currency": "USD",
+          "reviews_count": null,
+          "rating": null,
+          "sponsored": false,
+          "domain": null
+        }
+      ],
+      "related_keywords": [
+        {
+          "cpc": 0.9,
+          "keyword": "sunset lamp",
+          "search_volume": 27100,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.34,
+          "keyword": "sunset lamp amazon",
+          "search_volume": 1000,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.3,
+          "keyword": "sunset lamp near me",
+          "search_volume": 590,
+          "competition_index": null
+        },
+        {
+          "cpc": 1.29,
+          "keyword": "best sunset lamp",
+          "search_volume": 320,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.07,
+          "keyword": "sunset lamp walmart",
+          "search_volume": 170,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.77,
+          "keyword": "sunset lamp app",
+          "search_volume": 140,
+          "competition_index": null
+        },
+        {
+          "cpc": 1.36,
+          "keyword": "sunset lamp ikea",
+          "search_volume": 90,
+          "competition_index": null
+        },
+        {
+          "cpc": null,
+          "keyword": "sunset lamp reddit",
+          "search_volume": 70,
+          "competition_index": null
+        },
+        {
+          "cpc": 0.63,
+          "keyword": "sunset lamp 5 head",
+          "search_volume": 20,
+          "competition_index": null
+        }
+      ],
+      "serp": {
+        "paid": 0,
+        "total": 13,
+        "organic": 6,
+        "related": [],
+        "shopping": 1,
+        "ad_density": 0.077,
+        "top_domains": [
+          {
+            "count": 6,
+            "domain": "google.com"
+          }
+        ]
+      },
+      "sources": {
+        "plan": [
+          {
+            "id": "google_shopping",
+            "used": true,
+            "label": "Google Shopping",
+            "notes": "DataForSEO Merchant Google products, priority queue + task_get/advanced.",
+            "status": "ok",
+            "entitled": true,
+            "implemented": true
+          },
+          {
+            "id": "google_search",
+            "used": true,
+            "label": "Google Search",
+            "notes": "Google Ads search volume, DataForSEO Labs related keywords, Google organic SERP.",
+            "status": "ok",
+            "entitled": true,
+            "implemented": true
+          },
+          {
+            "id": "amazon",
+            "used": false,
+            "label": "Amazon",
+            "notes": "Planned: DataForSEO Amazon products / sellers (live/advanced). Hook: add a collector and set implemented true.",
+            "status": "planned",
+            "entitled": true,
+            "implemented": false
+          },
+          {
+            "id": "meta_ad_library",
+            "used": false,
+            "label": "Meta Ad Library",
+            "notes": "Not included in this plan.",
+            "status": "skipped",
+            "entitled": false,
+            "implemented": false
+          },
+          {
+            "id": "tiktok",
+            "used": false,
+            "label": "TikTok",
+            "notes": "Not included in this plan.",
+            "status": "skipped",
+            "entitled": false,
+            "implemented": false
+          },
+          {
+            "id": "aliexpress",
+            "used": false,
+            "label": "AliExpress",
+            "notes": "Not included in this plan.",
+            "status": "skipped",
+            "entitled": false,
+            "implemented": false
+          }
+        ],
+        "serp": "ok",
+        "shopping": "ok",
+        "search_volume": "ok",
+        "related_keywords": "ok"
+      },
+      "estimated_provider_cost_usd": 0.1071,
+      "generated_at": "2026-11-12T17:41:13.344Z",
+      "latency_sec": 31.540777444839478
+    }
+  ],
+  "stores": [
+    {
+      "name": "Target",
+      "domain": null,
+      "listings": 23,
+      "share": 0.1243,
+      "products": [
+        "MAGMOUNT-US",
+        "BLENDER-US",
+        "POSTURE-US",
+        "PETHAIR-US",
+        "SUNSET-US"
+      ],
+      "median_price": 26.49,
+      "reviews": 19564
+    },
+    {
+      "name": "Walmart",
+      "domain": null,
+      "listings": 19,
+      "share": 0.1027,
+      "products": [
+        "MAGMOUNT-US",
+        "BLENDER-US",
+        "PETHAIR-US",
+        "SUNSET-US"
+      ],
+      "median_price": 16.94,
+      "reviews": 62778
+    },
+    {
+      "name": "eBay",
+      "domain": null,
+      "listings": 15,
+      "share": 0.0811,
+      "products": [
+        "BLENDER-US",
+        "POSTURE-US",
+        "PETHAIR-US"
+      ],
+      "median_price": 36.995000000000005,
+      "reviews": 29899
+    },
+    {
+      "name": "Mercari",
+      "domain": null,
+      "listings": 13,
+      "share": 0.0703,
+      "products": [
+        "BLENDER-US",
+        "POSTURE-US",
+        "PETHAIR-US"
+      ],
+      "median_price": 20,
+      "reviews": 301879
+    },
+    {
+      "name": "Best Buy",
+      "domain": null,
+      "listings": 12,
+      "share": 0.0649,
+      "products": [
+        "MAGMOUNT-US",
+        "BLENDER-US"
+      ],
+      "median_price": 44.97,
+      "reviews": 4329
+    },
+    {
+      "name": "Home Depot",
+      "domain": null,
+      "listings": 11,
+      "share": 0.0595,
+      "products": [
+        "MAGMOUNT-US",
+        "BLENDER-US"
+      ],
+      "median_price": 55,
+      "reviews": 819
+    },
+    {
+      "name": "TikTok Shop",
+      "domain": null,
+      "listings": 10,
+      "share": 0.0541,
+      "products": [
+        "BLENDER-US",
+        "PETHAIR-US",
+        "SUNSET-US"
+      ],
+      "median_price": 24.99,
+      "reviews": 296521
+    },
+    {
+      "name": "Walmart - Seller",
+      "domain": null,
+      "listings": 10,
+      "share": 0.0541,
+      "products": [
+        "POSTURE-US",
+        "PETHAIR-US",
+        "SUNSET-US"
+      ],
+      "median_price": 24.99,
+      "reviews": null
+    },
+    {
+      "name": "Chewy.com",
+      "domain": null,
+      "listings": 7,
+      "share": 0.0378,
+      "products": [
+        "PETHAIR-US"
+      ],
+      "median_price": 16.99,
+      "reviews": 463
+    },
+    {
+      "name": "Tractor Supply Company",
+      "domain": null,
+      "listings": 6,
+      "share": 0.0324,
+      "products": [
+        "MAGMOUNT-US",
+        "PETHAIR-US"
+      ],
+      "median_price": 49.99,
+      "reviews": 3528
+    },
+    {
+      "name": "Rokform",
+      "domain": null,
+      "listings": 5,
+      "share": 0.027,
+      "products": [
+        "MAGMOUNT-US"
+      ],
+      "median_price": 19.99,
+      "reviews": 1535
+    },
+    {
+      "name": "4AllPromos.com",
+      "domain": null,
+      "listings": 5,
+      "share": 0.027,
+      "products": [
+        "BLENDER-US"
+      ],
+      "median_price": 762.9,
+      "reviews": null
+    },
+    {
+      "name": "Five Below",
+      "domain": null,
+      "listings": 4,
+      "share": 0.0216,
+      "products": [
+        "SUNSET-US"
+      ],
+      "median_price": 7,
+      "reviews": null
+    },
+    {
+      "name": "eBay - danybd5",
+      "domain": null,
+      "listings": 4,
+      "share": 0.0216,
+      "products": [
+        "SUNSET-US"
+      ],
+      "median_price": 15.19,
+      "reviews": null
+    },
+    {
+      "name": "Walmart - Scosche Industries",
+      "domain": null,
+      "listings": 3,
+      "share": 0.0162,
+      "products": [
+        "MAGMOUNT-US"
+      ],
+      "median_price": 9.99,
+      "reviews": 41
+    },
+    {
+      "name": "Sunaofe",
+      "domain": null,
+      "listings": 3,
+      "share": 0.0162,
+      "products": [
+        "POSTURE-US"
+      ],
+      "median_price": 179.99,
+      "reviews": 359
+    },
+    {
+      "name": "GoSupps.com",
+      "domain": null,
+      "listings": 3,
+      "share": 0.0162,
+      "products": [
+        "POSTURE-US"
+      ],
+      "median_price": 84.99,
+      "reviews": 157
+    },
+    {
+      "name": "88printers.com",
+      "domain": null,
+      "listings": 3,
+      "share": 0.0162,
+      "products": [
+        "SUNSET-US"
+      ],
+      "median_price": 29.95,
+      "reviews": 12
+    },
+    {
+      "name": "HighPeak",
+      "domain": null,
+      "listings": 3,
+      "share": 0.0162,
+      "products": [
+        "SUNSET-US"
+      ],
+      "median_price": 27.72,
+      "reviews": null
+    },
+    {
+      "name": "Wayfair",
+      "domain": null,
+      "listings": 3,
+      "share": 0.0162,
+      "products": [
+        "SUNSET-US"
+      ],
+      "median_price": 59.71,
+      "reviews": null
+    },
+    {
+      "name": "Mob Armor",
+      "domain": null,
+      "listings": 2,
+      "share": 0.0108,
+      "products": [
+        "MAGMOUNT-US"
+      ],
+      "median_price": 54.99,
+      "reviews": 497
+    },
+    {
+      "name": "Harbor Freight Tools",
+      "domain": null,
+      "listings": 2,
+      "share": 0.0108,
+      "products": [
+        "MAGMOUNT-US"
+      ],
+      "median_price": 9.99,
+      "reviews": null
+    },
+    {
+      "name": "CVS Pharmacy",
+      "domain": null,
+      "listings": 2,
+      "share": 0.0108,
+      "products": [
+        "MAGMOUNT-US"
+      ],
+      "median_price": 14.99,
+      "reviews": null
+    },
+    {
+      "name": "SharkNinja",
+      "domain": null,
+      "listings": 2,
+      "share": 0.0108,
+      "products": [
+        "BLENDER-US"
+      ],
+      "median_price": 99.99,
+      "reviews": 4000
+    },
+    {
+      "name": "Poshmark",
+      "domain": null,
+      "listings": 2,
+      "share": 0.0108,
+      "products": [
+        "BLENDER-US"
+      ],
+      "median_price": 36.5,
+      "reviews": 192000
+    },
+    {
+      "name": "thenaturalposture.com",
+      "domain": null,
+      "listings": 2,
+      "share": 0.0108,
+      "products": [
+        "POSTURE-US"
+      ],
+      "median_price": 37.99,
+      "reviews": 99
+    },
+    {
+      "name": "Kohl's",
+      "domain": null,
+      "listings": 2,
+      "share": 0.0108,
+      "products": [
+        "POSTURE-US"
+      ],
+      "median_price": 109,
+      "reviews": 371
+    },
+    {
+      "name": "Leonisa United States",
+      "domain": null,
+      "listings": 2,
+      "share": 0.0108,
+      "products": [
+        "POSTURE-US"
+      ],
+      "median_price": 33,
+      "reviews": 1173
+    },
+    {
+      "name": "BEK Medical",
+      "domain": null,
+      "listings": 2,
+      "share": 0.0108,
+      "products": [
+        "POSTURE-US"
+      ],
+      "median_price": 11.969999999999999,
+      "reviews": 54
+    },
+    {
+      "name": "Walmart - Jewyow",
+      "domain": null,
+      "listings": 2,
+      "share": 0.0108,
+      "products": [
+        "PETHAIR-US"
+      ],
+      "median_price": 10.99,
+      "reviews": 2
+    },
+    {
+      "name": "eBay - fic_5165",
+      "domain": null,
+      "listings": 2,
+      "share": 0.0108,
+      "products": [
+        "SUNSET-US"
+      ],
+      "median_price": 11.99,
+      "reviews": null
+    },
+    {
+      "name": "furfreeride.com",
+      "domain": null,
+      "listings": 1,
+      "share": 0.0054,
+      "products": [
+        "PETHAIR-US"
+      ],
+      "median_price": 14.95,
+      "reviews": null
+    }
+  ],
+  "notes": "Six products were analysed successfully on 12 Nov 2026. Nine further products (electric spin scrubber, mini projector, car vacuum, ice roller, wireless earbuds case, resistance bands, neck fan, cordless water flosser, silicone stretch lids) were requested but DataForSEO returned HTTP 402 Payment Required on every endpoint, so they are omitted. No figures were invented for them.",
+  "attempted_products": 15,
+  "successful_products": 6
+}
