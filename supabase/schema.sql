@@ -96,6 +96,11 @@ create index if not exists reports_user_created_idx
 alter table public.reports add column if not exists source text;
 alter table public.reports add column if not exists source_url text;
 
+-- Live reports (analyze edge function)
+alter table public.reports add column if not exists result jsonb;
+alter table public.reports add column if not exists is_example boolean not null default false;
+alter table public.reports add column if not exists status text not null default 'complete';
+
 
 alter table public.reports enable row level security;
 
@@ -202,13 +207,51 @@ begin
 end;
 $$;
 
-revoke all on function public.spend_credits(integer) from public, anon;
-grant execute on function public.spend_credits(integer) to authenticated;
+revoke all on function public.spend_credits(integer) from public, anon, authenticated;
+grant execute on function public.spend_credits(integer) to service_role;
+
+-- Server-side charge used by supabase/functions/analyze (service_role only).
+create or replace function public.spend_credits_for_user(p_user_id uuid, p_cost integer)
+returns integer
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  remaining integer;
+begin
+  if auth.role() is distinct from 'service_role' then
+    raise exception 'Forbidden';
+  end if;
+  if p_user_id is null then
+    raise exception 'User id is required';
+  end if;
+  if p_cost is null or p_cost <= 0 then
+    raise exception 'Cost must be a positive integer';
+  end if;
+
+  update public.profiles
+     set credits = credits - p_cost
+   where id = p_user_id
+     and credits >= p_cost
+  returning credits into remaining;
+
+  if remaining is null then
+    raise exception 'Insufficient credits';
+  end if;
+
+  return remaining;
+end;
+$$;
+
+revoke all on function public.spend_credits_for_user(uuid, integer) from public, anon, authenticated;
+grant execute on function public.spend_credits_for_user(uuid, integer) to service_role;
 
 -- Grants (Supabase usually has these already; repeated here for a fresh project)
 grant usage on schema public to authenticated, anon;
 grant select, update on table public.profiles to authenticated;
-grant select, insert on table public.reports to authenticated;
+grant select on table public.reports to authenticated;
+-- inserts are performed by the analyze function (service_role).
 
 
 -- ---------------------------------------------------------------------------
