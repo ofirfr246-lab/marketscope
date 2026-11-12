@@ -102,43 +102,34 @@
   window.MS = { lineChart: lineChart, barChart: barChart, setRing: setRing, setVerdict: setVerdict };
   var MONTHS = ["Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov"];
 
-  /* ---------- hero terminal (EXAMPLE DATA) ---------- */
-  var MARKETS = [
-    { q: "wireless earbuds", m: "US", verdict: "BUY", conf: "High", s: { demand: 81, competition: 64, saturation: 52, opportunity: 74 },
-      price: "$42.80 ▲3.1%", up: true, chart: [38, 39.5, 38.8, 40.2, 41, 40.1, 41.8, 42.5, 41.6, 42.9, 42.2, 42.8],
-      comp: [["SoundPeak", "$39.99", "18%", "+2.4%"], ["AeroBuds Co", "$54.00", "14%", "-1.1%"], ["Nordic Audio", "$29.95", "11%", "+0.6%"], ["Pulse&Co", "$47.50", "9%", "-3.2%"], ["EchoLane", "$34.99", "7%", "+1.8%"]],
-      ai: "Demand is strong and growing (+12% YoY search interest). The top 3 stores hold 43% share, but there is a clear price gap between $30 and $40 with few well-reviewed listings. Main risk: heavy ad competition in Q4." },
-    { q: "yoga mats", m: "DE", verdict: "HOLD", conf: "Medium", s: { demand: 58, competition: 71, saturation: 69, opportunity: 47 },
-      price: "€31.40 ▼1.4%", up: false, chart: [33, 32.6, 33.1, 32.4, 32.8, 32, 31.9, 32.2, 31.5, 31.8, 31.2, 31.4],
-      comp: [["FlowMat", "€29.90", "21%", "-0.8%"], ["ZenGrip", "€39.00", "16%", "-2.0%"], ["Asana Haus", "€24.95", "12%", "+0.4%"], ["CoreForm", "€34.50", "8%", "-1.5%"], ["Leaf Studio", "€27.00", "6%", "+0.9%"]],
-      ai: "Demand is stable but flat, and the market is crowded with similar products competing on price. Opportunity exists only with a differentiated angle, such as eco-materials or a premium travel mat. Consider watching for 60 days." },
-    { q: "pet water fountains", m: "UK", verdict: "STRONG BUY", conf: "High", s: { demand: 86, competition: 42, saturation: 35, opportunity: 85 },
-      price: "£27.10 ▲5.6%", up: true, chart: [22, 22.8, 23.1, 23.9, 24.2, 24, 25.1, 25.6, 25.9, 26.4, 26.8, 27.1],
-      comp: [["PawSpring", "£24.99", "15%", "+3.1%"], ["Kitty Falls", "£32.00", "10%", "+1.2%"], ["Hydropet", "£19.99", "8%", "+4.5%"], ["Whisker&Co", "£29.50", "6%", "+0.2%"], ["Aqua Paws", "£22.00", "5%", "+2.7%"]],
-      ai: "Rising demand (+28% YoY) with a fragmented field: no store holds more than 15% share. Reviews highlight noise and cleaning pain points, a clear product gap. Watch supplier lead times ahead of winter." }
-  ];
+  /* ---------- hero terminal (REAL report · Google Shopping & Search · US · Nov 12, 2026) ---------- */
+  var REAL = {
+    q: "magnetic phone mount",
+    m: "US",
+    verdict: "UNDERPERFORM",
+    s: { demand: 76, competition: 90, saturation: 64, opportunity: 48 },
+    comp: [["Home Depot", "12%"], ["Target", "11%"], ["Best Buy", "11%"], ["Walmart", "8%"], ["Five Below", "5%"]],
+    ai: "For “magnetic phone mount” in the United States, MarketScope measures about 8,100 monthly searches, with a roughly stable 12-month trend. Demand scores 76/100, competition 90/100 and saturation 64/100, producing an Opportunity score of 48/100 and a verdict of UNDERPERFORM — high competition versus solid demand. We counted 65 Google Shopping listings from 29 sellers, priced from $6.68 to $69. A reasonable selling band is $14.99–$19.99, at or just below the median of $19.99. The leading visible sellers by listing share are Home Depot (12%), Target (11%), Best Buy (11%), Walmart (8%) and Five Below (5%). Amazon, Meta Ad Library, TikTok and AliExpress are not in this report — those sources are coming soon."
+  };
   var term = $(".terminal"), typer;
-  function renderMarket(i) {
-    var d = MARKETS[i]; if (!term) return;
-    $("#t-cmd-q").textContent = '"' + d.q + '"'; $("#t-cmd-m").textContent = d.m;
-    setVerdict($("#t-verdict"), d.verdict); $("#t-conf").textContent = d.conf;
-    var opp = $("#t-opp"); opp.textContent = d.s.opportunity; opp.style.color = scoreColor("opportunity", d.s.opportunity);
-    $$(".terminal .gauge").forEach(function (g) { setRing($(".ring", g), d.s[g.dataset.key], g.dataset.key); });
-    var pr = $("#t-price"); pr.textContent = d.price; pr.className = d.up ? "g" : "r";
-    var pts = path(d.chart, 300, 110, 10), line = toD(pts);
-    $("#t-line").setAttribute("d", line); $("#t-area").setAttribute("d", line + "L300,110L0,110Z");
-    $("#t-comp").innerHTML = d.comp.map(function (r) { return "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td><td>" + r[2] + '</td><td class="' + (r[3][0] === "+" ? "g" : "r") + '">' + r[3] + "</td></tr>"; }).join("");
-    var adv = $("#t-advisor"), txt = d.ai, k = 0; clearInterval(typer);
-    if (reduce) { adv.textContent = txt; return; }
-    adv.innerHTML = '<span class="cur"></span>';
-    typer = setInterval(function () { k += 3; adv.innerHTML = txt.slice(0, k) + '<span class="cur"></span>'; if (k >= txt.length) { clearInterval(typer); adv.textContent = txt; } }, 18);
-  }
   if (term) {
-    var tabs = $$(".t-tabs button"), idx = 0, auto;
-    tabs.forEach(function (b) { b.addEventListener("click", function () { idx = +b.dataset.market; select(idx); clearInterval(auto); }); });
-    function select(i) { tabs.forEach(function (t, j) { t.classList.toggle("active", i === j); t.setAttribute("aria-selected", i === j); }); renderMarket(i); }
-    select(0);
-    if (!reduce) auto = setInterval(function () { idx = (idx + 1) % MARKETS.length; select(idx); }, 9000);
+    var qEl = $("#t-cmd-q"), mEl = $("#t-cmd-m");
+    if (qEl) qEl.textContent = '"' + REAL.q + '"';
+    if (mEl) mEl.textContent = REAL.m;
+    if ($("#t-verdict")) setVerdict($("#t-verdict"), REAL.verdict);
+    var opp = $("#t-opp");
+    if (opp) { opp.textContent = REAL.s.opportunity; opp.style.color = scoreColor("opportunity", REAL.s.opportunity); }
+    $$(".terminal .gauge").forEach(function (g) { setRing($(".ring", g), REAL.s[g.dataset.key], g.dataset.key); });
+    var comp = $("#t-comp");
+    if (comp) comp.innerHTML = REAL.comp.map(function (r) { return "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td></tr>"; }).join("");
+    var adv = $("#t-advisor"), txt = REAL.ai, k = 0;
+    if (adv) {
+      if (reduce) adv.textContent = txt;
+      else {
+        adv.innerHTML = '<span class="cur"></span>';
+        typer = setInterval(function () { k += 3; adv.innerHTML = txt.slice(0, k) + '<span class="cur"></span>'; if (k >= txt.length) { clearInterval(typer); adv.textContent = txt; } }, 18);
+      }
+    }
   }
 
   /* ---------- ticker (EXAMPLE DATA) ---------- */
@@ -176,7 +167,11 @@
     var body = C.matrix.map(function (r) {
       if (r.group) return '<tr class="grp"><th colspan="' + (C.plans.length + 1) + '">' + r.group.toUpperCase() + "</th></tr>";
       return "<tr><th>" + r[0] + "</th>" + r.slice(1).map(function (v, i) { var hl = C.plans[i] && C.plans[i].popular ? " hl" : "";
-        return v === true ? '<td class="yes' + hl + '" aria-label="Included">✓</td>' : v === false ? '<td class="no' + hl + '" aria-label="Not included">—</td>' : '<td class="' + hl + '">' + v + "</td>"; }).join("") + "</tr>";
+        return v === true ? '<td class="yes' + hl + '" aria-label="Included">✓</td>'
+          : v === false ? '<td class="no' + hl + '" aria-label="Not included">—</td>'
+          : v === "Live" ? '<td class="yes' + hl + '"><span class="chip live">Live</span></td>'
+          : v === "Coming soon" ? '<td class="' + hl + '"><span class="chip soon">Coming soon</span></td>'
+          : '<td class="' + hl + '">' + v + "</td>"; }).join("") + "</tr>";
     }).join("");
     mx.innerHTML = head + "<tbody>" + body + "</tbody>";
   }
@@ -286,6 +281,6 @@
         { data: [70, 71, 69, 72, 73, 75, 76, 78, 77, 79, 80, 81], color: "#19d27c" },
         { data: [55, 56, 57, 58, 58, 60, 61, 61, 62, 63, 63, 64], color: "#ff4d5e", dash: "4 4" }] });
     }); });
-    $$(".list-table tbody tr").forEach(function (r) { r.addEventListener("click", function () { location.href = "demo.html"; }); });
+    // App preview rows are labelled example data and should not open the real Google report.
   }
 })();

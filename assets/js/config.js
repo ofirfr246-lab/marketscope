@@ -5,8 +5,10 @@
    credit top-ups, sign-up plan picker, app preview wallet.
    Framing: Starter answers “Is there demand?”, Plus “How is it being
    sold?”, Pro “How much will I make?”.
-   Data sources: Free & Starter = Google Shopping + Google Search +
-   Amazon. Plus adds Meta Ad Library + TikTok. Pro adds AliExpress.
+   Data sources: Free & Starter = Google Shopping + Google Search
+   (Live) + Amazon (Coming soon). Plus adds Meta Ad Library + TikTok
+   (Coming soon). Pro adds AliExpress (Coming soon).
+   Only Google Shopping and Google Search are live today.
    ===================================================================== */
 window.MS_CONFIG = {
   currency: "$",
@@ -19,7 +21,7 @@ window.MS_CONFIG = {
       sources: ["Google Shopping", "Google Search", "Amazon"],
       features: [
         "5 one-time credits",
-        "Google Shopping, Google Search & Amazon",
+        "Google Shopping &amp; Search <span class=\"chip live\">Live</span> · Amazon <span class=\"chip soon\">Coming soon</span>",
         "Demand, Competition, Saturation & Opportunity scores",
         "Verdict (STRONG BUY → AVOID)",
         "AI Advisor summary",
@@ -35,7 +37,7 @@ window.MS_CONFIG = {
       features: [
         "30 credits every month",
         "Everything in Free, plus:",
-        "Amazon BSR & review velocity",
+        "Amazon BSR &amp; review velocity <span class=\"chip soon\">Coming soon</span>",
         "Price-band recommendation",
         "Competitor Intelligence & 1 tracked store",
         "PDF / CSV export & saved reports",
@@ -50,9 +52,9 @@ window.MS_CONFIG = {
       features: [
         "100 credits every month",
         "Everything in Starter, plus:",
-        "Meta Ad Library & TikTok ads / Creative Center",
-        "Ad longevity, advertiser count & creative angles",
-        "TikTok trend velocity & hashtag views",
+        "Meta Ad Library &amp; TikTok ads / Creative Center <span class=\"chip soon\">Coming soon</span>",
+        "Ad longevity, advertiser count &amp; creative angles <span class=\"chip soon\">Coming soon</span>",
+        "TikTok trend velocity &amp; hashtag views <span class=\"chip soon\">Coming soon</span>",
         "Screener, heatmap, backtest, sentiment & compare up to 4",
         "20 email alerts · 10 tracked stores · 12-month history",
         "AI Advisor summaries & priority email support"
@@ -65,8 +67,8 @@ window.MS_CONFIG = {
       features: [
         "200 credits every month",
         "Everything in Plus, plus:",
-        "AliExpress supplier finder with landed cost",
-        "Margin / ROAS breakeven & profit simulator",
+        "AliExpress supplier finder with landed cost <span class=\"chip soon\">Coming soon</span>",
+        "Margin / ROAS breakeven &amp; profit simulator <span class=\"chip soon\">Coming soon</span>",
         "Unlimited tracked stores, watch slots & 24-month history",
         "Portfolio desk & white-label PDF reports (early access)",
         "API access (early access) · 3 team seats",
@@ -83,13 +85,13 @@ window.MS_CONFIG = {
   matrix: [
     ["Credits", "5 one-time", "30 / mo", "100 / mo", "200 / mo"],
     { group: "Data sources" },
-    ["Google Shopping", true, true, true, true],
-    ["Google Search", true, true, true, true],
-    ["Amazon (listings & pricing)", true, true, true, true],
-    ["Amazon BSR & review velocity", false, true, true, true],
-    ["Meta Ad Library", false, false, true, true],
-    ["TikTok ads & Creative Center", false, false, true, true],
-    ["AliExpress (supplier cost, orders, margin)", false, false, false, true],
+    ["Google Shopping", "Live", "Live", "Live", "Live"],
+    ["Google Search", "Live", "Live", "Live", "Live"],
+    ["Amazon (listings & pricing)", "Coming soon", "Coming soon", "Coming soon", "Coming soon"],
+    ["Amazon BSR & review velocity", false, "Coming soon", "Coming soon", "Coming soon"],
+    ["Meta Ad Library", false, false, "Coming soon", "Coming soon"],
+    ["TikTok ads & Creative Center", false, false, "Coming soon", "Coming soon"],
+    ["AliExpress (supplier cost, orders, margin)", false, false, false, "Coming soon"],
     { group: "Analysis & scores" },
     ["Demand / Competition / Saturation / Opportunity scores", true, true, true, true],
     ["Verdict (STRONG BUY → AVOID)", true, true, true, true],
@@ -97,11 +99,11 @@ window.MS_CONFIG = {
     ["Price-band recommendation", false, true, true, true],
     ["AI Advisor", "Summary", "Full", "Full + summaries", "Full + follow-ups"],
     ["Competitor Intelligence", "Top 3", true, true, true],
-    ["Ad longevity, advertiser count & creative angles", false, false, true, true],
-    ["TikTok trend velocity & hashtag views", false, false, true, true],
-    ["AliExpress supplier finder & landed cost", false, false, false, true],
-    ["Margin / ROAS breakeven calculator", false, false, false, true],
-    ["Profit simulator", false, false, false, true],
+    ["Ad longevity, advertiser count & creative angles", false, false, "Coming soon", "Coming soon"],
+    ["TikTok trend velocity & hashtag views", false, false, "Coming soon", "Coming soon"],
+    ["AliExpress supplier finder & landed cost", false, false, false, "Coming soon"],
+    ["Margin / ROAS breakeven calculator", false, false, false, "Coming soon"],
+    ["Profit simulator", false, false, false, "Coming soon"],
     { group: "Market terminal" },
     ["Ticker tape, movers & desk feed", true, true, true, true],
     ["Market Terminal history", "7 days", "30 days", "12 months", "24 months"],
