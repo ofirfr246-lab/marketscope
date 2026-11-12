@@ -15,8 +15,8 @@
    Step-by-step: docs/SETUP.md
    ===================================================================== */
 
-export const SUPABASE_URL = "YOUR_SUPABASE_URL";
-export const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+export const SUPABASE_URL = "https://izcqyzrzjtogsfrffknp.supabase.co";
+export const SUPABASE_ANON_KEY = "sb_publishable_Q4JbiEEDoJzbcBJsmsq6rA_7I-_dkI2";
 
 const PLACEHOLDER = /YOUR_SUPABASE_|changeme|placeholder/i;
 
