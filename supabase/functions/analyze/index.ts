@@ -44,7 +44,7 @@ import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2";
 import { describeSourceRuns, isPlan, willRun, type SourceStatus } from "./sources.ts";
 
 const REPORT_COST = 1; // one credit per Starter-data report
-const RATE_LIMIT_PER_HOUR = 10;
+const RATE_LIMIT_PER_HOUR = 20;
 const SHOPPING_POLL_MS = 2500;
 const SHOPPING_TIMEOUT_MS = 55_000;
 const TITLE_FETCH_MS = 5000;
@@ -964,10 +964,13 @@ Deno.serve(async (req: Request) => {
       recommended_rule: "30th–50th percentile of visible Google Shopping prices (a band at or just below the median).",
       listing_count: listings,
       seller_count: sellers,
+      // All numeric Shopping prices in this snapshot (for a distribution histogram).
+      samples: prices.slice(),
     },
     demand_detail: {
       search_volume: volume ?? null,
       trend_slope: Math.round(slope * 1000) / 1000,
+      // Last 12 months from Google Ads search_volume: { year, month, search_volume }
       monthly_searches: months.slice(-12),
       competition: volumeRes.metrics && volumeRes.metrics.competition,
       competition_index: adsIdx ?? null,
@@ -981,7 +984,8 @@ Deno.serve(async (req: Request) => {
     })),
     serp: serpRes.summary,
     competitors,
-    listings: products.slice(0, 24).map((p) => ({
+    // Full Shopping listing set from this task (depth 40, including flattened carousels).
+    listings: products.map((p) => ({
       title: p.title,
       seller: p.seller,
       price: p.price,
@@ -990,6 +994,7 @@ Deno.serve(async (req: Request) => {
       rating: p.rating,
       sponsored: p.sponsored,
       url: p.url,
+      domain: p.domain,
     })),
     opportunities: [
       bandLow != null ? "Recommended selling band: " + money(bandLow, currency) + "–" + money(bandHigh, currency) + "." : "Collect more priced listings before setting a sell price.",
