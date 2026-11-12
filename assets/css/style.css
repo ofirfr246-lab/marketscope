@@ -707,3 +707,6 @@ pre.code{background:#090b0e;border:1px solid var(--line);border-radius:12px;padd
 .heat-tile .ht-name{font-weight:600;font-size:.86rem}
 .heat-tile .ht-meta{font:500 .68rem var(--mono);color:var(--muted)}
 .coming-soon-panel{border:1px dashed var(--line);border-radius:var(--r);padding:28px;background:rgba(255,255,255,.02)}
+
+.topup .btn{margin-top:10px}
+button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
