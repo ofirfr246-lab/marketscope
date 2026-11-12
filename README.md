@@ -30,11 +30,16 @@ The Terminal desk (`terminal.html` and related pages) is a capital-markets-style
 
 Watchlists and portfolios persist in Supabase (`watchlist`, `portfolio` tables in `supabase/schema.sql`) when the two keys are set and the user is signed in; otherwise they use `localStorage`.
 
+### Plan mapping (data sources)
+- **Free & Starter** — Google Shopping, Google Search and Amazon (listings and pricing on both; Amazon BSR and review velocity on Starter). Starter answers “Is there demand?”
+- **Plus** — everything in Starter, plus Meta Ad Library and TikTok ads and Creative Center trends. Answers “How is it being sold?”
+- **Pro** — everything in Plus, plus AliExpress supplier cost, order volume and a true margin calculator. Answers “How much will I make?”
+
 ### Plan mapping (Terminal features)
 - **Free** — Terminal desk (tape, movers, news feed), 7-day charts, 1 Watchlist slot
-- **Starter** — alert rules (5 slots), category indices, events calendar, compare 2 names, analyst ratings & target range, 30-day history
-- **Plus** — Screener, heatmap, backtest, sentiment gauge, niche ‘earnings’, compare up to 4, 20 watch slots, 12-month history
-- **Pro** — Portfolio desk (allocation, risk, diversification), unlimited watch, unlimited tracked stores, 24-month history
+- **Starter** — alert rules (5 Watchlist slots, 5 email alerts), category indices, events calendar, compare 2 names, analyst ratings & target range, 30-day history
+- **Plus** — Screener, heatmap, backtest, sentiment gauge, niche ‘earnings’, compare up to 4, 20 watch slots, 20 email alerts, 12-month history
+- **Pro** — Portfolio desk (allocation, risk, diversification), unlimited watch slots, unlimited tracked stores, 24-month history
 - **Store Intelligence** — directory visible on all plans (example data). Tracked stores: Starter 1, Plus 10, Pro unlimited. Plus+ for the full profile (catalog, ads, sentiment) when live collection ships.
 
 ## Front-end notes

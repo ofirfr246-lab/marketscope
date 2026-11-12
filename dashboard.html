@@ -39,7 +39,7 @@
       <div>
         <div class="kicker mono">// DASHBOARD</div>
         <h1 data-welcome>Welcome back</h1>
-        <p class="sub" style="margin:0">Your credits, plan and reports. New reports use labelled sample output until data providers are connected.</p>
+        <p class="sub" style="margin:0">Your credits, plan and reports. New reports pull live data via Google Shopping &amp; Search (1 credit).</p>
       </div>
       <a class="btn btn-sm btn-ghost" href="account.html">Account settings</a>
     </div>
@@ -63,7 +63,7 @@
     <div class="dash-grid">
       <div class="dash-card">
         <h2>New report</h2>
-        <p class="muted" style="margin-top:0">This run costs <b class="amber">1 credit</b>. Live data providers are not connected yet, so every result is labelled <b>sample output</b>.</p>
+        <p class="muted" style="margin-top:0">This run costs <b class="amber">1 credit</b> and uses live Google Shopping and Search data. If live data is still being connected, you’ll see a labelled example instead and you will not be charged.</p>
         <div class="seg" role="tablist" aria-label="How to start a report">
           <button type="button" class="active" data-report-tab="link" aria-selected="true">Paste a link</button>
           <button type="button" data-report-tab="describe" aria-selected="false">Describe product</button>
@@ -88,7 +88,7 @@
                 <span>Price</span><span>Not available from the URL</span>
               </div>
             </div>
-            <div class="field"><label for="ir-product">Product name</label><input id="ir-product" name="product" required placeholder="Edit if the guess is off" autocomplete="off"></div>
+            <div class="field"><label for="ir-product">Product name <span class="muted">(optional — we’ll derive it from the link if blank)</span></label><input id="ir-product" name="product" placeholder="Edit if the guess is off" autocomplete="off"></div>
             <div class="field"><label for="ir-market">Market</label>
               <select id="ir-market" name="market" required>
               <option value="" disabled selected>Select a market</option>
