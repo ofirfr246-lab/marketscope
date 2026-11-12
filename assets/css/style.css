@@ -162,8 +162,8 @@ p{margin:0 0 1em}
 
 /* ticker */
 .ticker{display:flex;border-block:1px solid var(--line);background:#090b0d;overflow:hidden;position:relative}
-.ticker-label{flex:none;background:var(--amber);color:#111;font-size:.7rem;font-weight:700;padding:11px 14px;letter-spacing:.06em;z-index:2}
-.ticker-track{display:flex;gap:36px;padding:11px 0;white-space:nowrap;animation:tick 60s linear infinite;font-size:.76rem;width:max-content}
+.ticker-label{flex:none;position:relative;background:var(--amber);color:#111;font-size:.7rem;font-weight:700;padding:11px 14px;letter-spacing:.06em;z-index:3}
+.ticker-track{display:flex;gap:36px;padding:11px 12px 11px 8px;white-space:nowrap;animation:tick 60s linear infinite;font-size:.76rem;width:max-content}
 .ticker:hover .ticker-track{animation-play-state:paused}
 .ticker-track span{color:var(--muted)}.ticker-track b{color:var(--text);font-weight:500;margin-right:6px}
 @keyframes tick{to{transform:translateX(-50%)}}
@@ -685,3 +685,25 @@ pre.code{background:#090b0e;border:1px solid var(--line);border-radius:12px;padd
 .store-card:hover{border-color:var(--amber)}
 .store-card .t-hd{margin-bottom:4px}
 .dash-card.full{grid-column:1/-1}
+
+
+/* TradingView-style demand chart + price histogram */
+.tv-wrap{background:#0a0c0f;border:1px solid var(--line);border-radius:var(--r);padding:14px 14px 10px;margin:16px 0}
+.tv-toolbar{display:flex;gap:6px;margin-bottom:8px}
+.tv-tf{background:transparent;border:1px solid var(--line);color:var(--muted);font:500 .72rem var(--mono);padding:4px 10px;border-radius:99px;cursor:pointer}
+.tv-tf.active,.tv-tf:hover{border-color:var(--amber);color:var(--amber)}
+.tv-legend{margin:0 0 10px;color:var(--dim);font-size:.68rem;line-height:1.45}
+.tv-chart{width:100%;height:360px}
+.tv-readout{margin:8px 0 0;color:var(--muted);font-size:.72rem}
+.px-hist{background:#0a0c0f;border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:16px 0}
+.px-hist-bars{display:flex;align-items:flex-end;gap:3px;height:140px}
+.px-hist-col{flex:1;background:rgba(77,163,255,.45);border-radius:3px 3px 0 0;min-width:4px}
+.px-hist-col.in-band{background:rgba(255,176,0,.75)}
+.px-hist-axis{display:flex;justify-content:space-between;margin-top:6px;color:var(--dim);font-size:.68rem}
+.banner-live{background:rgba(25,210,124,.08);border:1px solid rgba(25,210,124,.35);border-radius:10px;padding:10px 14px;font:500 .78rem var(--mono);color:#19d27c;text-align:center}
+.heat-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;align-items:end}
+.heat-tile{border:1px solid var(--line);border-radius:10px;padding:12px;min-height:88px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;text-align:left;color:inherit;background:#0a0c0f}
+.heat-tile:hover{border-color:var(--amber)}
+.heat-tile .ht-name{font-weight:600;font-size:.86rem}
+.heat-tile .ht-meta{font:500 .68rem var(--mono);color:var(--muted)}
+.coming-soon-panel{border:1px dashed var(--line);border-radius:var(--r);padding:28px;background:rgba(255,255,255,.02)}
