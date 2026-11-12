@@ -121,7 +121,10 @@
           '<div class="price"><span class="amt">' + money(Math.round(per)) + '</span><span class="per">/mo</span></div>' +
           '<div class="billed">' + billed + '</div><div class="credits">◆ ' + p.creditsLabel + "</div><ul>" +
           p.features.map(function (f) { var inc = /^Everything in /i.test(f); return "<li" + (inc ? ' class="inc"' : "") + ">" + f + "</li>"; }).join("") + "</ul>" +
-          '<a class="btn btn-amber" href="signup.html?plan=' + p.id + '">' + p.cta + "</a></div>";
+          (p.id === "free"
+            ? '<a class="btn btn-amber" href="signup.html?plan=free">' + p.cta + "</a>"
+            : '<button type="button" class="btn btn-amber" data-checkout-plan="' + p.id + '">' + p.cta + "</button>") +
+          "</div>";
       }).join("");
     });
     $$("[data-annual-note]").forEach(function (e) { e.textContent = (C.annualMonthsFree || 2) + " months free"; });
@@ -144,7 +147,7 @@
   }
   var tu = $("#topups");
   if (tu) tu.innerHTML = C.topups.map(function (t) {
-    return '<div class="topup">' + (t.tag ? '<span class="t chip live">' + t.tag + "</span>" : "") + '<span class="c">' + t.credits + ' <small class="muted" style="font-size:.9rem">credits</small></span><span class="p">' + money(t.price) + '</span><span class="u">' + money(t.price / t.credits) + " per credit · kept while your account is active</span></div>";
+    return '<div class="topup">' + (t.tag ? '<span class="t chip live">' + t.tag + "</span>" : "") + '<span class="c">' + t.credits + ' <small class="muted" style="font-size:.9rem">credits</small></span><span class="p">' + money(t.price) + '</span><span class="u">' + money(t.price / t.credits) + ' per credit · kept while your account is active</span><button type="button" class="btn btn-sm btn-amber" data-checkout-topup="' + t.credits + '">Buy ' + t.credits + " credits</button></div>";
   }).join("");
   // signup plan picker
   var pp = $("#plan-pick");

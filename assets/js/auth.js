@@ -120,7 +120,7 @@ function planLabel(plan) {
 }
 
 async function loadProfile(supabase, user) {
-  var { data, error } = await supabase.from("profiles").select("id,email,display_name,plan,credits,deletion_requested_at,created_at").eq("id", user.id).maybeSingle();
+  var { data, error } = await supabase.from("profiles").select("id,email,display_name,plan,credits,stripe_customer_id,stripe_subscription_id,deletion_requested_at,created_at").eq("id", user.id).maybeSingle();
   if (error) throw error;
   return data;
 }
@@ -660,11 +660,27 @@ async function initDashboard() {
     $$("[data-plan-name]").forEach(function (el) { el.textContent = plan; });
     var sub = $("[data-plan-note]");
     if (sub) {
-      if (profile && profile.plan && profile.plan !== "free") sub.textContent = "Billed plan. Monthly credits are granted after payment is confirmed.";
-      else sub.textContent = "Free plan includes 5 one-time credits. Upgrade anytime from Pricing — paid credits are applied after checkout.";
+      if (profile && profile.plan && profile.plan !== "free") sub.textContent = "Billed plan. Monthly credits refresh when Stripe confirms each renewal.";
+      else sub.textContent = "Free plan includes 5 one-time credits. Upgrade or buy a credit pack from Pricing — paid credits are applied after Stripe confirms payment.";
     }
+    var bill = document.querySelector("[data-manage-billing]");
+    if (bill) bill.hidden = !(profile && profile.stripe_customer_id);
   }
   paintProfile(profile);
+
+  try {
+    if (new URLSearchParams(location.search).get("checkout") === "success") {
+      var tries = 0;
+      var poll = window.setInterval(async function () {
+        tries += 1;
+        try {
+          var fresh = await loadProfile(supabase, session.user);
+          paintProfile(fresh);
+        } catch (e) { /* ignore */ }
+        if (tries >= 6) window.clearInterval(poll);
+      }, 2000);
+    }
+  } catch (e) { /* ignore */ }
 
   async function loadReports() {
     var { data, error } = await supabase.from("reports").select("id,product,market,cost,source,source_url,verdict,scores,content,result,is_example,status,created_at").order("created_at", { ascending: false }).limit(25);
