@@ -142,3 +142,17 @@ visitor picked Starter / Plus / Pro on the sign-up form. Paid plan credits
 will be granted later by Paddle webhooks, handled server-side (for example a
 Supabase Edge Function). A stub is in `supabase/functions/paddle-webhook/`
 and is **not deployed**. See the project README.
+
+## 8. Live reports (DataForSEO secrets)
+
+The `analyze` Edge Function is deployed at:
+
+`https://izcqyzrzjtogsfrffknp.supabase.co/functions/v1/analyze`
+
+It will not charge credits or call DataForSEO until both secrets below are set.
+
+1. Open [Edge Function secrets](https://supabase.com/dashboard/project/izcqyzrzjtogsfrffknp/functions/secrets).
+2. Add these two secrets (names must match exactly):
+   - `DATAFORSEO_LOGIN` — your DataForSEO API login (usually the account email).
+   - `DATAFORSEO_PASSWORD` — the **API password** from DataForSEO’s [API Access](https://app.dataforseo.com/api-access) page. This is **not** the same as the password you use to log into the DataForSEO website.
+3. Save. New reports from the dashboard then run against live Google Shopping and Search data (1 credit each). Until the secrets are set, the dashboard shows “Live data is being connected” and falls back to a labelled example without charging credits.
