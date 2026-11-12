@@ -1,9 +1,36 @@
 /* MarketScope — Stripe webhook.
    verify_jwt is off; authenticity comes from the Stripe signature
-   checked against STRIPE_WEBHOOK_SECRET. */
+   checked against STRIPE_WEBHOOK_SECRET only. No Stripe secret key is required:
+   plan/credits are read from event metadata (Payment Link / price / subscription). */
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2";
 import Stripe from "npm:stripe@19.1.0";
+
+type Catalog = { plan: string | null; credits: number | null; kind: string | null };
+
+const PRICE_CATALOG: Record<string, Catalog> = {
+  price_1Ub2a3KGd933k3yPs0SBUQh2: { plan: "starter", credits: 30, kind: "subscription" },
+  price_1Ub2a4KGd933k3yPcESrI9ln: { plan: "starter", credits: 30, kind: "subscription" },
+  price_1Ub2a5KGd933k3yPLuQlRSSk: { plan: "plus", credits: 100, kind: "subscription" },
+  price_1Ub2a5KGd933k3yPnJnSfDup: { plan: "plus", credits: 100, kind: "subscription" },
+  price_1Ub2a6KGd933k3yPFA3dokgq: { plan: "pro", credits: 200, kind: "subscription" },
+  price_1Ub2a6KGd933k3yP58jlDYey: { plan: "pro", credits: 200, kind: "subscription" },
+  price_1Ub2a7KGd933k3yPBF5yC9LA: { plan: null, credits: 10, kind: "topup" },
+  price_1Ub2a7KGd933k3yPKx7xO48e: { plan: null, credits: 50, kind: "topup" },
+  price_1Ub2a8KGd933k3yP2a08sT4X: { plan: null, credits: 150, kind: "topup" },
+};
+
+const LINK_CATALOG: Record<string, Catalog> = {
+  plink_1Ub3FNKGd933k3yPc7fnyFY3: { plan: "starter", credits: 30, kind: "subscription" },
+  plink_1Ub3FOKGd933k3yPLgnBOICB: { plan: "starter", credits: 30, kind: "subscription" },
+  plink_1Ub3FOKGd933k3yPIYkL2qki: { plan: "plus", credits: 100, kind: "subscription" },
+  plink_1Ub3FRKGd933k3yPMh57yhFs: { plan: "plus", credits: 100, kind: "subscription" },
+  plink_1Ub3FRKGd933k3yPmfUdeLSL: { plan: "pro", credits: 200, kind: "subscription" },
+  plink_1Ub3FSKGd933k3yP6QOQppDv: { plan: "pro", credits: 200, kind: "subscription" },
+  plink_1Ub3FSKGd933k3yPAXujZM0C: { plan: null, credits: 10, kind: "topup" },
+  plink_1Ub3FTKGd933k3yP4rZFXI7D: { plan: null, credits: 50, kind: "topup" },
+  plink_1Ub3FgKGd933k3yPpfAVymAs: { plan: null, credits: 150, kind: "topup" },
+};
 
 function env(name: string): string {
   return (Deno.env.get(name) || "").trim();
@@ -23,6 +50,11 @@ function adminClient(): SupabaseClient {
   return createClient(url, service, { auth: { persistSession: false, autoRefreshToken: false } });
 }
 
+function asMeta(v: unknown): Stripe.Metadata | null {
+  if (v && typeof v === "object" && !Array.isArray(v)) return v as Stripe.Metadata;
+  return null;
+}
+
 function metaNum(meta: Stripe.Metadata | null | undefined, key: string): number | null {
   const v = meta && meta[key];
   if (v == null || v === "") return null;
@@ -33,6 +65,53 @@ function metaNum(meta: Stripe.Metadata | null | undefined, key: string): number 
 function metaStr(meta: Stripe.Metadata | null | undefined, key: string): string | null {
   const v = meta && meta[key];
   return v ? String(v) : null;
+}
+
+function emptyCatalog(): Catalog {
+  return { plan: null, credits: null, kind: null };
+}
+
+function mergeCatalog(...parts: Array<Catalog | null | undefined>): Catalog {
+  const out = emptyCatalog();
+  for (const p of parts) {
+    if (!p) continue;
+    if (!out.plan && p.plan) out.plan = p.plan;
+    if (out.credits == null && p.credits != null) out.credits = p.credits;
+    if (!out.kind && p.kind) out.kind = p.kind;
+  }
+  return out;
+}
+
+function catalogFromMeta(meta: Stripe.Metadata | null | undefined): Catalog {
+  return {
+    plan: metaStr(meta, "plan"),
+    credits: metaNum(meta, "credits"),
+    kind: metaStr(meta, "kind"),
+  };
+}
+
+function idOf(value: unknown): string | null {
+  if (!value) return null;
+  if (typeof value === "string") return value;
+  if (typeof value === "object" && value && "id" in value && typeof (value as { id: unknown }).id === "string") {
+    return (value as { id: string }).id;
+  }
+  return null;
+}
+
+function customerIdOf(obj: { customer?: unknown }): string | null {
+  return idOf(obj.customer);
+}
+
+async function verifyStripeEvent(raw: string, signature: string, secret: string): Promise<Stripe.Event> {
+  const staticHooks = (Stripe as unknown as { webhooks?: Stripe["webhooks"] }).webhooks;
+  if (staticHooks && typeof staticHooks.constructEventAsync === "function") {
+    return await staticHooks.constructEventAsync(raw, signature, secret);
+  }
+  // Fallback: a dummy key is only used to construct the SDK client. No Stripe API calls are made.
+  const key = env("STRIPE_SECRET_KEY") || "sk_unused_webhook_verify_only";
+  const stripe = new Stripe(key, { apiVersion: "2025-08-27.basil" });
+  return await stripe.webhooks.constructEventAsync(raw, signature, secret);
 }
 
 async function seenEvent(admin: SupabaseClient, event: Stripe.Event): Promise<boolean> {
@@ -116,27 +195,49 @@ async function addCredits(
   if (upErr) throw upErr;
 }
 
-function customerIdOf(obj: { customer?: string | Stripe.Customer | Stripe.DeletedCustomer | null }): string | null {
-  const c = obj.customer;
-  if (!c) return null;
-  return typeof c === "string" ? c : c.id;
+function catalogFromLines(lines: unknown): Catalog {
+  const data = (lines as { data?: unknown[] } | undefined)?.data || [];
+  let found = emptyCatalog();
+  for (const raw of data) {
+    const line = raw as Record<string, unknown>;
+    const price = line.price;
+    const priceObj = price && typeof price === "object" ? price as Record<string, unknown> : null;
+    const priceId = idOf(price)
+      || ((line.pricing as { price_details?: { price?: unknown } } | undefined)?.price_details?.price as string | undefined)
+      || null;
+    found = mergeCatalog(
+      found,
+      catalogFromMeta(asMeta(line.metadata)),
+      catalogFromMeta(asMeta(priceObj?.metadata)),
+      priceId ? PRICE_CATALOG[priceId] : null,
+    );
+  }
+  return found;
 }
 
-async function catalogFromPrice(
-  stripe: Stripe,
-  priceId: string | null | undefined,
-  fallback: { plan: string | null; credits: number | null; kind: string | null },
-): Promise<{ plan: string | null; credits: number | null; kind: string | null }> {
-  if (!priceId) return fallback;
-  const price = await stripe.prices.retrieve(priceId);
+function catalogFromSession(session: Stripe.Checkout.Session): Catalog {
+  const paymentLinkId = idOf((session as unknown as { payment_link?: unknown }).payment_link);
+  return mergeCatalog(
+    catalogFromMeta(session.metadata),
+    paymentLinkId ? LINK_CATALOG[paymentLinkId] : null,
+    catalogFromLines((session as unknown as { line_items?: unknown }).line_items),
+  );
+}
+
+function invoiceSubscription(invoice: Stripe.Invoice): { id: string | null; metadata: Stripe.Metadata | null } {
+  const rec = invoice as unknown as {
+    subscription?: unknown;
+    parent?: { subscription_details?: { subscription?: unknown; metadata?: unknown } };
+    subscription_details?: { metadata?: unknown };
+  };
+  const details = rec.parent?.subscription_details;
   return {
-    plan: metaStr(price.metadata, "plan") || fallback.plan,
-    credits: metaNum(price.metadata, "credits") ?? fallback.credits,
-    kind: metaStr(price.metadata, "kind") || fallback.kind,
+    id: idOf(details?.subscription) || idOf(rec.subscription),
+    metadata: asMeta(details?.metadata) || asMeta(rec.subscription_details?.metadata),
   };
 }
 
-async function handleCheckoutSession(admin: SupabaseClient, stripe: Stripe, session: Stripe.Checkout.Session): Promise<void> {
+async function handleCheckoutSession(admin: SupabaseClient, session: Stripe.Checkout.Session): Promise<void> {
   if (session.payment_status !== "paid" && session.payment_status !== "no_payment_required") return;
 
   const userId = await findUserId(admin, {
@@ -150,24 +251,9 @@ async function handleCheckoutSession(admin: SupabaseClient, stripe: Stripe, sess
   }
   if (!(await fulfillOnce(admin, session.id, "checkout.session", userId))) return;
 
-  let linePrice: string | null = null;
-  try {
-    const lines = await stripe.checkout.sessions.listLineItems(session.id, { limit: 1 });
-    const price = lines.data[0]?.price;
-    linePrice = price ? (typeof price === "string" ? price : price.id) : null;
-  } catch (e) {
-    console.error("listLineItems", e);
-  }
-
-  const info = await catalogFromPrice(stripe, linePrice, {
-    plan: metaStr(session.metadata, "plan"),
-    credits: metaNum(session.metadata, "credits"),
-    kind: metaStr(session.metadata, "kind"),
-  });
+  const info = catalogFromSession(session);
   const customerId = customerIdOf(session);
-  const subscriptionId = typeof session.subscription === "string"
-    ? session.subscription
-    : session.subscription?.id || null;
+  const subscriptionId = idOf(session.subscription);
 
   if (info.kind === "topup" && info.credits != null) {
     await addCredits(admin, userId, info.credits, customerId);
@@ -178,40 +264,35 @@ async function handleCheckoutSession(admin: SupabaseClient, stripe: Stripe, sess
   }
 }
 
-async function handleInvoicePaid(admin: SupabaseClient, stripe: Stripe, invoice: Stripe.Invoice): Promise<void> {
+async function handleInvoicePaid(admin: SupabaseClient, invoice: Stripe.Invoice): Promise<void> {
   const reason = invoice.billing_reason || "";
   // First invoice is also granted from checkout.session.completed; skip create to avoid a second write race.
-  // Renewals and mid-cycle updates reset (or set) the monthly allotment.
   if (reason !== "subscription_cycle" && reason !== "subscription_update") return;
 
-  const subscriptionRef = (invoice as unknown as { subscription?: string | { id: string } }).subscription;
-  const subscriptionId = typeof subscriptionRef === "string" ? subscriptionRef : subscriptionRef?.id || null;
-  if (!subscriptionId) return;
+  const sub = invoiceSubscription(invoice);
+  if (!sub.id) {
+    console.error("invoice.paid: no subscription on", invoice.id);
+    return;
+  }
 
-  const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+  const lineInfo = catalogFromLines(invoice.lines);
+  const info = mergeCatalog(catalogFromMeta(sub.metadata), lineInfo, { plan: null, credits: null, kind: "subscription" });
+
   const userId = await findUserId(admin, {
-    userId: metaStr(subscription.metadata, "user_id"),
-    customerId: customerIdOf(subscription),
+    userId: metaStr(sub.metadata, "user_id"),
+    customerId: customerIdOf(invoice),
+    email: invoice.customer_email || null,
   });
   if (!userId) {
     console.error("invoice.paid: no user for", invoice.id);
     return;
   }
   if (!(await fulfillOnce(admin, invoice.id, "invoice.paid", userId))) return;
-
-  const itemPrice = subscription.items.data[0]?.price;
-  const priceId = itemPrice ? (typeof itemPrice === "string" ? itemPrice : itemPrice.id) : null;
-  const priceMeta = itemPrice && typeof itemPrice !== "string" ? itemPrice.metadata : undefined;
-  const info = await catalogFromPrice(stripe, priceId, {
-    plan: metaStr(subscription.metadata, "plan") || metaStr(priceMeta, "plan"),
-    credits: metaNum(subscription.metadata, "credits") ?? metaNum(priceMeta, "credits"),
-    kind: "subscription",
-  });
   if (!info.plan || info.credits == null) {
     console.error("invoice.paid: missing plan/credits on", invoice.id);
     return;
   }
-  await setPlan(admin, userId, info.plan, info.credits, customerIdOf(subscription), subscription.id);
+  await setPlan(admin, userId, info.plan, info.credits, customerIdOf(invoice), sub.id);
 }
 
 async function handleSubscriptionDeleted(admin: SupabaseClient, subscription: Stripe.Subscription): Promise<void> {
@@ -245,16 +326,14 @@ Deno.serve(async (req: Request) => {
   }
 
   const secret = env("STRIPE_WEBHOOK_SECRET");
-  const key = env("STRIPE_SECRET_KEY");
-  if (!secret || !key) {
+  if (!secret) {
     return json(503, { error: "Payments not configured", code: "payments_not_configured" });
   }
 
   const raw = await req.text();
-  const stripe = new Stripe(key, { apiVersion: "2025-08-27.basil" });
   let event: Stripe.Event;
   try {
-    event = await stripe.webhooks.constructEventAsync(raw, signature, secret);
+    event = await verifyStripeEvent(raw, signature, secret);
   } catch {
     return json(400, { error: "Invalid Stripe signature", code: "invalid_signature" });
   }
@@ -268,10 +347,10 @@ Deno.serve(async (req: Request) => {
     switch (event.type) {
       case "checkout.session.completed":
       case "checkout.session.async_payment_succeeded":
-        await handleCheckoutSession(admin, stripe, event.data.object as Stripe.Checkout.Session);
+        await handleCheckoutSession(admin, event.data.object as Stripe.Checkout.Session);
         break;
       case "invoice.paid":
-        await handleInvoicePaid(admin, stripe, event.data.object as Stripe.Invoice);
+        await handleInvoicePaid(admin, event.data.object as Stripe.Invoice);
         break;
       case "customer.subscription.deleted":
         await handleSubscriptionDeleted(admin, event.data.object as Stripe.Subscription);
@@ -282,7 +361,6 @@ Deno.serve(async (req: Request) => {
   } catch (err) {
     const message = err instanceof Error ? err.message : "handler failed";
     console.error("stripe-webhook", event.type, event.id, message);
-    // Drop the event row so Stripe can retry.
     await admin.from("stripe_events").delete().eq("id", event.id);
     return json(500, { error: "Webhook handler failed" });
   }
