@@ -54,7 +54,7 @@
         <p class="fine" style="margin:0">Early access · We detect the store and a product name from the URL. Live page extraction is not connected yet, so reports stay labelled sample output.</p>
       </form>
       <p class="hero-or mono">or join the waitlist</p>
-      <form class="hero-form waitlist-form hero-waitlist" novalidate>
+      <form class="hero-form waitlist-form hero-waitlist" data-lead-source="waitlist" novalidate>
         <label class="sr" for="hero-email">Work email</label>
         <input id="hero-email" type="email" name="email" placeholder="you@store.com" autocomplete="email" required>
         <button class="btn btn-ghost" type="submit">Get early access</button>
@@ -353,7 +353,7 @@
     <div class="kicker mono">// EARLY ACCESS</div>
     <h2>Stop guessing. Start measuring.</h2>
     <p class="sub">Join the waitlist and get <b class="amber">5 free credits</b> when we open your spot.</p>
-    <form class="cta-form waitlist-form" novalidate>
+    <form class="cta-form waitlist-form" data-lead-source="waitlist" novalidate>
       <label class="sr" for="cta-email">Email</label>
       <input id="cta-email" type="email" name="email" placeholder="you@store.com" autocomplete="email" required>
       <label class="sr" for="cta-plan">Plan you're interested in</label>
@@ -396,6 +396,7 @@
 </div>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/import-url.js"></script>
+<script type="module" src="assets/js/leads.js"></script>
 <script src="assets/js/main.js" defer></script>
 <script type="module" src="assets/js/auth.js"></script>
 </body>

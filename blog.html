@@ -58,7 +58,7 @@
     </div>
     <div class="card" style="margin-top:28px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap">
       <div><h3>Get new playbooks by email</h3><p>One useful email when we publish. No spam.</p></div>
-      <form class="hero-form waitlist-form" novalidate style="margin:0;flex:1;max-width:460px"><label class="sr" for="nl-email">Email</label><input id="nl-email" type="email" placeholder="you@store.com" required><button class="btn btn-amber" type="submit">Subscribe</button><p class="form-msg" role="status" aria-live="polite"></p></form>
+      <form class="hero-form waitlist-form" data-lead-source="blog" novalidate style="margin:0;flex:1;max-width:460px"><label class="sr" for="nl-email">Email</label><input id="nl-email" type="email" name="email" placeholder="you@store.com" required autocomplete="email"><button class="btn btn-amber" type="submit">Subscribe</button><p class="form-msg" role="status" aria-live="polite"></p></form>
     </div>
   </div>
 </section>
@@ -87,6 +87,7 @@
 </div>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/import-url.js"></script>
+<script type="module" src="assets/js/leads.js"></script>
 <script src="assets/js/main.js" defer></script>
 <script type="module" src="assets/js/auth.js"></script>
 </body>
