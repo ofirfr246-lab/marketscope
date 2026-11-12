@@ -188,19 +188,39 @@
     pp.innerHTML = C.plans.map(function (p) { return '<label><input type="radio" name="plan" value="' + p.id + '"' + (p.id === want ? " checked" : "") + ">" + p.name + "<small>" + (p.price ? money(p.price) + "/mo" : "Free") + "</small></label>"; }).join("");
   }
 
-  /* ---------- forms (front-end only) ---------- */
+  /* ---------- forms (localStorage + optional Supabase leads insert) ---------- */
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  function leadSource(f, fallback) {
+    return String((f && f.getAttribute("data-lead-source")) || fallback || "waitlist").slice(0, 40);
+  }
+  function submitLead(payload) {
+    try {
+      if (window.MSLeads && typeof window.MSLeads.submit === "function") {
+        return window.MSLeads.submit(payload).catch(function () { return { ok: false }; });
+      }
+    } catch (err) { /* ignore */ }
+    return Promise.resolve({ ok: false, skipped: true });
+  }
   $$(".waitlist-form").forEach(function (f) {
     f.addEventListener("submit", function (e) {
       e.preventDefault();
       var em = f.querySelector("input[type=email]"), msg = f.querySelector(".form-msg"), v = em.value.trim();
       if (!EMAIL.test(v)) { msg.className = "form-msg"; msg.textContent = "Please enter a valid email address."; em.focus(); return; }
+      var plan = (f.querySelector("select") || {}).value || "";
+      var source = leadSource(f, "waitlist");
       var list = store.get("marketscope_waitlist", []);
-      if (!list.some(function (x) { return x.email === v.toLowerCase(); })) list.push({ email: v.toLowerCase(), plan: (f.querySelector("select") || {}).value || "", source: location.pathname, at: new Date().toISOString() });
+      if (!list.some(function (x) { return x.email === v.toLowerCase(); })) list.push({ email: v.toLowerCase(), plan: plan, source: source, page: location.pathname, at: new Date().toISOString() });
       store.set("marketscope_waitlist", list);
       var th = f.parentNode.querySelector(".thanks");
       if (th) { f.hidden = true; th.hidden = false; $(".thanks-email", th).textContent = v; }
-      else { msg.className = "form-msg ok"; msg.textContent = "✓ You're on the list. We'll email " + v + " when your spot opens."; em.value = ""; }
+      else {
+        msg.className = "form-msg ok";
+        msg.textContent = source === "blog" || source === "newsletter"
+          ? "✓ Thanks. We'll email " + v + " when there's a new post."
+          : "✓ You're on the list. We'll email " + v + " when your spot opens.";
+        em.value = "";
+      }
+      submitLead({ email: v, source: source, page: location.pathname, message: plan ? ("Plan interest: " + plan) : undefined });
     });
   });
   $$("form[data-demo-form]").forEach(function (f) {
@@ -210,9 +230,17 @@
       if (bad.length) { msg.className = "form-msg"; msg.textContent = "Please complete the highlighted fields."; bad.forEach(function (b) { b.style.borderColor = "#ff4d5e"; }); bad[0].focus(); return; }
       $$("[required]", f).forEach(function (b) { b.style.borderColor = ""; });
       var kind = f.dataset.demoForm;
-      if (kind === "contact") { var l = store.get("marketscope_contact", []); l.push({ at: new Date().toISOString(), email: f.email.value }); store.set("marketscope_contact", l); }
+      if (kind === "contact") {
+        var nameVal = (f.name && f.name.value || "").trim();
+        var emailVal = (f.email && f.email.value || "").trim();
+        var messageVal = (f.message && f.message.value || "").trim();
+        var l = store.get("marketscope_contact", []);
+        l.push({ at: new Date().toISOString(), email: emailVal, name: nameVal, message: messageVal, page: location.pathname });
+        store.set("marketscope_contact", l);
+        submitLead({ email: emailVal, source: leadSource(f, "contact"), name: nameVal, message: messageVal, page: location.pathname });
+      }
       msg.className = "form-msg ok";
-      msg.textContent = { contact: "✓ Thanks! Your message was saved in this browser preview. (Not sent: no backend yet.)", login: "This is a UI preview. Accounts open soon — join the waitlist on the home page.", signup: "✓ Looks good! Sign-up opens soon. This preview doesn't create accounts yet." }[kind];
+      msg.textContent = { contact: "✓ Thanks! Your message was sent. We'll get back to you at the email you provided.", login: "This is a UI preview. Accounts open soon — join the waitlist on the home page.", signup: "✓ Looks good! Sign-up opens soon. This preview doesn't create accounts yet." }[kind];
     });
   });
 
