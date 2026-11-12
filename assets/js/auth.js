@@ -667,7 +667,7 @@ async function initDashboard() {
   paintProfile(profile);
 
   async function loadReports() {
-    var { data, error } = await supabase.from("reports").select("id,product,market,cost,source,source_url,verdict,scores,content,created_at").order("created_at", { ascending: false }).limit(25);
+    var { data, error } = await supabase.from("reports").select("id,product,market,cost,source,source_url,verdict,scores,content,result,is_example,status,created_at").order("created_at", { ascending: false }).limit(25);
     if (error) throw error;
     return data || [];
   }
@@ -702,36 +702,117 @@ async function initDashboard() {
     });
   }
 
+  function isLiveReport(row) {
+    var c = (row && (row.content || row.result)) || {};
+    if (row && row.is_example === false && c.sample !== true) return true;
+    if (row && row.is_example === true) return false;
+    if (c.is_example === false && c.sample !== true) return true;
+    return false;
+  }
+
+  function formatMoney(n, currency) {
+    if (n == null || n === "" || isNaN(Number(n))) return "—";
+    var cur = currency || "USD";
+    try {
+      return new Intl.NumberFormat("en-US", { style: "currency", currency: cur, maximumFractionDigits: Number(n) >= 100 ? 0 : 2 }).format(Number(n));
+    } catch (e) {
+      return cur + " " + Number(n);
+    }
+  }
+
+  function priceBandHtml(c) {
+    var p = c.prices || {};
+    if (p.min == null && p.median == null && p.max == null) return "";
+    var currency = p.currency || "USD";
+    var min = p.min, med = p.median, max = p.max;
+    var band = p.recommended_band || {};
+    var span = (max != null && min != null && max > min) ? (max - min) : 0;
+    function pct(v) {
+      if (v == null || !span) return 0;
+      return Math.max(0, Math.min(100, ((v - min) / span) * 100));
+    }
+    var fillLeft = band.low != null ? pct(band.low) : 25;
+    var fillRight = band.high != null ? pct(band.high) : 55;
+    var midTick = med != null ? pct(med) : 50;
+    return '<div class="price-band">' +
+      "<h3>// PRICE RANGE</h3>" +
+      '<div class="price-track">' +
+        '<span class="fill" style="left:' + fillLeft + "%;width:" + Math.max(4, fillRight - fillLeft) + '%"></span>' +
+        '<span class="tick" style="left:' + midTick + '%"></span>' +
+      "</div>" +
+      '<div class="price-ticks"><span>Min ' + escapeHtml(formatMoney(min, currency)) + "</span><span>Median " + escapeHtml(formatMoney(med, currency)) + "</span><span>Max " + escapeHtml(formatMoney(max, currency)) + "</span></div>" +
+      (band.low != null
+        ? "<p>Recommended selling band: <b class=\"amber\">" + escapeHtml(formatMoney(band.low, currency)) + "–" + escapeHtml(formatMoney(band.high, currency)) + "</b>" +
+          (p.recommended_rule ? " · " + escapeHtml(p.recommended_rule) : "") + "</p>"
+        : "") +
+    "</div>";
+  }
+
+  function competitorsHtml(c) {
+    var rows = c.competitors || [];
+    if (!rows.length) return "";
+    var currency = (c.prices && c.prices.currency) || "USD";
+    var body = rows.map(function (r) {
+      return "<tr><td>" + escapeHtml(r.seller || r.domain || "—") + "</td>" +
+        "<td>" + escapeHtml(String(r.listings != null ? r.listings : "—")) + "</td>" +
+        "<td>" + escapeHtml(r.share != null ? Math.round(r.share * 100) + "%" : "—") + "</td>" +
+        "<td>" + escapeHtml(formatMoney(r.median_price != null ? r.median_price : r.min_price, currency)) + "</td>" +
+        "<td>" + escapeHtml(r.reviews != null ? String(r.reviews) : "—") + "</td></tr>";
+    }).join("");
+    return "<h3 class=\"mono\" style=\"margin:20px 0 8px;color:var(--dim);font-size:.78rem;letter-spacing:.06em\">// TOP COMPETITORS / STORES</h3>" +
+      '<div class="comp-wrap"><table class="comp-table"><thead><tr><th>Seller</th><th>Listings</th><th>Share</th><th>Typical price</th><th>Reviews</th></tr></thead><tbody>' + body + "</tbody></table></div>";
+  }
+
+  function relatedHtml(c) {
+    var rows = c.related_keywords || [];
+    if (!rows.length) return "";
+    return "<h3 class=\"mono\" style=\"margin:16px 0 0;color:var(--dim);font-size:.78rem;letter-spacing:.06em\">// RELATED KEYWORDS</h3>" +
+      '<ul class="kw-list">' + rows.slice(0, 10).map(function (k) {
+        var label = (k.keyword || "") + (k.search_volume != null ? " · " + Number(k.search_volume).toLocaleString("en-US") : "");
+        return "<li>" + escapeHtml(label) + "</li>";
+      }).join("") + "</ul>";
+  }
+
   function showReport(row) {
     var panel = $("[data-report-view]");
     if (!panel) return;
-    var c = row.content || {};
+    var c = row.content || row.result || {};
     var scores = row.scores || c.scores || {};
+    var live = isLiveReport(row);
+    var bannerClass = live ? "banner-live" : "banner-ex";
+    var bannerText = c.banner || (live
+      ? "Live data via Google Shopping & Search"
+      : "SAMPLE OUTPUT — data providers are not connected yet. Figures are illustrative examples, not real market measurements.");
+    var creditLabel = row.cost ? (String(row.cost) + " credit") : "preview";
+    var kindLabel = live ? "live data via Google Shopping & Search" : "labelled sample";
     panel.hidden = false;
     panel.innerHTML =
-      '<div class="banner-ex">' + escapeHtml(c.banner || "SAMPLE OUTPUT — data providers are not connected yet. Figures are illustrative examples, not real market measurements.") + "</div>" +
+      '<div class="' + bannerClass + '">' + escapeHtml(bannerText) + "</div>" +
       '<div class="report-view-head">' +
-        "<div><h2>" + escapeHtml(row.product) + ' <span class="muted">·</span> <span class="amber">' + escapeHtml(row.market) + "</span></h2>" +
-        '<p class="mono muted" style="margin:0">Generated ' + escapeHtml(formatWhen(row.created_at)) + " · " + escapeHtml(String(row.cost || REPORT_COST)) + " credit · labelled sample" + (row.source || row.source_url ? " · " + escapeHtml((row.source || "link")) + (row.source_url ? " · " + escapeHtml(row.source_url) : "") : "") + "</p></div>" +
-        '<div class="big-verdict panel"><div class="label mono">VERDICT</div><div class="verdict mono" data-verdict="' + escapeHtml(row.verdict || "BUY") + '">' + escapeHtml(row.verdict || "BUY") + "</div>" +
+        "<div><h2>" + escapeHtml(row.product || c.product || "") + ' <span class="muted">·</span> <span class="amber">' + escapeHtml(row.market || c.market || "") + "</span></h2>" +
+        '<p class="mono muted" style="margin:0">Generated ' + escapeHtml(formatWhen(row.created_at || c.generated_at)) + " · " + escapeHtml(creditLabel) + " · " + escapeHtml(kindLabel) + (row.source || row.source_url ? " · " + escapeHtml((row.source || "link")) + (row.source_url ? " · " + escapeHtml(row.source_url) : "") : "") + "</p></div>" +
+        '<div class="big-verdict panel"><div class="label mono">VERDICT</div><div class="verdict mono" data-verdict="' + escapeHtml(row.verdict || c.verdict || "HOLD") + '">' + escapeHtml(row.verdict || c.verdict || "HOLD") + "</div>" +
         '<div class="opp"><span class="mono big g">' + escapeHtml(String(scores.opportunity != null ? scores.opportunity : "—")) + '</span><span class="mono small">/100<br>OPPORTUNITY</span></div></div>' +
       "</div>" +
       '<div class="score-grid compact">' +
-        scoreCard("Demand", scores.demand) +
-        scoreCard("Competition", scores.competition) +
-        scoreCard("Saturation", scores.saturation) +
-        scoreCard("Opportunity", scores.opportunity) +
+        scoreCard("Demand", scores.demand, live) +
+        scoreCard("Competition", scores.competition, live) +
+        scoreCard("Saturation", scores.saturation, live) +
+        scoreCard("Opportunity", scores.opportunity, live) +
       "</div>" +
-      '<div class="advisor-box"><h3>// AI ADVISOR · SAMPLE</h3><p>' + escapeHtml(c.advisor || "") + "</p></div>" +
+      (live ? priceBandHtml(c) : "") +
+      (live ? competitorsHtml(c) : "") +
+      (live ? relatedHtml(c) : "") +
+      '<div class="advisor-box"><h3>// AI ADVISOR' + (live ? "" : " · SAMPLE") + "</h3><p>" + escapeHtml(c.advisor || "") + "</p></div>" +
       '<button type="button" class="btn btn-ghost btn-sm" data-close-report>Close</button>';
     panel.scrollIntoView({ behavior: "smooth", block: "start" });
     var close = $("[data-close-report]", panel);
     if (close) close.addEventListener("click", function () { panel.hidden = true; });
   }
 
-  function scoreCard(label, value) {
+  function scoreCard(label, value, live) {
     var v = value != null ? value : "—";
-    return '<div class="score-card"><div class="ring-plain mono">' + escapeHtml(String(v)) + '</div><div><h3>' + escapeHtml(label) + "</h3><p class='muted'>Sample score</p></div></div>";
+    return '<div class="score-card"><div class="ring-plain mono">' + escapeHtml(String(v)) + '</div><div><h3>' + escapeHtml(label) + "</h3><p class='muted'>" + (live ? "Live score" : "Sample score") + "</p></div></div>";
   }
 
   try {
@@ -741,44 +822,87 @@ async function initDashboard() {
     if (errBox) { errBox.hidden = false; errBox.textContent = "Could not load reports: " + friendlyError(e); }
   }
 
+  async function parseFnError(inv) {
+    var payload = inv && inv.data;
+    var status = null;
+    var err = inv && inv.error;
+    if (err && err.context) {
+      status = err.context.status || status;
+      if (!payload && typeof err.context.json === "function") {
+        try { payload = await err.context.json(); } catch (e) { /* ignore */ }
+      } else if (!payload && typeof err.context.clone === "function") {
+        try { payload = await err.context.clone().json(); } catch (e2) { /* ignore */ }
+      }
+    }
+    if (!payload && err && err.message) {
+      try { payload = JSON.parse(err.message); } catch (e3) { /* ignore */ }
+    }
+    return { payload: payload || {}, status: status, message: (payload && payload.error) || (err && err.message) || "The report could not be run." };
+  }
+
   async function runReport(opts) {
     var product = opts.product, market = opts.market, form = opts.form, source = opts.source || null, sourceUrl = opts.source_url || null;
     var msg = $(".form-msg", form);
     var btn = $("button[type=submit]", form);
-    if (!product || !market) { setMsg(msg, "Enter a product and a market."); return; }
+    if (!market) { setMsg(msg, "Choose a market."); return; }
+    if (!product && !sourceUrl) { setMsg(msg, "Enter a product or paste a product link."); return; }
     var have = profile && typeof profile.credits === "number" ? profile.credits : 0;
     if (have < REPORT_COST) { setMsg(msg, "You need at least " + REPORT_COST + " credit to run a report. Upgrade or add a credit pack from Pricing."); return; }
     btn.disabled = true;
-    setMsg(msg, "Spending " + REPORT_COST + " credit and saving a labelled sample report…", true);
-    var spent = false;
+    if (form && form.classList) form.classList.add("report-loading");
+    setMsg(msg, "Gathering live Google Shopping and Search data… this can take up to a minute.", true);
     try {
-      var spend = await supabase.rpc("spend_credits", { cost: REPORT_COST });
-      if (spend.error) throw spend.error;
-      spent = true;
-      var content = buildSampleReport(product, market, { source: source, source_url: sourceUrl });
-      var ins = await supabase.from("reports").insert({
-        user_id: session.user.id,
-        product: product,
-        market: market,
-        cost: REPORT_COST,
-        source: source,
-        source_url: sourceUrl,
-        verdict: content.verdict,
-        scores: content.scores,
-        content: content
-      }).select().single();
-      if (ins.error) throw ins.error;
-      var remaining = typeof spend.data === "number" ? spend.data : (have - REPORT_COST);
-      paintProfile(Object.assign({}, profile, { credits: remaining }));
-      form.reset();
-      setMsg(msg, "Report saved. This is labelled sample output — live data providers are not connected yet.", true);
-      try { renderList(await loadReports()); } catch (e2) { /* list refresh best-effort */ }
-      if (ins.data) showReport(ins.data);
-      btn.disabled = false;
+      var inv = await supabase.functions.invoke("analyze", {
+        body: { product: product || "", market: market, source: source, source_url: sourceUrl || null }
+      });
+      var parsed = inv.error ? await parseFnError(inv) : { payload: inv.data || {}, status: 200 };
+      var payload = parsed.payload || {};
+      var code = payload.code;
+      var status = parsed.status;
+      if (payload.report && (!inv.error || status === 207 || code === "persist_failed")) {
+        if (typeof payload.credits === "number") paintProfile(Object.assign({}, profile, { credits: payload.credits }));
+        if (form && form.reset) form.reset();
+        setMsg(msg, payload.error || "Report saved. Live data via Google Shopping & Search.", !payload.error);
+        try { renderList(await loadReports()); } catch (e2) { /* list refresh best-effort */ }
+        showReport(payload.report);
+        return;
+      }
+      if (status === 503 || code === "provider_not_configured") {
+        var sample = buildSampleReport(product || "this product", market, { source: source, source_url: sourceUrl });
+        setMsg(msg, "Live data is being connected. Showing a labelled example so you can preview the report. You were not charged.", true);
+        showReport({
+          product: sample.product,
+          market: sample.market,
+          cost: 0,
+          source: source,
+          source_url: sourceUrl,
+          verdict: sample.verdict,
+          scores: sample.scores,
+          content: sample,
+          is_example: true,
+          status: "complete",
+          created_at: sample.generated_at
+        });
+        return;
+      }
+      if (status === 401 || code === "unauthorized") {
+        setMsg(msg, "Please sign in again to run a live report.");
+        return;
+      }
+      if (status === 402 || code === "insufficient_credits") {
+        setMsg(msg, payload.error || "You need at least " + REPORT_COST + " credit to run a report.");
+        return;
+      }
+      if (status === 429 || code === "rate_limited") {
+        setMsg(msg, payload.error || "You can run at most 10 reports per hour. Try again later.");
+        return;
+      }
+      setMsg(msg, payload.error || parsed.message || "The report could not be run.");
     } catch (err) {
-      var extra = spent ? " A credit may already have been deducted. If the report is missing, contact support and we will restore it." : "";
-      setMsg(msg, friendlyError(err) + extra, false);
+      setMsg(msg, friendlyError(err), false);
+    } finally {
       btn.disabled = false;
+      if (form && form.classList) form.classList.remove("report-loading");
       try {
         var fresh = await loadProfile(supabase, session.user);
         paintProfile(fresh);
@@ -844,7 +968,6 @@ async function initDashboard() {
       if (!info || !info.ok) { setMsg($(".form-msg", importForm), (info && info.error) || "Paste a valid product link."); return; }
       var product = (($("#ir-product") || {}).value || info.product || "").trim();
       var market = (($("#ir-market") || {}).value || info.market || "").trim();
-      if (!product) { setMsg($(".form-msg", importForm), "Add a product name. We could not guess it from this URL."); return; }
       if (!market) { setMsg($(".form-msg", importForm), "Choose a market."); return; }
       await runReport({ product: product, market: market, form: importForm, source: info.source, source_url: info.url, sourceName: info.sourceName });
     });

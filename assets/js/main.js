@@ -158,8 +158,11 @@
         var m = C.annualMonthsFree || 0, per = yearly && p.price ? p.price * (12 - m) / 12 : p.price;
         var billed = p.price === 0 ? "Free forever" : yearly ? money(p.price * (12 - m)) + " billed yearly" : "billed monthly";
         return '<div class="plan' + (p.popular ? " popular" : "") + '">' + (p.popular ? '<span class="badge-pop">MOST POPULAR</span>' : "") +
-          "<h3>" + p.name + '</h3><p class="blurb">' + p.blurb + '</p><div class="price"><span class="amt">' + money(Math.round(per)) + '</span><span class="per">/mo</span></div>' +
-          '<div class="billed">' + billed + '</div><div class="credits">◆ ' + p.creditsLabel + "</div><ul>" + p.features.map(function (f) { return "<li>" + f + "</li>"; }).join("") + "</ul>" +
+          "<h3>" + p.name + '</h3><p class="blurb">' + p.blurb + "</p>" +
+          (p.question ? '<p class="ask mono">' + p.question + "</p>" : "") +
+          '<div class="price"><span class="amt">' + money(Math.round(per)) + '</span><span class="per">/mo</span></div>' +
+          '<div class="billed">' + billed + '</div><div class="credits">◆ ' + p.creditsLabel + "</div><ul>" +
+          p.features.map(function (f) { var inc = /^Everything in /i.test(f); return "<li" + (inc ? ' class="inc"' : "") + ">" + f + "</li>"; }).join("") + "</ul>" +
           '<a class="btn btn-amber" href="signup.html?plan=' + p.id + '">' + p.cta + "</a></div>";
       }).join("");
     });
