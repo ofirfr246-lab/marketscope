@@ -52,6 +52,8 @@ const DFS_BASE = "https://api.dataforseo.com";
 
 const ALLOWED_ORIGINS = new Set([
   "https://ofirfr246-lab.github.io",
+  "https://marketscope.space",
+  "https://www.marketscope.space",
   "http://localhost:4173",
   "http://127.0.0.1:4173",
   "http://localhost:4174",
@@ -173,7 +175,7 @@ async function deriveProductFromUrl(url: string): Promise<string> {
       redirect: "follow",
       signal: ctrl.signal,
       headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; MarketScope/1.0; +https://ofirfr246-lab.github.io/ogir/)",
+        "User-Agent": "Mozilla/5.0 (compatible; MarketScope/1.0; +https://marketscope.space/)",
         Accept: "text/html,application/xhtml+xml",
       },
     });
