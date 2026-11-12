@@ -1,4 +1,4 @@
-/* MarketScope Terminal desk — example data, localStorage + optional Supabase. */
+/* MarketScope Terminal desk — live snapshot + localStorage / optional Supabase. */
 import { SUPABASE_URL, SUPABASE_ANON_KEY, isSupabaseConfigured } from "./supabase-config.js";
 
 var CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
@@ -14,14 +14,21 @@ function C() { return window.MSCharts; }
 function esc(s) {
   return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
-function money(n) { return "$" + (Math.round(n * 100) / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
-function pct(n, s) { var v = Number(n); var sign = v > 0 ? "+" : ""; var cls = v > 0 ? "g" : v < 0 ? "r" : "muted"; return '<span class="' + cls + '">' + sign + v.toFixed(s == null ? 1 : s) + "%</span>"; }
+function money(n) {
+  if (n == null || n === "" || !isFinite(Number(n))) return "—";
+  return "$" + (Math.round(Number(n) * 100) / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function pct(n, s) {
+  if (n == null || n === "" || !isFinite(Number(n))) return '<span class="muted">—</span>';
+  var v = Number(n); var sign = v > 0 ? "+" : ""; var cls = v > 0 ? "g" : v < 0 ? "r" : "muted";
+  return '<span class="' + cls + '">' + sign + v.toFixed(s == null ? 1 : s) + "%</span>";
+}
 function verdictClass(v) {
   var x = String(v || "").toUpperCase().replace(/\s+/g, "");
   return ({ STRONGBUY: "v-sbuy", BUY: "v-buy", HOLD: "v-hold", UNDERPERFORM: "v-under", AVOID: "v-avoid" })[x] || "v-hold";
 }
 function channel(t) {
-  return ({ tech: "Amazon", kitchen: "Google Shopping", pet: "Google Shopping", beauty: "Etsy", fitness: "Google Shopping", home: "Walmart" })[t.category] || "Google Shopping";
+  return "Google Shopping & Search";
 }
 
 /* ---------- persistence ---------- */
@@ -153,7 +160,7 @@ function renderTape(el) {
   var items = D().tickers.map(function (t) {
     return '<span><b>' + esc(t.ticker) + "</b> " + money(t.price) + " " + pct(t.chg) + "</span>";
   }).join("");
-  el.innerHTML = '<div class="ticker-label mono">EXAMPLE TAPE</div><div class="ticker-track mono">' + items + items + "</div>";
+  el.innerHTML = '<div class="ticker-label mono">LIVE TAPE · US</div><div class="ticker-track mono">' + items + items + "</div>";
 }
 
 function gotoPage(file, q) { window.location.href = file + (q ? "?" + q : ""); }
@@ -206,7 +213,7 @@ function runCommand(raw) {
   if (f.length === 1) { selectTicker(f[0].ticker); return; }
   if (f.length) { gotoPage("screener.html", "q=" + encodeURIComponent(q)); return; }
   var msg = $("[data-cmd-msg]");
-  if (msg) { msg.textContent = "No match for “" + q + "”. Try a ticker like EARBUDS-US, or SCREEN / HEAT / WATCH."; msg.hidden = false; }
+  if (msg) { msg.textContent = "No match for “" + q + "”. Try a ticker like MAGMOUNT-US, or SCREEN / HEAT / WATCH."; msg.hidden = false; }
 }
 
 function bindCommandBar() {
@@ -230,42 +237,30 @@ function toggleHelp(on) {
 }
 
 function currentTicker() {
-  try { return new URLSearchParams(location.search).get("t") || "EARBUDS-US"; } catch (e) { return "EARBUDS-US"; }
+  var fallback = (D() && D().defaultTicker && D().defaultTicker()) || ((D() && D().tickers[0]) ? D().tickers[0].ticker : "");
+  try { return new URLSearchParams(location.search).get("t") || fallback; } catch (e) { return fallback; }
 }
 function currentTf() {
-  try { return new URLSearchParams(location.search).get("tf") || "1M"; } catch (e) { return "1M"; }
+  try { return new URLSearchParams(location.search).get("tf") || "12M"; } catch (e) { return "12M"; }
 }
 
 /* ---------- charts / focus ---------- */
 var chartKind = "line";
 function drawMainChart() {
-  var el = $("[data-term-chart]");
-  if (!el || !C()) return;
+  var host = $("[data-term-chart-host]") || $("[data-term-chart]");
   var ticker = currentTicker();
   var tf = currentTf();
-  var kind = ($("[data-chart-kind].active") || {}).getAttribute("data-chart-kind") || chartKind;
-  chartKind = kind;
-  if (kind === "candle") {
-    var ohlc = D().history(ticker, tf, "ohlc");
-    C().candles(el, { candles: ohlc.candles });
-  } else {
-    var px = D().history(ticker, tf, "price");
-    var dem = D().history(ticker, tf, "demand");
-    var want = ($("[data-series].active") || {}).getAttribute("data-series") || "price";
-    if (want === "both") {
-      C().line(el, { series: [
-        { data: px.values, color: "#ffb000", area: true },
-        { data: dem.values.map(function (v, i) { return px.values[0] * (v / dem.values[0]); }), color: "#4da3ff", dash: "4 4" }
-      ] });
-    } else if (want === "demand") {
-      C().line(el, { values: dem.values, color: "#4da3ff", area: true });
-    } else {
-      C().line(el, { values: px.values, color: "#ffb000", area: true });
-    }
-  }
+  var t = D().get(ticker);
   $$("[data-tf]").forEach(function (b) { b.classList.toggle("active", b.getAttribute("data-tf") === tf); });
   var lab = $("[data-chart-caption]");
-  if (lab) lab.textContent = ticker + " · " + tf + " · example series (not live)";
+  if (lab) lab.textContent = ticker + " · " + tf + " · monthly Google Ads search volume (candles built from adjacent months)";
+  if (host && window.MSTrading && t) {
+    window.MSTrading.mountDemandChart(host, { monthly_searches: t.monthly_searches, timeframe: tf, height: 360 });
+  }
+  var hist = $("[data-price-hist]");
+  if (hist && window.MSTrading && t) {
+    window.MSTrading.mountPriceHistogram(hist, { samples: (t.prices && t.prices.samples) || [], currency: (t.prices && t.prices.currency) || "USD", band: t.prices && t.prices.recommended_band });
+  }
 }
 function bindChartControls() {
   $$("[data-tf]").forEach(function (b) {
@@ -289,18 +284,23 @@ function paintFocus() {
   if (!t) return;
   $$("[data-focus-ticker]").forEach(function (e) { e.textContent = t.ticker; });
   $$("[data-focus-name]").forEach(function (e) { e.textContent = t.product + " · " + t.market; });
-  $$("[data-focus-price]").forEach(function (e) { e.textContent = money(t.price); });
-  $$("[data-focus-chg]").forEach(function (e) { e.innerHTML = pct(t.chg); });
+  $$("[data-focus-price]").forEach(function (e) { e.innerHTML = money(t.price) + '<div class="fine">median Shopping price</div>'; });
+  $$("[data-focus-chg]").forEach(function (e) { e.innerHTML = pct(t.chg) + '<div class="fine">demand, last 3 mo vs prior 3</div>'; });
   $$("[data-focus-verdict]").forEach(function (e) { e.className = "pill " + verdictClass(t.verdict); e.textContent = t.verdict; });
   var box = $("[data-rating]");
   if (box) {
-    var c = D().consensus(t);
-    box.innerHTML = '<div class="cons-bar" title="Example analyst consensus"><i class="buy" style="width:' + c.buyPct + '%"></i><i class="hold" style="width:' + c.holdPct + '%"></i><i class="sell" style="width:' + c.sellPct + '%"></i></div>' +
-      '<div class="cons-leg mono"><span class="g">Buy ' + c.buy + '</span><span class="a">Hold ' + c.hold + '</span><span class="r">Sell ' + c.sell + "</span></div>" +
-      '<p class="muted" style="margin:8px 0 0;font-size:.82rem">Target selling range <b class="amber">' + money(t.target[0]) + " – " + money(t.target[1]) + '</b> <span class="tag-example">EXAMPLE</span></p>';
+    var band = t.target;
+    box.innerHTML = '<p class="muted" style="margin:0 0 8px">We do not have a third-party analyst consensus. The desk verdict from this snapshot is:</p>' +
+      '<div class="pill ' + verdictClass(t.verdict) + '">' + esc(t.verdict || "—") + "</div>" +
+      (band ? '<p class="muted" style="margin:8px 0 0;font-size:.82rem">Recommended selling band (30th–50th percentile of Google Shopping prices) <b class="amber">' + money(band[0]) + " – " + money(band[1]) + "</b></p>" : '<p class="muted">No recommended price band — not enough priced listings.</p>');
   }
   var g = $("[data-sentiment]");
-  if (g && C()) C().gauge(g, { value: t.sentiment, label: "SENTIMENT · EXAMPLE" });
+  if (g && C()) {
+    if (t.sentiment != null) C().gauge(g, { value: Math.round(t.sentiment / 5 * 100), label: "AVG RATING " + t.sentiment + "/5" });
+    else g.innerHTML = "";
+  }
+  var sentNote = $("[data-sentiment-note]");
+  if (sentNote) sentNote.textContent = t.sentiment != null ? "Average star rating on visible Google Shopping listings in this snapshot." : "No listing ratings were present in the snapshot for this product.";
   var starSlot = $("[data-focus-star]");
   if (starSlot) { starSlot.innerHTML = starBtn(t.ticker, false); paintStars(); }
   var meta = $("[data-focus-scores]");
@@ -319,7 +319,7 @@ function renderMovers() {
     if (!el) return;
     el.innerHTML = rows.map(function (t) {
       return '<button type="button" class="mv-row" data-jump="' + esc(t.ticker) + '"><span class="mono">' + esc(t.ticker) + "</span>" +
-        (field === "vol" ? "<span class='muted'>" + t.volume.toLocaleString() + "</span>" : pct(t.chg)) + "</button>";
+        (field === "vol" ? "<span class='muted'>" + (t.volume != null ? Number(t.volume).toLocaleString("en-US") : "—") + "</span>" : pct(t.chg)) + "</button>";
     }).join("");
   }
   list($("[data-gainers]"), m.gainers);
@@ -346,7 +346,7 @@ function renderWatchMini() {
   if (!el) return;
   Watch.all().then(function (list) {
     if (!list.length) {
-      el.innerHTML = '<p class="muted">No names on your watchlist yet. Star a ticker or <button type="button" class="link-btn amber" data-load-example-watch>load an example list</button>.</p>';
+      el.innerHTML = '<p class="muted">No names on your watchlist yet. Star a ticker or <button type="button" class="link-btn amber" data-load-example-watch>load the snapshot defaults</button> (top demand-change names from the live US basket).</p>';
       return;
     }
     el.innerHTML = list.map(function (w) {
@@ -408,7 +408,7 @@ function initScreener() {
     tb.innerHTML = data.map(function (t) {
       return "<tr data-jump='" + esc(t.ticker) + "'><td class='mono'><button type='button' class='star-btn' data-star='" + esc(t.ticker) + "'>☆</button> " + esc(t.ticker) + "</td><td>" + esc(t.product) + "</td><td>" + esc(D().marketAbbr[t.market]) + "</td><td>" + esc(channel(t)) + "</td><td class='mono'>" + money(t.price) + "</td><td>" + pct(t.chg) + "</td><td class='mono'>" + t.demand + "</td><td class='mono'>" + t.competition + "</td><td class='mono'>" + t.saturation + "</td><td class='mono'>" + t.opportunity + "</td><td><span class='pill " + verdictClass(t.verdict) + "'>" + esc(t.verdict) + "</span></td></tr>";
     }).join("");
-    var n = $("[data-screen-count]"); if (n) n.textContent = data.length + " names · example snapshot";
+    var n = $("[data-screen-count]"); if (n) n.textContent = data.length + " names · live US snapshot";
     paintStars();
   }
   $$("[data-f-market],[data-f-cat],[data-f-source],[data-f-verdict],[data-f-opp-min],[data-f-comp-max],[data-f-sat-max],[data-f-price]").forEach(function (el) {
@@ -427,23 +427,37 @@ function initScreener() {
 }
 
 /* ---------- heatmap / indices / calendar ---------- */
+function initHeatmapMini(el) {
+  var cells = (D().heat && D().heat.cells) || [];
+  el.classList.add("heat-tiles");
+  el.innerHTML = cells.slice(0, 12).map(function (c) {
+    var color = c.chg == null ? "#1b2128" : (c.chg >= 5 ? "#0a5" : c.chg >= 0 ? "#1a6b45" : c.chg <= -5 ? "#7a2030" : "#5a2a20");
+    return '<button type="button" class="heat-tile" data-jump="' + esc(c.ticker) + '" style="background:' + color + '"><span class="ht-name">' + esc(c.product) + '</span><span class="ht-meta">' + (c.chg == null ? "—" : ((c.chg > 0 ? "+" : "") + c.chg.toFixed(1) + "%")) + "</span></button>";
+  }).join("");
+}
 function initHeatmap() {
   var el = $("[data-heatmap]");
-  if (!el || !C()) return;
-  C().heatmap(el, {
-    rows: D().heat.rows,
-    cols: D().markets.map(function (m) { return D().marketAbbr[m]; }),
-    cells: D().heat.cells,
-    onClick: function (cell) { if (cell.ticker) selectTicker(cell.ticker); }
-  });
+  if (!el) return;
+  var cells = (D().heat && D().heat.cells) || [];
+  el.className = (el.className || "") + " heat-tiles";
+  el.innerHTML = cells.map(function (c) {
+    var chg = c.chg;
+    var color = chg == null ? "#1b2128" : (chg >= 5 ? "#0a5" : chg >= 0 ? "#1a6b45" : chg <= -5 ? "#7a2030" : "#5a2a20");
+    var size = 70 + (c.size || 0.3) * 70;
+    return '<button type="button" class="heat-tile" data-jump="' + esc(c.ticker) + '" style="background:' + color + ';min-height:' + size + 'px">' +
+      '<span class="ht-name">' + esc(c.product) + '</span>' +
+      '<span class="ht-meta">' + esc(c.ticker) + " · vol " + (c.volume != null ? Number(c.volume).toLocaleString("en-US") : "—") +
+      " · " + (c.chg == null ? "—" : ((c.chg > 0 ? "+" : "") + c.chg.toFixed(1) + "%")) + "</span></button>";
+  }).join("");
 }
+
 function initIndices() {
   var host = $("[data-indices-table]");
   if (!host) return;
   host.innerHTML = D().indices.map(function (ix) {
-    return '<article class="idx-card" id="idx-' + esc(ix.id) + '"><header><div><div class="kicker mono">EXAMPLE INDEX</div><h2>' + esc(ix.name) + '</h2></div><div class="idx-lvl mono">' + ix.level.toLocaleString() + " " + pct(ix.chg) + "</div></header>" +
+    return '<article class="idx-card" id="idx-' + esc(ix.id) + '"><header><div><div class="kicker mono">COMPOSITE · REBASED DEMAND</div><h2>' + esc(ix.name) + '</h2></div><div class="idx-lvl mono">' + ix.level.toLocaleString() + " " + pct(ix.chg) + "</div></header>" +
       '<svg class="idx-chart" data-idx-chart="' + esc(ix.id) + '"></svg>' +
-      '<p class="muted">Opportunity (avg of members) <b class="amber">' + ix.opportunity + "</b>. Constituents: " + ix.members.map(function (tk) { return '<button type="button" class="link-btn amber" data-jump="' + esc(tk) + '">' + esc(tk) + "</button>"; }).join(" · ") + "</p></article>";
+      '<p class="muted">' + esc(ix.note || "") + ' Opportunity (avg of members) <b class="amber">' + ix.opportunity + "</b>. Constituents: " + ix.members.map(function (tk) { return '<button type="button" class="link-btn amber" data-jump="' + esc(tk) + '">' + esc(tk) + "</button>"; }).join(" · ") + "</p></article>";
   }).join("");
   $$("[data-idx-chart]").forEach(function (svg) {
     var ix = D().indices.filter(function (x) { return x.id === svg.getAttribute("data-idx-chart"); })[0];
@@ -456,15 +470,11 @@ function initIndices() {
 function initCalendar() {
   var ev = $("[data-events]");
   if (ev) {
-    ev.innerHTML = D().events.map(function (e) {
-      return '<article class="cal-row"><div class="mono amber">' + esc(e.date) + '</div><div><h3>' + esc(e.name) + ' <span class="chip early">' + esc(e.type) + '</span></h3><p class="muted">' + esc(e.note) + '</p></div><div class="impact mono">+' + e.impact + "% <small>modelled demand</small></div></article>";
-    }).join("");
+    ev.innerHTML = '<div class="coming-soon-panel"><h3>Coming soon</h3><p class="muted">Event-level demand impact (Black Friday, Prime Day, holidays) is not in this Google Shopping &amp; Search snapshot. We will not invent lift percentages. This calendar will light up when we can measure those windows from live data.</p></div>';
   }
   var er = $("[data-earnings]");
   if (er) {
-    er.innerHTML = D().earnings.map(function (e) {
-      return '<article class="earn-row"><div class="mono">' + esc(e.period) + '</div><div><h3>' + esc(e.headline) + '</h3><p class="muted">' + esc(e.note) + "</p></div><div class='mono'>" + e.revenue + " idx · " + pct(e.yoy) + (e.beat ? ' <span class="g">beat</span>' : ' <span class="r">miss</span>') + "</div></article>";
-    }).join("");
+    er.innerHTML = '<div class="coming-soon-panel"><h3>Coming soon</h3><p class="muted">Niche “earnings” would need a longer financial history than the 12-month search-volume series we have here. Nothing on this panel is estimated.</p></div>';
   }
 }
 
@@ -490,7 +500,7 @@ async function initWatchlist() {
   async function paint() {
     var list = await Watch.all();
     if (!list.length) {
-      host.innerHTML = '<div class="note"><b>Your watchlist is empty.</b> Star names from the terminal or screener, or <button type="button" class="link-btn amber" data-load-example-watch>load an example list</button> (clearly labelled, stored on this device until you sign in).</div>';
+      host.innerHTML = '<div class="note"><b>Your watchlist is empty.</b> Star names from the terminal or screener, or <button type="button" class="link-btn amber" data-load-example-watch>load the snapshot defaults</button> (top demand-change names from the live US basket, stored on this device until you sign in).</div>';
       return;
     }
     host.innerHTML = list.map(function (w) {
@@ -500,7 +510,7 @@ async function initWatchlist() {
       var rules = ALERT_TYPES.map(function (a) {
         var on = alerts.some(function (x) { return x.type === a.id && x.enabled !== false; });
         var fire = on && alertFires(t, a.id);
-        return '<label class="alert-rule"><input type="checkbox" data-alert="' + esc(w.ticker) + '" data-type="' + a.id + '"' + (on ? " checked" : "") + "> " + esc(a.label) + (fire ? ' <span class="chip early">WOULD FIRE · EXAMPLE</span>' : "") + "</label>";
+        return '<label class="alert-rule"><input type="checkbox" data-alert="' + esc(w.ticker) + '" data-type="' + a.id + '"' + (on ? " checked" : "") + "> " + esc(a.label) + (fire ? ' <span class="chip early">WOULD FIRE · from snapshot trend</span>' : "") + "</label>";
       }).join("");
       return '<article class="watch-card"><header><button type="button" class="link-btn" data-jump="' + esc(t.ticker) + '"><b class="mono">' + esc(t.ticker) + "</b> " + esc(t.product) + "</button> " + pct(t.chg) + ' <button type="button" class="link-btn r" data-unwatch="' + esc(t.ticker) + '">Remove</button></header><div class="alert-rules">' + rules + "</div></article>";
     }).join("");
@@ -533,9 +543,9 @@ function bindExampleWatch() {
   document.addEventListener("click", async function (e) {
     var b = e.target.closest && e.target.closest("[data-load-example-watch]");
     if (!b) return;
-    var sample = ["PETFNT-UK", "LITTERBOX-CA", "EARBUDS-US"];
+    var sample = (D().movers() && D().movers().gainers ? D().movers().gainers : D().tickers).slice(0, 3);
     for (var i = 0; i < sample.length; i++) {
-      var t = D().get(sample[i]);
+      var t = sample[i].ticker ? sample[i] : D().get(sample[i]);
       if (t) await Watch.add(t, [{ type: "demand_jump", enabled: true }, { type: "competition_drop", enabled: true }]);
     }
     document.dispatchEvent(new CustomEvent("ms:watchlist"));
@@ -574,7 +584,7 @@ async function initPortfolio() {
     var nCats = Object.keys(cats).length;
     if (stats) {
       stats.innerHTML = '<div class="stat"><div class="k">NAMES</div><div class="v">' + list.length + '</div></div>' +
-        '<div class="stat"><div class="k">RISK SCORE</div><div class="v">' + Math.round(risk) + '</div><p>Higher = more exposure to weaker opportunity names. Example only.</p></div>' +
+        '<div class="stat"><div class="k">RISK SCORE</div><div class="v">' + Math.round(risk) + '</div><p>Allocation-weighted (100 − opportunity) from the snapshot scores. Not a financial risk measure.</p></div>' +
         '<div class="stat"><div class="k">DIVERSIFICATION</div><div class="v">' + nCats + '</div><p>Distinct category sleeves in this book.</p></div>';
     }
     if (table) {
@@ -602,6 +612,12 @@ async function initPortfolio() {
       await paint();
     });
   }
+  var portSel = $("[data-port-ticker]");
+  if (portSel) {
+    portSel.innerHTML = D().tickers.map(function (tk) {
+      return '<option value="' + esc(tk.ticker) + '">' + esc(tk.ticker) + " — " + esc(tk.product) + "</option>";
+    }).join("");
+  }
   var add = $("[data-port-add]");
   if (add) add.addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -613,10 +629,12 @@ async function initPortfolio() {
   });
   var ex = $("[data-load-example-port]");
   if (ex) ex.addEventListener("click", async function () {
-    var sample = [["SKILLETS-US", 30], ["PETFNT-UK", 25], ["EARBUDS-US", 25], ["RESBAND-UK", 20]];
-    for (var i = 0; i < sample.length; i++) {
-      var t = D().get(sample[i][0]);
-      if (t) await Port.add(t, { allocation: sample[i][1] });
+    var names = D().tickers || [];
+    var n = names.length;
+    if (!n) return;
+    var base = Math.floor(100 / n), rem = 100 - base * n;
+    for (var i = 0; i < n; i++) {
+      await Port.add(names[i], { allocation: base + (i === n - 1 ? rem : 0) });
     }
     await paint();
   });
@@ -638,15 +656,22 @@ function initBacktest() {
     var ticker = (sel && sel.value) || currentTicker();
     var bt = D().backtest(ticker);
     if (!bt) return;
+    if (!bt.available) {
+      $("[data-bt-ret]") && ($("[data-bt-ret]").textContent = "—");
+      $("[data-bt-idx]") && ($("[data-bt-idx]").textContent = "—");
+      $("[data-bt-alpha]") && ($("[data-bt-alpha]").textContent = "—");
+      $("[data-bt-dd]") && ($("[data-bt-dd]").textContent = "—");
+      $("[data-bt-note]") && ($("[data-bt-note]").textContent = bt.note);
+      return;
+    }
     $("[data-bt-ret]") && ($("[data-bt-ret]").innerHTML = pct(bt.ret));
-    $("[data-bt-idx]") && ($("[data-bt-idx]").innerHTML = pct(bt.indexRet));
-    $("[data-bt-alpha]") && ($("[data-bt-alpha]").innerHTML = pct(bt.alpha));
-    $("[data-bt-dd]") && ($("[data-bt-dd]").textContent = bt.maxDrawdown + "%");
+    $("[data-bt-idx]") && ($("[data-bt-idx]").textContent = "—");
+    $("[data-bt-alpha]") && ($("[data-bt-alpha]").textContent = "—");
+    $("[data-bt-dd]") && ($("[data-bt-dd]").textContent = "—");
     $("[data-bt-note]") && ($("[data-bt-note]").textContent = bt.note);
     var ch = $("[data-bt-chart]");
-    if (ch && C()) C().line(ch, { series: [
-      { data: bt.equity, color: "#ffb000", area: true },
-      { data: bt.index, color: "#4da3ff", dash: "4 4" }
+    if (ch && C() && bt.equity && bt.equity.length) C().line(ch, { series: [
+      { data: bt.equity, color: "#ffb000", area: true }
     ] });
   }
   if (sel) sel.addEventListener("change", run);
@@ -662,23 +687,26 @@ function initCompare() {
     var q = new URLSearchParams(location.search).get("c") || "";
     picked = q.split(",").filter(function (t) { return D().get(t); }).slice(0, 4);
   } catch (e) {}
-  if (!picked.length) picked = ["EARBUDS-US", "PETFNT-UK", "PHONECASE-US"];
+  if (!picked.length) picked = D().tickers.slice(0, 3).map(function (x) { return x.ticker; });
   function paint() {
     host.innerHTML = '<div class="compare-picks">' + D().tickers.map(function (t) {
       var on = picked.indexOf(t.ticker) >= 0;
       return '<label><input type="checkbox" data-cmp="' + esc(t.ticker) + '"' + (on ? " checked" : "") + ( !on && picked.length >= 4 ? " disabled" : "") + "> " + esc(t.ticker) + "</label>";
     }).join("") + '</div><div class="compare-grid">' + picked.map(function (tk) {
       var t = D().get(tk);
-      var c = D().consensus(t);
+      var band = t.target;
       return '<article class="cmp-col"><h3 class="mono"><button type="button" class="link-btn" data-jump="' + esc(t.ticker) + '">' + esc(t.ticker) + "</button></h3><p>" + esc(t.product) + " · " + esc(t.market) + "</p>" +
-        "<p class='mono'>" + money(t.price) + " " + pct(t.chg) + "</p><span class='pill " + verdictClass(t.verdict) + "'>" + esc(t.verdict) + "</span>" +
+        "<p class='mono'>" + money(t.price) + " <span class='fine'>median</span> " + pct(t.chg) + "</p><span class='pill " + verdictClass(t.verdict) + "'>" + esc(t.verdict) + "</span>" +
         '<svg class="cmp-chart" data-cmp-chart="' + esc(t.ticker) + '"></svg>' +
-        '<div class="score-mini-row"><span>D ' + t.demand + "</span><span>C " + t.competition + "</span><span>S " + t.saturation + "</span><span>O " + t.opportunity + "</span></div>" +
-        '<p class="muted">Target ' + money(t.target[0]) + "–" + money(t.target[1]) + "<br>Consensus " + c.buyPct + "% buy · Sentiment " + t.sentiment + "</p></article>";
+        '<div class="score-mini-row"><span>D ' + (t.demand != null ? t.demand : "—") + "</span><span>C " + (t.competition != null ? t.competition : "—") + "</span><span>S " + (t.saturation != null ? t.saturation : "—") + "</span><span>O " + (t.opportunity != null ? t.opportunity : "—") + "</span></div>" +
+        '<p class="muted">' + (band ? ("Band " + money(band[0]) + "–" + money(band[1])) : "No recommended band") +
+        "<br>Sellers " + (t.seller_count != null ? t.seller_count : "—") +
+        " · vol " + (t.volume != null ? Number(t.volume).toLocaleString("en-US") : "—") +
+        (t.sentiment != null ? " · avg rating " + t.sentiment + "/5" : "") + "</p></article>";
     }).join("") + "</div>";
     $$("[data-cmp-chart]", host).forEach(function (svg) {
-      var h = D().history(svg.getAttribute("data-cmp-chart"), "6M", "price");
-      C().line(svg, { values: h.values, color: "#ffb000", area: true });
+      var h = D().history(svg.getAttribute("data-cmp-chart"), "12M", "demand");
+      if (C() && h && h.values && h.values.length) C().line(svg, { values: h.values, color: "#ffb000", area: true });
     });
   }
   host.addEventListener("change", function (e) {
@@ -706,10 +734,7 @@ function initTerminal() {
   renderWatchMini();
   document.addEventListener("ms:watchlist", renderWatchMini);
   var heat = $("[data-heatmap-mini]");
-  if (heat && C()) C().heatmap(heat, {
-    rows: D().heat.rows, cols: D().markets.map(function (m) { return D().marketAbbr[m]; }), cells: D().heat.cells,
-    onClick: function (cell) { if (cell.ticker) selectTicker(cell.ticker); }
-  });
+  if (heat) initHeatmapMini(heat);
   bindChartControls();
   drawMainChart();
   paintFocus();
@@ -724,7 +749,14 @@ function initTerminal() {
 
 /* ---------- boot ---------- */
 async function boot() {
-  if (!D() || !C()) return;
+  if (D() && D().ready) {
+    try { await D().ready; } catch (e) {
+      var box0 = $("[data-term-error]");
+      if (box0) { box0.hidden = false; box0.textContent = "Could not load the live snapshot. " + (e && e.message ? e.message : ""); }
+      return;
+    }
+  }
+  if (!D() || !D().tickers || !D().tickers.length) return;
   renderTape($("[data-tape]"));
   bindCommandBar();
   bindStars(document);

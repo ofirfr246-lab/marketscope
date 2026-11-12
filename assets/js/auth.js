@@ -801,6 +801,7 @@ async function initDashboard() {
         scoreCard("Opportunity", scores.opportunity, live) +
       "</div>" +
       (live ? priceBandHtml(c) : "") +
+      (live ? '<div class="tv-wrap" data-live-demand-chart></div><div data-live-price-hist></div>' : "") +
       (live ? competitorsHtml(c) : "") +
       (live ? relatedHtml(c) : "") +
       '<div class="advisor-box"><h3>// AI ADVISOR' + (live ? "" : " · SAMPLE") + "</h3><p>" + escapeHtml(c.advisor || "") + "</p></div>" +
@@ -808,6 +809,19 @@ async function initDashboard() {
     panel.scrollIntoView({ behavior: "smooth", block: "start" });
     var close = $("[data-close-report]", panel);
     if (close) close.addEventListener("click", function () { panel.hidden = true; });
+    if (live && window.MSTrading) {
+      var months = (c.demand_detail && c.demand_detail.monthly_searches) || [];
+      var samples = (c.prices && (c.prices.samples || c.prices.price_samples)) || [];
+      if (!samples.length && c.listings) {
+        samples = c.listings.map(function (L) { return L.price; }).filter(function (n) { return n != null; });
+      }
+      window.MSTrading.mountDemandChart(panel.querySelector("[data-live-demand-chart]"), { monthly_searches: months, timeframe: "12M", height: 340 });
+      window.MSTrading.mountPriceHistogram(panel.querySelector("[data-live-price-hist]"), {
+        samples: samples,
+        currency: (c.prices && c.prices.currency) || "USD",
+        band: c.prices && c.prices.recommended_band
+      });
+    }
   }
 
   function scoreCard(label, value, live) {
@@ -894,7 +908,7 @@ async function initDashboard() {
         return;
       }
       if (status === 429 || code === "rate_limited") {
-        setMsg(msg, payload.error || "You can run at most 10 reports per hour. Try again later.");
+        setMsg(msg, payload.error || "You can run at most 20 reports per hour. Try again later.");
         return;
       }
       setMsg(msg, payload.error || parsed.message || "The report could not be run.");

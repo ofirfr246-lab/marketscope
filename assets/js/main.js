@@ -1,4 +1,4 @@
-/* MarketScope site script — static, no dependencies. All market data here is EXAMPLE data. */
+/* MarketScope site script — static chrome. Market figures come from live-report.js + the snapshot. */
 (function () {
   "use strict";
   var C = window.MS_CONFIG || { plans: [], topups: [], matrix: [], currency: "$", annualMonthsFree: 2 };
@@ -102,43 +102,10 @@
   window.MS = { lineChart: lineChart, barChart: barChart, setRing: setRing, setVerdict: setVerdict };
   var MONTHS = ["Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov"];
 
-  /* ---------- hero terminal (REAL report · Google Shopping & Search · US · Nov 12, 2026) ---------- */
-  var REAL = {
-    q: "magnetic phone mount",
-    m: "US",
-    verdict: "UNDERPERFORM",
-    s: { demand: 76, competition: 90, saturation: 64, opportunity: 48 },
-    comp: [["Home Depot", "12%"], ["Target", "11%"], ["Best Buy", "11%"], ["Walmart", "8%"], ["Five Below", "5%"]],
-    ai: "For “magnetic phone mount” in the United States, MarketScope measures about 8,100 monthly searches, with a roughly stable 12-month trend. Demand scores 76/100, competition 90/100 and saturation 64/100, producing an Opportunity score of 48/100 and a verdict of UNDERPERFORM — high competition versus solid demand. We counted 65 Google Shopping listings from 29 sellers, priced from $6.68 to $69. A reasonable selling band is $14.99–$19.99, at or just below the median of $19.99. The leading visible sellers by listing share are Home Depot (12%), Target (11%), Best Buy (11%), Walmart (8%) and Five Below (5%). Amazon, Meta Ad Library, TikTok and AliExpress are not in this report — those sources are coming soon."
-  };
-  var term = $(".terminal"), typer;
-  if (term) {
-    var qEl = $("#t-cmd-q"), mEl = $("#t-cmd-m");
-    if (qEl) qEl.textContent = '"' + REAL.q + '"';
-    if (mEl) mEl.textContent = REAL.m;
-    if ($("#t-verdict")) setVerdict($("#t-verdict"), REAL.verdict);
-    var opp = $("#t-opp");
-    if (opp) { opp.textContent = REAL.s.opportunity; opp.style.color = scoreColor("opportunity", REAL.s.opportunity); }
-    $$(".terminal .gauge").forEach(function (g) { setRing($(".ring", g), REAL.s[g.dataset.key], g.dataset.key); });
-    var comp = $("#t-comp");
-    if (comp) comp.innerHTML = REAL.comp.map(function (r) { return "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td></tr>"; }).join("");
-    var adv = $("#t-advisor"), txt = REAL.ai, k = 0;
-    if (adv) {
-      if (reduce) adv.textContent = txt;
-      else {
-        adv.innerHTML = '<span class="cur"></span>';
-        typer = setInterval(function () { k += 3; adv.innerHTML = txt.slice(0, k) + '<span class="cur"></span>'; if (k >= txt.length) { clearInterval(typer); adv.textContent = txt; } }, 18);
-      }
-    }
-  }
+  /* ---------- hero terminal: live-report.js hydrates from the snapshot ---------- */
+  /* Rings already present in the markup will be updated once MSData is ready. */
 
-  /* ---------- ticker (EXAMPLE DATA) ---------- */
-  var tk = $("#ticker");
-  if (tk) {
-    var items = [["EARBUDS·US", "OPP 74", "▲2.1", 1], ["YOGA MATS·DE", "OPP 47", "▼0.8", 0], ["PET FOUNTAIN·UK", "OPP 85", "▲3.4", 1], ["LED STRIPS·CA", "OPP 39", "▼1.9", 0], ["AIR FRYER·AU", "OPP 61", "▲0.7", 1], ["PHONE CASE·US", "OPP 28", "▼2.6", 0], ["SMART RING·UK", "OPP 69", "▲4.2", 1], ["DESK LAMP·FR", "OPP 55", "▲0.3", 1], ["HAIR DRYER·IL", "OPP 63", "▲1.1", 1], ["KNIFE SET·US", "OPP 44", "▼0.5", 0], ["PROTEIN SHAKER·DE", "OPP 52", "▲0.9", 1], ["DOG BED·US", "OPP 58", "▼0.4", 0]];
-    var html = items.map(function (x) { return "<span><b>" + x[0] + "</b>" + x[1] + ' <i class="' + (x[3] ? "g" : "r") + '" style="font-style:normal">' + x[2] + "</i></span>"; }).join("");
-    tk.innerHTML = html + html;
-  }
+  /* ---------- ticker is filled by live-report.js from the snapshot ---------- */
 
   /* ---------- pricing ---------- */
   var yearly = false;
@@ -251,21 +218,14 @@
     }); });
   });
 
-  /* ---------- page charts (EXAMPLE DATA) ---------- */
-  var c1 = $("#chart-price"); if (c1) lineChart(c1, { labels: MONTHS, fmt: function (v) { return "$" + v.toFixed(0); }, series: [
-    { data: [38, 39.5, 38.8, 40.2, 41, 40.1, 41.8, 42.5, 41.6, 42.9, 42.2, 42.8], color: "#ffb000", area: true },
-    { data: [31, 31.4, 30.9, 31.8, 32.2, 31.9, 32.6, 33.1, 32.7, 33.4, 33.2, 33.5], color: "#19d27c" },
-    { data: [55, 54.2, 55.1, 54.8, 56, 55.3, 56.4, 57.2, 56.8, 57.5, 57.1, 57.9], color: "#4da3ff", dash: "5 5" }] });
-  var c2 = $("#chart-demand"); if (c2) lineChart(c2, { labels: MONTHS, min: 0, max: 100, series: [
-    { data: [58, 61, 57, 60, 63, 62, 66, 70, 68, 74, 88, 96], color: "#19d27c", area: true },
-    { data: [52, 54, 51, 53, 56, 55, 58, 61, 60, 64, 77, 85], color: "#5d6672", dash: "4 4" }] });
-  var c3 = $("#chart-bands"); if (c3) barChart(c3, { labels: ["<$20", "$20–30", "$30–40", "$40–60", "$60–100", "$100+"], data: [14, 31, 9, 24, 15, 7], fmt: function (v) { return Math.round(v) + "%"; }, colors: ["#5d6672", "#ffb000", "#19d27c", "#ffb000", "#ffb000", "#5d6672"] });
-  var c4 = $("#chart-terminal"); if (c4) lineChart(c4, { labels: MONTHS, min: 0, max: 100, series: [
-    { data: [62, 64, 63, 66, 68, 67, 70, 71, 70, 73, 72, 74], color: "#ffb000", area: true },
-    { data: [70, 71, 69, 72, 73, 75, 76, 78, 77, 79, 80, 81], color: "#19d27c" },
-    { data: [55, 56, 57, 58, 58, 60, 61, 61, 62, 63, 63, 64], color: "#ff4d5e", dash: "4 4" }] });
+  /* ---------- page charts: live-report.js draws real demand series from the snapshot.
+       Invented price-history and modelled series are no longer drawn. ---------- */
   $$("svg[data-spark]").forEach(function (s) {
-    var d = s.dataset.spark.split(",").map(Number), pts = path(d, 100, 30, 3); s.setAttribute("viewBox", "0 0 100 30"); s.setAttribute("preserveAspectRatio", "none");
+    if (!s.dataset.spark) return;
+    /* Only draw a spark if the values were provided as a data attribute from a live page. */
+    var d = s.dataset.spark.split(",").map(Number).filter(function (n) { return isFinite(n); });
+    if (d.length < 2) return;
+    var pts = path(d, 100, 30, 3); s.setAttribute("viewBox", "0 0 100 30"); s.setAttribute("preserveAspectRatio", "none");
     el("path", { d: toD(pts), fill: "none", stroke: d[d.length - 1] >= d[0] ? "#19d27c" : "#ff4d5e", "stroke-width": 1.6, "vector-effect": "non-scaling-stroke" }, s);
   });
 
@@ -276,10 +236,13 @@
       $$("button[data-view]", side).forEach(function (x) { x.classList.toggle("active", x === b); });
       $$(".view").forEach(function (v) { v.classList.toggle("active", v.id === "view-" + b.dataset.view); });
       var vt = $("#view-title"); if (vt) vt.textContent = b.dataset.title || b.textContent.trim();
-      if (b.dataset.view === "terminal" && c4) lineChart(c4, { labels: MONTHS, min: 0, max: 100, series: [
-        { data: [62, 64, 63, 66, 68, 67, 70, 71, 70, 73, 72, 74], color: "#ffb000", area: true },
-        { data: [70, 71, 69, 72, 73, 75, 76, 78, 77, 79, 80, 81], color: "#19d27c" },
-        { data: [55, 56, 57, 58, 58, 60, 61, 61, 62, 63, 63, 64], color: "#ff4d5e", dash: "4 4" }] });
+      if (b.dataset.view === "terminal" && window.MSTrading && window.MS_SNAPSHOT) {
+        var prod = (window.MS_SNAPSHOT.products || [])[0];
+        var host = document.getElementById("chart-terminal-host") || document.getElementById("chart-terminal");
+        if (prod && window.MSTrading.mountDemandChart && host && host.getAttribute && host.tagName !== "svg") {
+          window.MSTrading.mountDemandChart(host, { monthly_searches: (prod.demand_detail || {}).monthly_searches || [], timeframe: "12M", height: 280 });
+        }
+      }
     }); });
     // App preview rows are labelled example data and should not open the real Google report.
   }

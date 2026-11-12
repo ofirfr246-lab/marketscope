@@ -1,4 +1,4 @@
-/* MarketScope Store Intelligence — example profiles, localStorage + optional Supabase. */
+/* MarketScope Store Intelligence — snapshot sellers, localStorage + optional Supabase. */
 import { SUPABASE_URL, SUPABASE_ANON_KEY, isSupabaseConfigured } from "./supabase-config.js";
 
 var CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
@@ -11,7 +11,14 @@ function $$(s, r) { return Array.prototype.slice.call((r || document).querySelec
 function esc(s) {
   return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
-function money(n) { return "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 }); }
+function money(n) {
+  if (n == null || n === "" || !isFinite(Number(n))) return "—";
+  return "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function pctShare(n) {
+  if (n == null || !isFinite(Number(n))) return "—";
+  return (Number(n) * 100).toFixed(1) + "%";
+}
 
 function readLS() { try { return JSON.parse(localStorage.getItem(LS_KEY) || "[]"); } catch (e) { return []; } }
 function writeLS(v) { try { localStorage.setItem(LS_KEY, JSON.stringify(v)); } catch (e) {} }
@@ -109,14 +116,16 @@ function paintDirectory() {
   var q = (($("[data-store-q]") || {}).value || "").toLowerCase();
   var rows = S.all.filter(function (s) {
     if (!q) return true;
-    return (s.name + " " + s.url + " " + s.platform + " " + s.category).toLowerCase().indexOf(q) >= 0;
+    return (s.name + " " + (s.url || "") + " " + (s.domain || "") + " " + (s.platform || "") + " " + (s.products || []).join(" ")).toLowerCase().indexOf(q) >= 0;
   });
   host.innerHTML = rows.map(function (s) {
     return '<a class="store-card" href="' + esc(profileLink(s.slug, s.url)) + '">' +
-      '<div class="t-hd"><b>' + esc(s.name) + '</b><span class="chip early">' + esc(s.platform) + "</span></div>" +
-      '<p class="muted mono" style="margin:0;font-size:.75rem">' + esc(s.url) + "</p>" +
-      '<p style="margin:8px 0 0">' + esc(s.category) + " · " + s.catalog + " SKUs (example) · sentiment " + s.sentiment + "</p></a>";
-  }).join("") || '<p class="muted">No directory examples match that search. You can still paste a store URL above — we will open a labelled placeholder profile.</p>';
+      '<div class="t-hd"><b>' + esc(s.name) + '</b><span class="chip early">' + esc(s.platform || "Seller") + "</span></div>" +
+      '<p class="muted mono" style="margin:0;font-size:.75rem">' + esc(s.domain || s.url || "") + "</p>" +
+      '<p style="margin:8px 0 0">' + (s.listings != null ? s.listings + " visible listings" : "Not in snapshot") +
+      " · share " + pctShare(s.share) +
+      (s.products && s.products.length ? " · " + s.products.length + " basket products" : "") + "</p></a>";
+  }).join("") || '<p class="muted">No sellers in this snapshot match that search. You can still paste a store URL — if it is not in the basket we will open a Coming soon placeholder, with no invented numbers.</p>';
 }
 
 async function paintTracked() {
@@ -142,50 +151,43 @@ function renderProfile(s) {
   if (!host || !s) return;
   var maxN = 1;
   (s.priceDistribution || []).forEach(function (b) { if (b.n > maxN) maxN = b.n; });
-  var apps = (s.apps || []).map(function (a) { return "<li>" + esc(a) + "</li>"; }).join("");
   var best = (s.bestsellers || []).map(function (p) {
-    return "<tr><td>" + esc(p.name) + "</td><td class='mono'>" + money(p.price) + "</td><td class='mono'>" + esc(p.share) + "</td></tr>";
+    return "<tr><td>" + esc(p.name || "—") + "</td><td class='mono'>" + money(p.price) + "</td><td class='mono'>" + esc(p.share || p.ticker || "") + "</td></tr>";
   }).join("");
   var dist = (s.priceDistribution || []).map(function (b) {
     var w = Math.round(b.n / maxN * 100);
     return '<div class="bar-row mono"><span>' + esc(b.band) + '</span><div class="bar"><i style="width:' + w + '%"></i></div><span>' + b.n + "</span></div>";
-  }).join("");
-  var tl = (s.timeline || []).map(function (e) {
-    return '<div class="alert-row mono"><span>' + esc(e.date) + ' · ' + esc(e.type.replace(/_/g, " ")) + "</span><span>" + esc(e.text) + "</span></div>";
-  }).join("");
-  var ads = (s.ads || []).map(function (a) {
-    return '<div class="alert-row"><span><b>' + esc(a.network) + "</b> · " + esc(a.status) + "</span><span class='muted'>" + esc(a.creative) + "</span></div>";
-  }).join("");
-  var countries = (s.topCountries || []).join(" · ");
-  var sent = s.sentiment != null ? ('<svg data-store-gauge viewBox="0 0 160 100"></svg><p class="center muted">Review sentiment ' + s.sentiment + " · " + (s.reviews != null ? s.reviews + "★ example average" : "") + "</p>") : '<p class="muted">Sentiment is not modelled for URL-only placeholders.</p>';
+  }).join("") || '<p class="muted">No priced listings for this seller in the snapshot.</p>';
+  var coming = '<div class="coming-soon-panel"><h3>Coming soon</h3><p class="muted">This panel needs a longer public crawl or an ad-library lookup, which is not in the Nov 12, 2026 Shopping snapshot. We will not invent the figures.</p></div>';
+  var sent = s.sentiment != null
+    ? ('<p class="center" style="font-size:1.6rem;margin:8px 0">' + s.sentiment + ' / 5</p><p class="center muted">Average star rating on this seller’s visible Google Shopping listings in the snapshot.</p>')
+    : coming;
+  var bannerClass = s.inSnapshot ? "banner-live" : "banner-ex";
 
   host.innerHTML =
-    '<div class="banner-ex">' + esc(s.banner) + "</div>" +
+    '<div class="' + bannerClass + '">' + esc(s.banner) + "</div>" +
     '<div class="dash-top" style="margin-top:18px"><div>' +
-      '<div class="kicker mono">// STORE INTELLIGENCE · EARLY ACCESS</div>' +
+      '<div class="kicker mono">// STORE INTELLIGENCE · GOOGLE SHOPPING BASKET</div>' +
       "<h1>" + esc(s.name) + "</h1>" +
-      '<p class="mono muted">' + esc(s.url) + "</p>" +
+      '<p class="mono muted">' + esc(s.domain || s.url || "") + "</p>" +
     '</div><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start">' +
       '<button type="button" class="btn btn-amber" data-track-store>Track store</button>' +
       '<a class="btn btn-ghost" href="stores.html">Back to directory</a></div></div>' +
     '<div class="dash-stats">' +
-      '<div class="stat"><div class="k">PLATFORM</div><div class="v" style="font-size:1.15rem">' + esc(s.platform) + "</div><p>" + (s.platformGuessed ? "Guessed from the URL pattern" : "From the example directory") + "</p></div>" +
-      '<div class="stat"><div class="k">CATALOG (EXAMPLE)</div><div class="v">' + (s.catalog != null ? s.catalog : "—") + "</div><p>Public SKU count when live collection is connected</p></div>" +
-      '<div class="stat"><div class="k">TRAFFIC BAND</div><div class="v" style="font-size:1rem">' + esc(s.trafficBand || "—") + "</div><p>Top countries: " + esc(countries) + "</p></div>" +
+      '<div class="stat"><div class="k">PLATFORM</div><div class="v" style="font-size:1.15rem">' + esc(s.platform || "—") + "</div><p>" + (s.platformGuessed ? "Guessed from the URL or name" : "Inferred from the seller domain") + "</p></div>" +
+      '<div class="stat"><div class="k">VISIBLE LISTINGS</div><div class="v">' + (s.listings != null ? s.listings : "—") + "</div><p>Count of this seller’s Google Shopping listings across the snapshot basket. Not a full catalog crawl.</p></div>" +
+      '<div class="stat"><div class="k">LISTING SHARE</div><div class="v" style="font-size:1.15rem">' + pctShare(s.share) + "</div><p>Share of visible listings in this basket, not website traffic.</p></div>" +
     "</div>" +
     '<div class="dash-grid">' +
-      '<div class="dash-card"><h2>Theme &amp; apps</h2><p class="muted">' + esc(s.theme || "—") + "</p><ul class='checks'>" + apps + "</ul></div>" +
-      '<div class="dash-card"><h2>Bestseller-style products</h2><p class="muted" style="margin-top:0">Example ranking, not a live sales feed.</p><div class="screen-wrap"><table><thead><tr><th>Product</th><th>Price</th><th>Share</th></tr></thead><tbody>' + best + "</tbody></table></div></div>" +
-      '<div class="dash-card"><h2>Price distribution</h2>' + dist + "</div>" +
-      '<div class="dash-card"><h2>Review sentiment</h2>' + sent + "</div>" +
-      '<div class="dash-card full"><h2>New products &amp; price changes</h2>' + tl + "</div>" +
-      '<div class="dash-card full"><h2>Active ads (public libraries)</h2><p class="muted" style="margin-top:0">When live, this panel will only use public ad libraries. It does not log into ad accounts.</p>' + ads + "</div>" +
+      '<div class="dash-card"><h2>Theme &amp; apps</h2>' + coming + "</div>" +
+      '<div class="dash-card"><h2>Listings in this basket</h2><p class="muted" style="margin-top:0">Titles and prices from the live Google Shopping snapshot. Ranked by review count when present, not by sales.</p><div class="screen-wrap"><table><thead><tr><th>Listing</th><th>Price</th><th>Basket product</th></tr></thead><tbody>' + (best || "<tr><td colspan='3'>None in this snapshot.</td></tr>") + "</tbody></table></div></div>" +
+      '<div class="dash-card"><h2>Price distribution</h2><p class="muted" style="margin-top:0">From this seller’s priced listings in the snapshot.</p>' + dist + "</div>" +
+      '<div class="dash-card"><h2>Average listing rating</h2>' + sent + "</div>" +
+      '<div class="dash-card full"><h2>New products &amp; price changes</h2>' + coming + "</div>" +
+      '<div class="dash-card full"><h2>Active ads (public libraries)</h2>' + coming + "</div>" +
     "</div>" +
-    '<div class="note" style="margin-top:22px"><b>Compliance:</b> Store Intelligence is designed to use only publicly available information from public storefronts and public ad libraries. We do not collect personal data about a store’s customers, and we do not bypass logins, paywalls or access controls. Live collection is not connected yet — treat every figure here as an example.</div>';
+    '<div class="note" style="margin-top:22px"><b>Compliance:</b> Store Intelligence uses only publicly visible Google Shopping listings from this snapshot. We do not collect personal data about a store’s customers, and we do not bypass logins, paywalls or access controls.</div>';
 
-  if (s.sentiment != null && window.MSCharts && $("[data-store-gauge]", host)) {
-    window.MSCharts.gauge($("[data-store-gauge]", host), { value: s.sentiment, label: "SENTIMENT · EXAMPLE" });
-  }
   paintTrackButton(s);
 }
 
@@ -246,6 +248,9 @@ function bindSearch() {
 }
 
 async function boot() {
+  if (window.MSStores && window.MSStores.ready) {
+    try { await window.MSStores.ready; } catch (e) { console.warn(e); }
+  }
   var page = (document.body && document.body.getAttribute("data-page")) || "";
   bindSearch();
   if (page === "stores") {
