@@ -44,9 +44,15 @@
       <a class="btn btn-sm btn-ghost" href="account.html">Account settings</a>
     </div>
     <p class="form-msg" data-dash-error hidden role="status"></p>
+    <p class="form-msg ok" data-checkout-toast hidden role="status"></p>
     <div class="dash-stats">
       <div class="stat"><div class="k">CREDIT BALANCE</div><div class="v" data-credit-balance>—</div><p>1 credit per new report</p></div>
-      <div class="stat"><div class="k">PLAN</div><div class="v" data-plan-name style="font-size:1.4rem">—</div><p data-plan-note>Free plan includes 5 one-time credits.</p></div>
+      <div class="stat"><div class="k">PLAN</div><div class="v" data-plan-name style="font-size:1.4rem">—</div><p data-plan-note>Free plan includes 5 one-time credits.</p>
+        <p style="margin:10px 0 0;display:flex;flex-wrap:wrap;gap:8px">
+          <a class="btn btn-sm btn-amber" href="pricing.html">Upgrade or top up</a>
+          <button type="button" class="btn btn-sm btn-ghost" data-manage-billing hidden>Manage billing</button>
+        </p>
+      </div>
       <div class="stat"><div class="k">REPORTS</div><div class="v" data-report-count>0</div><p>Saved to your account</p></div>
     </div>
     <div class="term-launch" aria-label="Market Terminal">
@@ -171,6 +177,8 @@
 <script src="assets/js/market-data.js"></script>
 <script src="assets/js/trading-chart.js"></script>
 <script src="assets/js/live-report.js"></script>
+<script src="assets/js/stripe-prices.js"></script>
+<script type="module" src="assets/js/billing.js"></script>
 <script type="module" src="assets/js/auth.js"></script>
 </body>
 </html>
