@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create your account — MarketScope</title>
+<meta name="description" content="Create a free MarketScope account with 5 free credits.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#07080a">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="MarketScope">
+<meta property="og:title" content="Create your account — MarketScope">
+<meta property="og:description" content="Create a free MarketScope account with 5 free credits.">
+<meta property="og:image" content="assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="auth-page" data-page="signup">
+
+<main id="main">
+<div class="auth">
+  <div class="auth-form">
+    <a href="index.html" class="brand"><img src="favicon.svg" alt="" width="30" height="30"><span>Market<b>Scope</b></span></a>
+    <h1 style="font-size:2rem">Create your account</h1>
+    <p class="muted">Start with <b class="amber">5 free credits</b>. No credit card required.</p>
+    <div class="note" style="margin:10px 0 20px"><b>Preview:</b> sign-up isn't live yet and no account is created. Join the <a class="amber" href="index.html#waitlist">waitlist</a> to get access first.</div>
+    <div class="oauth"><button class="btn btn-ghost" type="button" disabled title="Coming soon">Sign up with Google</button><button class="btn btn-ghost" type="button" disabled title="Coming soon">Sign up with Apple</button></div>
+    <div class="or">or with email</div>
+    <form data-demo-form="signup" novalidate>
+      <div class="field"><label>Plan</label></div>
+      <div class="plan-pick" id="plan-pick" role="radiogroup" aria-label="Choose a plan"></div>
+      <div class="field"><label for="s-name">Full name</label><input id="s-name" name="name" required autocomplete="name"></div>
+      <div class="field"><label for="s-email">Work email</label><input id="s-email" type="email" name="email" required autocomplete="email"></div>
+      <div class="field"><label for="s-pass">Password</label><input id="s-pass" type="password" name="password" required minlength="8" autocomplete="new-password" placeholder="At least 8 characters"></div>
+      <label class="muted" style="font-size:.82rem;display:flex;gap:8px;align-items:flex-start;margin-bottom:16px"><input type="checkbox" required style="margin-top:4px"> I agree to the <a class="amber" href="terms.html">Terms</a> and <a class="amber" href="privacy.html">Privacy Policy</a>.</label>
+      <button class="btn btn-amber btn-block" type="submit">Create account</button>
+      <p class="form-msg" role="status" aria-live="polite" style="margin-top:12px"></p>
+    </form>
+    <p class="auth-foot">Already have an account? <a href="login.html">Log in</a> · <a href="index.html">Back to site</a></p>
+  </div>
+  <div class="auth-side">
+    <div style="max-width:440px">
+      <h2 style="font-size:1.8rem">Stop guessing.<br><span class="amber">Start measuring.</span></h2>
+      <ul class="checks"><li>Demand, Competition, Saturation &amp; Opportunity scores</li><li>Clear verdicts from STRONG BUY to AVOID</li><li>AI Advisor that explains the data</li><li>Track markets over time with Market Watch</li></ul>
+      <div class="badges" style="justify-content:flex-start"><span class="badge"><i>◆</i> Stripe-ready payments</span><span class="badge"><i>◆</i> GDPR-minded</span></div>
+    </div>
+  </div>
+</div>
+</main>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>

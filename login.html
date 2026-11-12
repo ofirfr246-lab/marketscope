@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Log in — MarketScope</title>
+<meta name="description" content="Log in to MarketScope.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#07080a">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="MarketScope">
+<meta property="og:title" content="Log in — MarketScope">
+<meta property="og:description" content="Log in to MarketScope.">
+<meta property="og:image" content="assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="auth-page" data-page="login">
+
+<main id="main">
+<div class="auth">
+  <div class="auth-form">
+    <a href="index.html" class="brand"><img src="favicon.svg" alt="" width="30" height="30"><span>Market<b>Scope</b></span></a>
+    <h1 style="font-size:2rem">Welcome back</h1>
+    <p class="muted">Log in to your research desk.</p>
+    <div class="note" style="margin:10px 0 20px"><b>Preview:</b> accounts aren't live yet. This page is UI only.</div>
+    <div class="oauth"><button class="btn btn-ghost" type="button" disabled title="Coming soon">Continue with Google</button><button class="btn btn-ghost" type="button" disabled title="Coming soon">Continue with Apple</button></div>
+    <div class="or">or with email</div>
+    <form data-demo-form="login" novalidate>
+      <div class="field"><label for="l-email">Email</label><input id="l-email" type="email" name="email" required autocomplete="email"></div>
+      <div class="field"><label for="l-pass" style="display:flex;justify-content:space-between">Password <a class="amber" href="contact.html" style="font-size:.8rem">Forgot?</a></label><input id="l-pass" type="password" name="password" required autocomplete="current-password"></div>
+      <button class="btn btn-amber btn-block" type="submit">Log in</button>
+      <p class="form-msg" role="status" aria-live="polite" style="margin-top:12px"></p>
+    </form>
+    <p class="auth-foot">New to MarketScope? <a href="signup.html">Create a free account</a> · <a href="index.html">Back to site</a></p>
+  </div>
+  <div class="auth-side">
+    <div style="max-width:440px">
+      <div class="mock">
+        <div class="mock-head mono"><span>TODAY ON YOUR DESK</span><span class="tag-example">EXAMPLE</span></div>
+        <div class="alert-row mono"><span><span class="g">▲</span> Pet fountains · UK</span><span class="pill v-sbuy">STRONG BUY</span></div>
+        <div class="alert-row mono"><span><span class="a">●</span> Earbuds · US</span><span class="pill v-buy">BUY</span></div>
+        <div class="alert-row mono"><span><span class="r">▼</span> Yoga mats · DE</span><span class="pill v-hold">HOLD</span></div>
+      </div>
+      <p class="mono muted center" style="margin-top:24px;font-size:.8rem">Understand the Market. Measure the Opportunity.</p>
+    </div>
+  </div>
+</div>
+</main>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>
