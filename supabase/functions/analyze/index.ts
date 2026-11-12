@@ -222,6 +222,44 @@ function firstTask(env: DfsEnvelope): DfsTask | null {
   return (env.tasks && env.tasks[0]) || null;
 }
 
+/** DataForSEO uses 40xxx both for "still running" and for real errors. */
+const DFS_IN_PROGRESS = new Set([
+  20100, // Task Created
+  40601, // Task Handed
+  40602, // Task In Queue
+  40603,
+]);
+
+function dfsMessage(task: DfsTask | null, env?: DfsEnvelope): string {
+  return (task && task.status_message) || (env && env.status_message) || "";
+}
+
+function dfsCode(task: DfsTask | null, env?: DfsEnvelope): number | undefined {
+  return (task && task.status_code) || (env && env.status_code);
+}
+
+function isDfsReady(code?: number): boolean {
+  return code === 20000;
+}
+
+function isDfsInProgress(code?: number, message?: string): boolean {
+  if (isDfsReady(code)) return false;
+  if (code != null && DFS_IN_PROGRESS.has(code)) return true;
+  if (code != null && code < 40000) return true;
+  const m = (message || "").toLowerCase();
+  return m.includes("in queue") || m.includes("handed") || m.includes("not ready");
+}
+
+function isDfsAuthError(code?: number, message?: string): boolean {
+  const m = (message || "").toLowerCase();
+  return code === 40100 || code === 40101 || code === 40102 || m.includes("unauthor") || m.includes("auth failed") || m.includes("login") && m.includes("password") && m.includes("invalid");
+}
+
+function isDfsBalanceError(code?: number, message?: string): boolean {
+  const m = (message || "").toLowerCase();
+  return code === 40200 || code === 40201 || m.includes("insufficient") || m.includes("not enough") && m.includes("fund") || m.includes("balance");
+}
+
 type Monthly = { year: number; month: number; search_volume: number | null };
 
 type KeywordMetrics = {
@@ -551,12 +589,13 @@ async function pollShopping(auth: string, id: string): Promise<{ task: DfsTask |
     await new Promise((r) => setTimeout(r, SHOPPING_POLL_MS));
     const env = await dfsFetch("/v3/merchant/google/products/task_get/advanced/" + id, auth, { method: "GET" });
     const task = firstTask(env);
-    const code = task && task.status_code;
-    if (code === 20000) return { task, timedOut: false, cost: asNum(task && task.cost) || asNum(env.cost) || 0 };
-    if (code && code >= 40000) {
-      throw new Error((task && task.status_message) || "Google Shopping task failed.");
-    }
-    // 40601 / 40602 typically mean "Task In Queue" / "Task Handed Over"
+    const code = dfsCode(task, env);
+    const message = dfsMessage(task, env);
+    if (isDfsReady(code)) return { task, timedOut: false, cost: asNum(task && task.cost) || asNum(env.cost) || 0 };
+    if (isDfsInProgress(code, message)) continue;
+    if (isDfsAuthError(code, message)) throw new Error("DATAFORSEO_AUTH: " + (message || "Unauthorized"));
+    if (isDfsBalanceError(code, message)) throw new Error("DATAFORSEO_BALANCE: " + (message || "Insufficient balance"));
+    throw new Error(message || ("Google Shopping task failed (status " + code + ")."));
   }
   return { task: null, timedOut: true, cost: 0 };
 }
@@ -669,6 +708,7 @@ Deno.serve(async (req: Request) => {
     return json(req, 405, { error: "Method not allowed. Use POST.", code: "method_not_allowed" });
   }
 
+  try {
   const user = await verifyUser(req);
   if ("error" in user) return user.error;
 
@@ -1015,4 +1055,14 @@ Deno.serve(async (req: Request) => {
   }
 
   return json(req, 200, { report: ins.data, credits: remaining });
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    if (msg.startsWith("DATAFORSEO_AUTH:")) {
+      return json(req, 502, { error: "DataForSEO authentication failed. Check that DATAFORSEO_LOGIN and DATAFORSEO_PASSWORD are the API credentials from the API Access page (the API password is not the website login password).", code: "provider_auth_failed", details: msg });
+    }
+    if (msg.startsWith("DATAFORSEO_BALANCE:")) {
+      return json(req, 502, { error: "DataForSEO account balance is insufficient. No credits were charged.", code: "provider_balance", details: msg });
+    }
+    return json(req, 502, { error: "Live data could not be retrieved. No credits were charged.", code: "provider_failed", details: msg });
+  }
 });
