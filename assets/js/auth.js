@@ -841,6 +841,9 @@ async function initDashboard() {
         band: c.prices && c.prices.recommended_band
       });
     }
+    if (window.MSReportDesk && typeof window.MSReportDesk.mount === "function") {
+      window.MSReportDesk.mount(panel, c, { reveal: !!opts.reveal, live: live });
+    }
     if (opts.reveal && window.MSAnalyzeOverlay && typeof window.MSAnalyzeOverlay.reveal === "function") {
       window.MSAnalyzeOverlay.reveal(panel);
     }
@@ -849,7 +852,7 @@ async function initDashboard() {
   function scoreCard(label, value, live) {
     var v = value != null ? value : "—";
     var count = value != null && value !== "" && isFinite(Number(value)) ? ' data-count-to="' + escapeHtml(String(Number(value))) + '"' : "";
-    return '<div class="score-card"><div class="ring-plain mono"' + count + ">" + escapeHtml(String(v)) + '</div><div><h3>' + escapeHtml(label) + "</h3><p class='muted'>" + (live ? "Live score" : "Sample score") + "</p></div></div>";
+    return '<div class="score-card" data-score-key="' + escapeHtml(String(label).toLowerCase()) + '"><div class="ring-plain mono"' + count + ">" + escapeHtml(String(v)) + '</div><div><h3>' + escapeHtml(label) + "</h3><p class='muted'>" + (live ? "Live score" : "Sample score") + "</p></div></div>";
   }
 
   try {
