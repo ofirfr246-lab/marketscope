@@ -85,8 +85,8 @@
 <div class="banner-live">Live data snapshot · Google Shopping & Search · US · Nov 12, 2026</div>
 <div class="tape ticker" data-tape aria-label="Live US snapshot tape — last is median Google Shopping price, change is search-demand last 3 months vs prior 3"></div>
 <form class="cmdbar" role="search">
-  <span class="prompt mono">MS&gt;</span>
-  <input data-cmd type="search" placeholder="Ticker or command — press /  ·  SCREEN  HEAT  WATCH  PORT  BACKTEST  CAL  COMPARE" aria-label="Command bar" autocomplete="off">
+  <span class="prompt mono">Find</span>
+  <input data-cmd type="search" placeholder="Product name or page — press / to start  ·  Screener, Heatmap, Watchlist…" aria-label="Find a product or page" autocomplete="off">
   <span class="tag-live mono">LIVE SNAPSHOT · US</span>
   <button type="button" class="btn btn-sm btn-ghost" data-help-open title="Keyboard shortcuts">?</button>
 </form>
@@ -109,7 +109,7 @@
     <div class="t-hd"><h2>Screener</h2><span class="mono muted" data-screen-count></span></div>
     <p class="muted" style="margin-top:0">Filter the live US basket by scores, median Shopping price band, category and verdict. Source in this snapshot is Google Shopping &amp; Search. Sort any column.</p>
     <div class="screen-filters">
-      <label>Search<input type="search" data-screen-q placeholder="Ticker or product"></label>
+      <label>Search<input type="search" data-screen-q placeholder="Product name"></label>
       <label>Market<select data-f-market><option value="">All</option><option value="United States">United States</option>
 <option value="United Kingdom">United Kingdom</option>
 <option value="Germany">Germany</option>
@@ -136,9 +136,9 @@
     <div class="screen-wrap">
       <table>
         <thead><tr>
-          <th data-sort="ticker">Ticker</th><th data-sort="product">Product</th><th>Mkt</th><th>Source</th>
-          <th data-sort="price">Price</th><th data-sort="chg">Chg</th><th data-sort="demand">Dem</th>
-          <th data-sort="competition">Comp</th><th data-sort="saturation">Sat</th><th data-sort="opportunity">Opp</th><th>Verdict</th>
+          <th data-sort="ticker">Watch</th><th data-sort="product">Product</th><th>Market</th><th>Source</th>
+          <th data-sort="price">Price</th><th data-sort="chg">Change</th><th data-sort="demand">Demand</th>
+          <th data-sort="competition">Competition</th><th data-sort="saturation">Saturation</th><th data-sort="opportunity">Opportunity</th><th>Verdict</th>
         </tr></thead>
         <tbody data-screen-body></tbody>
       </table>
@@ -151,9 +151,9 @@
     <h2>Terminal shortcuts</h2>
     <p class="muted" style="margin-top:0">Tape last = median Google Shopping price. Change = search demand, last 3 months vs prior 3. Every figure is from the Nov 12, 2026 snapshot or a transparent computation on it.</p>
     <dl class="mono" style="font-size:.85rem">
-      <dt><kbd>/</kbd> Focus the command bar</dt><dd>Type a ticker (MAGMOUNT-US) or a command.</dd>
+      <dt><kbd>/</kbd> Focus the command bar</dt><dd>Type a product name (for example, magnetic phone mount) or a page name.</dd>
       <dt><kbd>?</kbd> This help</dt><dd>Press Escape to close.</dd>
-      <dt>Commands</dt><dd>SCREEN, HEAT, INDEX, WATCH, PORT, BACKTEST, CAL, COMPARE, HELP</dd>
+      <dt>Pages you can open</dt><dd>Screener, Heatmap, Indices, Watchlist, Portfolio, Backtest, Calendar, Compare, Help</dd>
     </dl>
     <p style="margin-top:16px"><button type="button" class="btn btn-sm btn-amber" data-help-close>Close</button></p>
   </div>

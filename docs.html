@@ -84,7 +84,7 @@
 <section class="page-hero">
   <div class="wrap">
     <div class="crumbs mono"><a href="index.html">Home</a> / API &amp; Docs</div>
-    <div class="kicker mono">// DEVELOPERS <span class="chip early" style="margin-left:8px">PREVIEW · EARLY ACCESS · PRO</span></div>
+    <div class="kicker mono">DEVELOPERS <span class="chip early" style="margin-left:8px">PREVIEW · EARLY ACCESS · PRO</span></div>
     <h1>The MarketScope API.</h1>
     <p class="sub">Run analyses, pull scores and verdicts, and stream Market Watch changes into your own tools. This is a design preview; endpoints may change before release.</p>
   </div>
@@ -127,7 +127,7 @@ curl -X POST https://api.marketscope.example/v1/analyses \
       <div class="endpoint"><span class="method post">POST</span>/v1/watchlist<span>Add to Market Watch</span></div>
       <div class="endpoint"><span class="method get">GET</span>/v1/wallet<span>Credit balance &amp; usage</span></div>
       <div class="grid2" style="gap:14px;margin-top:24px;grid-template-columns:1fr 1fr">
-        <div class="card"><h3>Webhooks</h3><p>Receive <code class="mono">watch.score_changed</code> and <code class="mono">watch.verdict_changed</code> events.</p></div>
+        <div class="card"><h3>Webhooks</h3><p>Get a notification when a watched product’s score or verdict changes. In this preview the event names are <code class="mono">watch.score_changed</code> and <code class="mono">watch.verdict_changed</code>.</p></div>
         <div class="card"><h3>Rate limits</h3><p>Per-key limits will be published with the release.</p></div>
         <div class="card"><h3>Credits</h3><p>API calls that run analyses use the same credits as the app.</p></div>
         <div class="card"><h3>Early access</h3><p><a class="amber" href="contact.html">Ask to join</a> the API preview group.</p></div>
