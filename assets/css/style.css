@@ -746,8 +746,8 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
   margin:0;
   padding:0;
   display:grid;
-  grid-template-columns:repeat(5,minmax(0,1fr));
-  gap:16px;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:14px;
   perspective:1200px;
   position:relative;
 }
@@ -791,7 +791,8 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
 .sources-cell:nth-child(2) .sources-card{--ry:-5deg;animation-delay:.35s}
 .sources-cell:nth-child(3) .sources-card{--rx:10deg;--ry:0deg;animation-delay:.7s}
 .sources-cell:nth-child(4) .sources-card{--ry:5deg;animation-delay:1.05s}
-.sources-cell:nth-child(5) .sources-card{--ry:10deg;animation-delay:1.4s}
+.sources-cell:nth-child(5) .sources-card{--ry:8deg;animation-delay:1.4s}
+.sources-cell:nth-child(6) .sources-card{--ry:12deg;animation-delay:1.75s}
 @keyframes sources-float{
   0%,100%{transform:rotateX(var(--rx)) rotateY(var(--ry)) translateY(0) translateZ(0)}
   50%{transform:rotateX(var(--rx)) rotateY(var(--ry)) translateY(-8px) translateZ(10px)}
@@ -875,10 +876,8 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
   position:relative;
 }
 @media (max-width:980px){
-  .sources-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
-  .sources-cell{grid-column:span 2}
-  .sources-cell:nth-child(4){grid-column:2 / span 2}
-  .sources-cell:nth-child(5){grid-column:4 / span 2}
+  .sources-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .sources-cell{grid-column:auto}
 }
 @media (max-width:720px){
   .sources{padding:32px 0 24px}
@@ -897,8 +896,6 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
     flex:0 0 min(200px,72vw);
     scroll-snap-align:start;
   }
-  .sources-cell:nth-child(4),
-  .sources-cell:nth-child(5){grid-column:auto}
   .sources-card{min-height:176px}
 }
 @media (prefers-reduced-motion:reduce){
@@ -1147,6 +1144,7 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
 .hero-source.brand-meta{--brand:#0866FF;--brand-rgb:8,102,255}
 .hero-source.brand-tiktok{--brand:#25F4EE;--brand-rgb:37,244,238;--brand-2:#FE2C55}
 .hero-source.brand-aliexpress{--brand:#FF4747;--brand-rgb:255,71,71}
+.hero-source.brand-shopify{--brand:#95BF47;--brand-rgb:149,191,71}
 .hero-source:hover,
 .hero-source:focus,
 .hero-source:focus-visible,
@@ -1201,4 +1199,19 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
   .hero-source:focus-visible,
   .hero-source:active,
   .hero-source.is-glow{transform:none}
+}
+
+/* Six data-source chips (Shopify added): keep the hero row on one line on phones */
+@media (max-width:640px){
+  .hero-sources-row{gap:2px;padding:10px 3px;margin:-10px -3px}
+  .hero-source{height:26px;padding:0 3px;gap:2px}
+  .hero-source-name{font-size:clamp(8.5px,2.45vw,11px);letter-spacing:-.04em}
+  .hero-source-logo{width:12px;height:12px}
+  .hero-source-logo.is-wide{width:37px;height:9px}
+  .hero-source .dot,
+  .hero-source-soon{width:4px;height:4px}
+}
+@media (min-width:370px) and (max-width:640px){
+  /* the row fits, so let the brand glow spill out instead of being clipped */
+  .hero-sources-row{overflow:visible}
 }
