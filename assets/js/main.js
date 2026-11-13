@@ -250,3 +250,60 @@
     // App preview rows are labelled example data and should not open the real Google report.
   }
 })();
+
+
+/* Data sources: mouse-tilt parallax. No-ops when the user prefers reduced motion. */
+(function () {
+  var root = document.querySelector("[data-sources]");
+  if (!root) return;
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
+  var cards = root.querySelectorAll(".sources-card");
+  var defaults = [];
+  cards.forEach(function (c) {
+    var st = window.getComputedStyle(c);
+    defaults.push({ el: c, rx: st.getPropertyValue("--rx").trim() || "8deg", ry: st.getPropertyValue("--ry").trim() || "0deg" });
+  });
+  function reset() {
+    defaults.forEach(function (d) {
+      d.el.style.setProperty("--rx", d.rx);
+      d.el.style.setProperty("--ry", d.ry);
+      d.el.style.setProperty("--mx", "50%");
+      d.el.style.setProperty("--my", "12%");
+    });
+  }
+  function onMove(e) {
+    if (reduce && reduce.matches) return;
+    var cx = e.clientX, cy = e.clientY;
+    defaults.forEach(function (d) {
+      var r = d.el.getBoundingClientRect();
+      var px = (cx - (r.left + r.width / 2)) / (r.width / 2);
+      var py = (cy - (r.top + r.height / 2)) / (r.height / 2);
+      px = Math.max(-1.6, Math.min(1.6, px));
+      py = Math.max(-1.6, Math.min(1.6, py));
+      var dist = Math.hypot(px, py);
+      var strength = Math.max(0.25, 1 - dist * 0.28);
+      d.el.style.setProperty("--rx", (-py * 11 * strength).toFixed(2) + "deg");
+      d.el.style.setProperty("--ry", (px * 13 * strength).toFixed(2) + "deg");
+      var lx = ((cx - r.left) / Math.max(1, r.width)) * 100;
+      var ly = ((cy - r.top) / Math.max(1, r.height)) * 100;
+      d.el.style.setProperty("--mx", Math.max(0, Math.min(100, lx)).toFixed(1) + "%");
+      d.el.style.setProperty("--my", Math.max(0, Math.min(100, ly)).toFixed(1) + "%");
+    });
+  }
+  if (!(reduce && reduce.matches)) {
+    root.addEventListener("mousemove", onMove);
+    root.addEventListener("mouseleave", reset);
+    if (reduce && reduce.addEventListener) {
+      reduce.addEventListener("change", function () {
+        if (reduce.matches) {
+          root.removeEventListener("mousemove", onMove);
+          root.removeEventListener("mouseleave", reset);
+          reset();
+        } else {
+          root.addEventListener("mousemove", onMove);
+          root.addEventListener("mouseleave", reset);
+        }
+      });
+    }
+  }
+})();
