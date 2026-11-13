@@ -52,13 +52,13 @@
       if (ring && g.MS && g.MS.setRing && sc[key] != null) g.MS.setRing(ring, sc[key], key);
     });
     var stats = {
-      "SEARCH VOLUME": d.search_volume != null ? num(d.search_volume) + "/mo" : "—",
+      "Monthly searches": d.search_volume != null ? num(d.search_volume) + "/mo" : "—",
       "12-MONTH TREND": trendLabel(d.trend_slope),
       "CPC": d.cpc != null ? "~" + money(d.cpc) : "—",
       "LISTINGS": pr.listing_count != null ? String(pr.listing_count) : "—",
-      "PRICE RANGE": (pr.min != null ? money(pr.min) + "–" + money(pr.max) : "—"),
+      "Price range": (pr.min != null ? money(pr.min) + "–" + money(pr.max) : "—"),
       "MEDIAN": money(pr.median),
-      "RECOMMENDED BAND": pr.recommended_band ? (money(pr.recommended_band.low) + "–" + money(pr.recommended_band.high)) : "—"
+      "Recommended price range": pr.recommended_band ? (money(pr.recommended_band.low) + "–" + money(pr.recommended_band.high)) : "—"
     };
     $$(".hero-stats > div").forEach(function (box) {
       var k = (box.querySelector(".k") || {}).textContent || "";
@@ -123,13 +123,13 @@
         if (dd && detail != null) dd.textContent = detail;
       });
     }
-    if (d.search_volume != null) setStat("SEARCH VOLUME", num(d.search_volume) + "/mo", "Google Ads");
+    if (d.search_volume != null) setStat("Monthly searches", num(d.search_volume) + "/mo", "Google Ads");
     setStat("12-MONTH TREND", trendLabel(d.trend_slope), "last 3 months vs prior 3");
     if (d.cpc != null) setStat("CPC", "~" + money(d.cpc), "Google Ads");
     if (pr.listing_count != null) setStat("LISTINGS", String(pr.listing_count), pr.seller_count != null ? ("from " + pr.seller_count + " sellers") : "");
-    if (pr.min != null) setStat("PRICE RANGE", money(pr.min) + "–" + money(pr.max), "Google Shopping");
+    if (pr.min != null) setStat("Price range", money(pr.min) + "–" + money(pr.max), "Google Shopping");
     if (pr.median != null) { setStat("MEDIAN", money(pr.median), "Google Shopping"); setStat("MEDIAN PRICE", money(pr.median), "Google Shopping"); }
-    if (pr.recommended_band) setStat("RECOMMENDED BAND", money(pr.recommended_band.low) + "–" + money(pr.recommended_band.high), pr.recommended_rule || "");
+    if (pr.recommended_band) setStat("Recommended price range", money(pr.recommended_band.low) + "–" + money(pr.recommended_band.high), pr.recommended_rule || "");
     var comps = (p.competitors || []).slice();
     if (comps.length) {
       var top3 = comps.slice(0, 3);
@@ -156,6 +156,10 @@
     }
   }
 
+  function displayProduct(t) {
+    var s = (t && (t.product || t.query || t.ticker)) || "";
+    return s.replace(/\b[a-z]/g, function (c) { return c.toUpperCase(); });
+  }
   function hydrateTicker(snap) {
     var tk = $("#ticker");
     var label = document.querySelector(".ticker .ticker-label, #ticker") && document.querySelector(".ticker .ticker-label");
@@ -168,7 +172,7 @@
       var chgStr = chg == null ? "—" : ((chg >= 0 ? "▲" : "▼") + Math.abs(chg).toFixed(1));
       var cls = chg == null ? "muted" : (chg >= 0 ? "g" : "r");
       var px = t.price != null ? money(t.price) : "—";
-      return "<span><b>" + t.ticker + "</b> " + px + ' <i class="' + cls + '" style="font-style:normal">' + chgStr + "</i></span>";
+      return "<span><b>" + displayProduct(t) + "</b> " + px + ' <i class="' + cls + '" style="font-style:normal">' + chgStr + "</i></span>";
     }).join("");
     if (items) tk.innerHTML = items + items;
   }

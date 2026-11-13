@@ -158,7 +158,7 @@ function bindStars(root) {
 function renderTape(el) {
   if (!el) return;
   var items = D().tickers.map(function (t) {
-    return '<span><b>' + esc(t.ticker) + "</b> " + money(t.price) + " " + pct(t.chg) + "</span>";
+    return '<span><b>' + esc(displayProduct(t)) + "</b> " + money(t.price) + " " + pct(t.chg) + "</span>";
   }).join("");
   el.innerHTML = '<div class="ticker-label mono">LIVE TAPE · US</div><div class="ticker-track mono">' + items + items + "</div>";
 }
@@ -177,16 +177,21 @@ function selectTicker(ticker, tf) {
   }
 }
 
+function displayProduct(t) {
+  var s = (t && (t.product || t.query || t.ticker)) || "";
+  return s.replace(/\b[a-z]/g, function (c) { return c.toUpperCase(); });
+}
+
 var COMMANDS = [
-  { k: "SCREEN", d: "Open the screener", go: "screener.html" },
-  { k: "HEAT", d: "Open the category heatmap", go: "heatmap.html" },
-  { k: "INDEX", d: "Category indices", go: "indices.html" },
-  { k: "WATCH", d: "Watchlist and alerts", go: "watchlist.html" },
-  { k: "PORT", d: "Portfolio desk", go: "portfolio.html" },
-  { k: "BACKTEST", d: "Open the backtest tool", go: "backtest.html" },
-  { k: "CAL", d: "Events calendar", go: "calendar.html" },
-  { k: "COMPARE", d: "Compare products on the terminal", go: "terminal.html?view=compare" },
-  { k: "HELP", d: "Keyboard shortcuts", fn: "help" }
+  { k: "SCREEN", names: ["SCREEN", "SCREENER"], d: "Open the screener", go: "screener.html" },
+  { k: "HEAT", names: ["HEAT", "HEATMAP"], d: "Open the category heatmap", go: "heatmap.html" },
+  { k: "INDEX", names: ["INDEX", "INDICES", "INDEXES"], d: "Category indices", go: "indices.html" },
+  { k: "WATCH", names: ["WATCH", "WATCHLIST"], d: "Watchlist and alerts", go: "watchlist.html" },
+  { k: "PORT", names: ["PORT", "PORTFOLIO"], d: "Portfolio desk", go: "portfolio.html" },
+  { k: "BACKTEST", names: ["BACKTEST"], d: "Open the backtest tool", go: "backtest.html" },
+  { k: "CAL", names: ["CAL", "CALENDAR"], d: "Events calendar", go: "calendar.html" },
+  { k: "COMPARE", names: ["COMPARE"], d: "Compare products on the terminal", go: "terminal.html?view=compare" },
+  { k: "HELP", names: ["HELP"], d: "Keyboard shortcuts", fn: "help" }
 ];
 
 function runCommand(raw) {
@@ -203,7 +208,7 @@ function runCommand(raw) {
     gotoPage("terminal.html", "view=compare" + (ts.length ? "&c=" + ts.join(",") : ""));
     return;
   }
-  var c = COMMANDS.filter(function (x) { return x.k === cmd || x.k.indexOf(cmd) === 0; })[0];
+  var c = COMMANDS.filter(function (x) { var names = x.names || [x.k]; return names.indexOf(cmd) >= 0 || names.some(function (n) { return n.indexOf(cmd) === 0; }); })[0];
   if (c && c.go) { gotoPage(c.go); return; }
   if (c && c.fn === "help") { toggleHelp(true); return; }
   /* fuzzy product search */
@@ -213,7 +218,7 @@ function runCommand(raw) {
   if (f.length === 1) { selectTicker(f[0].ticker); return; }
   if (f.length) { gotoPage("screener.html", "q=" + encodeURIComponent(q)); return; }
   var msg = $("[data-cmd-msg]");
-  if (msg) { msg.textContent = "No match for “" + q + "”. Try a ticker like MAGMOUNT-US, or SCREEN / HEAT / WATCH."; msg.hidden = false; }
+  if (msg) { msg.textContent = "No match for “" + q + "”. Try a product name, such as magnetic phone mount, or a page name like Screener or Watchlist."; msg.hidden = false; }
 }
 
 function bindCommandBar() {
@@ -253,7 +258,7 @@ function drawMainChart() {
   var t = D().get(ticker);
   $$("[data-tf]").forEach(function (b) { b.classList.toggle("active", b.getAttribute("data-tf") === tf); });
   var lab = $("[data-chart-caption]");
-  if (lab) lab.textContent = ticker + " · " + tf + " · monthly Google Ads search volume (candles built from adjacent months)";
+  if (lab) lab.textContent = (t ? displayProduct(t) : ticker) + " · " + tf + " · monthly Google Ads search volume (candles built from adjacent months)";
   if (host && window.MSTrading && t) {
     window.MSTrading.mountDemandChart(host, { monthly_searches: t.monthly_searches, timeframe: tf, height: 360 });
   }
@@ -282,7 +287,7 @@ function bindChartControls() {
 function paintFocus() {
   var t = D().get(currentTicker());
   if (!t) return;
-  $$("[data-focus-ticker]").forEach(function (e) { e.textContent = t.ticker; });
+  $$("[data-focus-ticker]").forEach(function (e) { e.textContent = displayProduct(t); });
   $$("[data-focus-name]").forEach(function (e) { e.textContent = t.product + " · " + t.market; });
   $$("[data-focus-price]").forEach(function (e) { e.innerHTML = money(t.price) + '<div class="fine">median Shopping price</div>'; });
   $$("[data-focus-chg]").forEach(function (e) { e.innerHTML = pct(t.chg) + '<div class="fine">demand, last 3 mo vs prior 3</div>'; });
@@ -292,7 +297,7 @@ function paintFocus() {
     var band = t.target;
     box.innerHTML = '<p class="muted" style="margin:0 0 8px">We do not have a third-party analyst consensus. The desk verdict from this snapshot is:</p>' +
       '<div class="pill ' + verdictClass(t.verdict) + '">' + esc(t.verdict || "—") + "</div>" +
-      (band ? '<p class="muted" style="margin:8px 0 0;font-size:.82rem">Recommended selling band (30th–50th percentile of Google Shopping prices) <b class="amber">' + money(band[0]) + " – " + money(band[1]) + "</b></p>" : '<p class="muted">No recommended price band — not enough priced listings.</p>');
+      (band ? '<p class="muted" style="margin:8px 0 0;font-size:.82rem">Recommended price range (at or just below the median Google Shopping price) <b class="amber">' + money(band[0]) + " – " + money(band[1]) + "</b></p>" : '<p class="muted">No recommended price range — not enough priced listings.</p>');
   }
   var g = $("[data-sentiment]");
   if (g && C()) {
@@ -318,7 +323,7 @@ function renderMovers() {
   function list(el, rows, field) {
     if (!el) return;
     el.innerHTML = rows.map(function (t) {
-      return '<button type="button" class="mv-row" data-jump="' + esc(t.ticker) + '"><span class="mono">' + esc(t.ticker) + "</span>" +
+      return '<button type="button" class="mv-row" data-jump="' + esc(t.ticker) + '"><span>' + esc(displayProduct(t)) + "</span>" +
         (field === "vol" ? "<span class='muted'>" + (t.volume != null ? Number(t.volume).toLocaleString("en-US") : "—") + "</span>" : pct(t.chg)) + "</button>";
     }).join("");
   }
@@ -346,13 +351,13 @@ function renderWatchMini() {
   if (!el) return;
   Watch.all().then(function (list) {
     if (!list.length) {
-      el.innerHTML = '<p class="muted">No names on your watchlist yet. Star a ticker or <button type="button" class="link-btn amber" data-load-example-watch>load the snapshot defaults</button> (top demand-change names from the live US basket).</p>';
+      el.innerHTML = '<p class="muted">No names on your watchlist yet. Star a product or <button type="button" class="link-btn amber" data-load-example-watch>load the snapshot defaults</button> (top demand-change names from the live US basket).</p>';
       return;
     }
     el.innerHTML = list.map(function (w) {
       var t = D().get(w.ticker);
       if (!t) return "";
-      return '<button type="button" class="mv-row" data-jump="' + esc(t.ticker) + '"><span class="mono">' + esc(t.ticker) + "</span>" + pct(t.chg) + "</button>";
+      return '<button type="button" class="mv-row" data-jump="' + esc(t.ticker) + '"><span>' + esc(displayProduct(t)) + "</span>" + pct(t.chg) + "</button>";
     }).join("");
     paintStars();
   });
@@ -406,7 +411,7 @@ function initScreener() {
     var tb = $("[data-screen-body]");
     if (!tb) return;
     tb.innerHTML = data.map(function (t) {
-      return "<tr data-jump='" + esc(t.ticker) + "'><td class='mono'><button type='button' class='star-btn' data-star='" + esc(t.ticker) + "'>☆</button> " + esc(t.ticker) + "</td><td>" + esc(t.product) + "</td><td>" + esc(D().marketAbbr[t.market]) + "</td><td>" + esc(channel(t)) + "</td><td class='mono'>" + money(t.price) + "</td><td>" + pct(t.chg) + "</td><td class='mono'>" + t.demand + "</td><td class='mono'>" + t.competition + "</td><td class='mono'>" + t.saturation + "</td><td class='mono'>" + t.opportunity + "</td><td><span class='pill " + verdictClass(t.verdict) + "'>" + esc(t.verdict) + "</span></td></tr>";
+      return "<tr data-jump='" + esc(t.ticker) + "'><td class='mono'><button type='button' class='star-btn' data-star='" + esc(t.ticker) + "'>☆</button></td><td>" + esc(displayProduct(t)) + "</td><td>" + esc(D().marketAbbr[t.market]) + "</td><td>" + esc(channel(t)) + "</td><td class='mono'>" + money(t.price) + "</td><td>" + pct(t.chg) + "</td><td class='mono'>" + t.demand + "</td><td class='mono'>" + t.competition + "</td><td class='mono'>" + t.saturation + "</td><td class='mono'>" + t.opportunity + "</td><td><span class='pill " + verdictClass(t.verdict) + "'>" + esc(t.verdict) + "</span></td></tr>";
     }).join("");
     var n = $("[data-screen-count]"); if (n) n.textContent = data.length + " names · live US snapshot";
     paintStars();
@@ -446,7 +451,7 @@ function initHeatmap() {
     var size = 70 + (c.size || 0.3) * 70;
     return '<button type="button" class="heat-tile" data-jump="' + esc(c.ticker) + '" style="background:' + color + ';min-height:' + size + 'px">' +
       '<span class="ht-name">' + esc(c.product) + '</span>' +
-      '<span class="ht-meta">' + esc(c.ticker) + " · vol " + (c.volume != null ? Number(c.volume).toLocaleString("en-US") : "—") +
+      '<span class="ht-meta">' + (c.volume != null ? Number(c.volume).toLocaleString("en-US") + " monthly searches" : "—") +
       " · " + (c.chg == null ? "—" : ((c.chg > 0 ? "+" : "") + c.chg.toFixed(1) + "%")) + "</span></button>";
   }).join("");
 }
@@ -455,9 +460,9 @@ function initIndices() {
   var host = $("[data-indices-table]");
   if (!host) return;
   host.innerHTML = D().indices.map(function (ix) {
-    return '<article class="idx-card" id="idx-' + esc(ix.id) + '"><header><div><div class="kicker mono">COMPOSITE · REBASED DEMAND</div><h2>' + esc(ix.name) + '</h2></div><div class="idx-lvl mono">' + ix.level.toLocaleString() + " " + pct(ix.chg) + "</div></header>" +
+    return '<article class="idx-card" id="idx-' + esc(ix.id) + '"><header><div><div class="kicker mono">Category demand</div><h2>' + esc(ix.name) + '</h2></div><div class="idx-lvl mono">' + ix.level.toLocaleString() + " " + pct(ix.chg) + "</div></header>" +
       '<svg class="idx-chart" data-idx-chart="' + esc(ix.id) + '"></svg>' +
-      '<p class="muted">' + esc(ix.note || "") + ' Opportunity (avg of members) <b class="amber">' + ix.opportunity + "</b>. Constituents: " + ix.members.map(function (tk) { return '<button type="button" class="link-btn amber" data-jump="' + esc(tk) + '">' + esc(tk) + "</button>"; }).join(" · ") + "</p></article>";
+      '<p class="muted">' + esc(ix.note || "") + ' Opportunity (avg of members) <b class="amber">' + ix.opportunity + "</b>. Constituents: " + ix.members.map(function (tk) { var mt = D().get(tk); return '<button type="button" class="link-btn amber" data-jump="' + esc(tk) + '">' + esc(displayProduct(mt || { ticker: tk })) + "</button>"; }).join(" · ") + "</p></article>";
   }).join("");
   $$("[data-idx-chart]").forEach(function (svg) {
     var ix = D().indices.filter(function (x) { return x.id === svg.getAttribute("data-idx-chart"); })[0];
@@ -512,7 +517,7 @@ async function initWatchlist() {
         var fire = on && alertFires(t, a.id);
         return '<label class="alert-rule"><input type="checkbox" data-alert="' + esc(w.ticker) + '" data-type="' + a.id + '"' + (on ? " checked" : "") + "> " + esc(a.label) + (fire ? ' <span class="chip early">WOULD FIRE · from snapshot trend</span>' : "") + "</label>";
       }).join("");
-      return '<article class="watch-card"><header><button type="button" class="link-btn" data-jump="' + esc(t.ticker) + '"><b class="mono">' + esc(t.ticker) + "</b> " + esc(t.product) + "</button> " + pct(t.chg) + ' <button type="button" class="link-btn r" data-unwatch="' + esc(t.ticker) + '">Remove</button></header><div class="alert-rules">' + rules + "</div></article>";
+      return '<article class="watch-card"><header><button type="button" class="link-btn" data-jump="' + esc(t.ticker) + '"><b>' + esc(displayProduct(t)) + "</b></button> " + pct(t.chg) + ' <button type="button" class="link-btn r" data-unwatch="' + esc(t.ticker) + '">Remove</button></header><div class="alert-rules">' + rules + "</div></article>";
     }).join("");
   }
   host.addEventListener("change", async function (e) {
@@ -588,9 +593,9 @@ async function initPortfolio() {
         '<div class="stat"><div class="k">DIVERSIFICATION</div><div class="v">' + nCats + '</div><p>Distinct category sleeves in this book.</p></div>';
     }
     if (table) {
-      table.innerHTML = "<thead><tr><th>Ticker</th><th>Product</th><th>Alloc %</th><th>Opp</th><th></th></tr></thead><tbody>" + list.map(function (r) {
+      table.innerHTML = "<thead><tr><th>Product</th><th>Share %</th><th>Opportunity</th><th></th></tr></thead><tbody>" + list.map(function (r) {
         var t = D().get(r.ticker);
-        return "<tr><td class='mono'><button type='button' class='link-btn' data-jump='" + esc(r.ticker) + "'>" + esc(r.ticker) + "</button></td><td>" + esc(r.product) + "</td><td><input type='number' min='0' max='100' step='1' value='" + esc(r.allocation) + "' data-alloc='" + esc(r.ticker) + "'></td><td class='mono'>" + (t ? t.opportunity : "—") + "</td><td><button type='button' class='link-btn r' data-unport='" + esc(r.ticker) + "'>Remove</button></td></tr>";
+        return "<tr><td><button type='button' class='link-btn' data-jump='" + esc(r.ticker) + "'>" + esc(displayProduct(t || r)) + "</button></td><td><input type='number' min='0' max='100' step='1' value='" + esc(r.allocation) + "' data-alloc='" + esc(r.ticker) + "'></td><td class='mono'>" + (t ? t.opportunity : "—") + "</td><td><button type='button' class='link-btn r' data-unport='" + esc(r.ticker) + "'>Remove</button></td></tr>";
       }).join("") + "</tbody>";
     }
   }
@@ -615,7 +620,7 @@ async function initPortfolio() {
   var portSel = $("[data-port-ticker]");
   if (portSel) {
     portSel.innerHTML = D().tickers.map(function (tk) {
-      return '<option value="' + esc(tk.ticker) + '">' + esc(tk.ticker) + " — " + esc(tk.product) + "</option>";
+      return '<option value="' + esc(tk.ticker) + '">' + esc(displayProduct(tk)) + "</option>";
     }).join("");
   }
   var add = $("[data-port-add]");
@@ -645,7 +650,7 @@ function initBacktest() {
   var sel = $("[data-bt-ticker]");
   if (sel && !sel.options.length) {
     D().tickers.forEach(function (t) {
-      var o = document.createElement("option"); o.value = t.ticker; o.textContent = t.ticker + " — " + t.product; sel.appendChild(o);
+      var o = document.createElement("option"); o.value = t.ticker; o.textContent = displayProduct(t); sel.appendChild(o);
     });
   }
   try {
@@ -691,17 +696,17 @@ function initCompare() {
   function paint() {
     host.innerHTML = '<div class="compare-picks">' + D().tickers.map(function (t) {
       var on = picked.indexOf(t.ticker) >= 0;
-      return '<label><input type="checkbox" data-cmp="' + esc(t.ticker) + '"' + (on ? " checked" : "") + ( !on && picked.length >= 4 ? " disabled" : "") + "> " + esc(t.ticker) + "</label>";
+      return '<label><input type="checkbox" data-cmp="' + esc(t.ticker) + '"' + (on ? " checked" : "") + ( !on && picked.length >= 4 ? " disabled" : "") + "> " + esc(displayProduct(t)) + "</label>";
     }).join("") + '</div><div class="compare-grid">' + picked.map(function (tk) {
       var t = D().get(tk);
       var band = t.target;
-      return '<article class="cmp-col"><h3 class="mono"><button type="button" class="link-btn" data-jump="' + esc(t.ticker) + '">' + esc(t.ticker) + "</button></h3><p>" + esc(t.product) + " · " + esc(t.market) + "</p>" +
+      return '<article class="cmp-col"><h3><button type="button" class="link-btn" data-jump="' + esc(t.ticker) + '">' + esc(displayProduct(t)) + "</button></h3><p>" + esc(t.market) + "</p>" +
         "<p class='mono'>" + money(t.price) + " <span class='fine'>median</span> " + pct(t.chg) + "</p><span class='pill " + verdictClass(t.verdict) + "'>" + esc(t.verdict) + "</span>" +
         '<svg class="cmp-chart" data-cmp-chart="' + esc(t.ticker) + '"></svg>' +
-        '<div class="score-mini-row"><span>D ' + (t.demand != null ? t.demand : "—") + "</span><span>C " + (t.competition != null ? t.competition : "—") + "</span><span>S " + (t.saturation != null ? t.saturation : "—") + "</span><span>O " + (t.opportunity != null ? t.opportunity : "—") + "</span></div>" +
-        '<p class="muted">' + (band ? ("Band " + money(band[0]) + "–" + money(band[1])) : "No recommended band") +
+        '<div class="score-mini-row"><span>Demand ' + (t.demand != null ? t.demand : "—") + "</span><span>Competition " + (t.competition != null ? t.competition : "—") + "</span><span>Saturation " + (t.saturation != null ? t.saturation : "—") + "</span><span>Opportunity " + (t.opportunity != null ? t.opportunity : "—") + "</span></div>" +
+        '<p class="muted">' + (band ? ("Price range " + money(band[0]) + "–" + money(band[1])) : "No recommended price range") +
         "<br>Sellers " + (t.seller_count != null ? t.seller_count : "—") +
-        " · vol " + (t.volume != null ? Number(t.volume).toLocaleString("en-US") : "—") +
+        " · monthly searches " + (t.volume != null ? Number(t.volume).toLocaleString("en-US") : "—") +
         (t.sentiment != null ? " · avg rating " + t.sentiment + "/5" : "") + "</p></article>";
     }).join("") + "</div>";
     $$("[data-cmp-chart]", host).forEach(function (svg) {

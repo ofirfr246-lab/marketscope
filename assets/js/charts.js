@@ -199,7 +199,7 @@
         td.innerHTML = "<b>" + v + "</b><small>" + (cell.chg > 0 ? "+" : "") + (cell.chg != null ? cell.chg : "—") + "%</small>";
         td.tabIndex = 0;
         function show() {
-          tip(td, "<b>" + (cell.categoryName || rName) + " · " + (cell.market || "") + "</b><br>Opportunity " + v + " · " + (cell.chg > 0 ? "+" : "") + cell.chg + "% (example)" + (cell.ticker ? "<br>Ticker " + cell.ticker : ""), td.offsetWidth / 2, 0);
+          tip(td, "<b>" + (cell.categoryName || rName) + " · " + (cell.market || "") + "</b><br>Opportunity " + v + " · " + (cell.chg > 0 ? "+" : "") + cell.chg + "% (example)" + (cell.product ? "<br>" + cell.product : (cell.ticker ? "<br>" + cell.ticker : "")), td.offsetWidth / 2, 0);
           if (opts.onHover) opts.onHover(cell);
         }
         td.addEventListener("mouseenter", show);

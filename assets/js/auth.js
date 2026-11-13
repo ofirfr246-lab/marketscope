@@ -751,7 +751,7 @@ async function initDashboard() {
     var fillRight = band.high != null ? pct(band.high) : 55;
     var midTick = med != null ? pct(med) : 50;
     return '<div class="price-band">' +
-      "<h3>// PRICE RANGE</h3>" +
+      "<h3>Price range</h3>" +
       '<div class="price-track">' +
         '<span class="fill" style="left:' + fillLeft + "%;width:" + Math.max(4, fillRight - fillLeft) + '%"></span>' +
         '<span class="tick" style="left:' + midTick + '%"></span>' +
@@ -775,14 +775,14 @@ async function initDashboard() {
         "<td>" + escapeHtml(formatMoney(r.median_price != null ? r.median_price : r.min_price, currency)) + "</td>" +
         "<td>" + escapeHtml(r.reviews != null ? String(r.reviews) : "—") + "</td></tr>";
     }).join("");
-    return "<h3 class=\"mono\" style=\"margin:20px 0 8px;color:var(--dim);font-size:.78rem;letter-spacing:.06em\">// TOP COMPETITORS / STORES</h3>" +
+    return "<h3 class=\"mono\" style=\"margin:20px 0 8px;color:var(--dim);font-size:.78rem;letter-spacing:.06em\">Top competitors / stores</h3>" +
       '<div class="comp-wrap"><table class="comp-table"><thead><tr><th>Seller</th><th>Listings</th><th>Share</th><th>Typical price</th><th>Reviews</th></tr></thead><tbody>' + body + "</tbody></table></div>";
   }
 
   function relatedHtml(c) {
     var rows = c.related_keywords || [];
     if (!rows.length) return "";
-    return "<h3 class=\"mono\" style=\"margin:16px 0 0;color:var(--dim);font-size:.78rem;letter-spacing:.06em\">// RELATED KEYWORDS</h3>" +
+    return "<h3 class=\"mono\" style=\"margin:16px 0 0;color:var(--dim);font-size:.78rem;letter-spacing:.06em\">Related search terms</h3>" +
       '<ul class="kw-list">' + rows.slice(0, 10).map(function (k) {
         var label = (k.keyword || "") + (k.search_volume != null ? " · " + Number(k.search_volume).toLocaleString("en-US") : "");
         return "<li>" + escapeHtml(label) + "</li>";
@@ -820,7 +820,7 @@ async function initDashboard() {
       (live ? '<div class="tv-wrap" data-live-demand-chart></div><div data-live-price-hist></div>' : "") +
       (live ? competitorsHtml(c) : "") +
       (live ? relatedHtml(c) : "") +
-      '<div class="advisor-box"><h3>// AI ADVISOR' + (live ? "" : " · SAMPLE") + "</h3><p>" + escapeHtml(c.advisor || "") + "</p></div>" +
+      '<div class="advisor-box"><h3>AI Advisor' + (live ? "" : " · SAMPLE") + "</h3><p>" + escapeHtml(c.advisor || "") + "</p></div>" +
       '<button type="button" class="btn btn-ghost btn-sm" data-close-report>Close</button>';
     panel.scrollIntoView({ behavior: "smooth", block: "start" });
     var close = $("[data-close-report]", panel);

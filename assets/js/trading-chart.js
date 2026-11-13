@@ -160,8 +160,8 @@
     function paintReadout(c) {
       if (!c) { read.textContent = ""; return; }
       var dir = c.close >= c.open ? "up" : "down";
-      read.innerHTML = monthLabel(c) + " · O " + fmtInt(c.open) + " · H " + fmtInt(c.high) + " · L " + fmtInt(c.low) + " · C " + fmtInt(c.close) +
-        ' · <span class="' + (dir === "up" ? "g" : "r") + '">vol ' + fmtInt(c.volume) + "</span> monthly searches";
+      read.innerHTML = monthLabel(c) + " · opened " + fmtInt(c.open) + " · high " + fmtInt(c.high) + " · low " + fmtInt(c.low) + " · closed " + fmtInt(c.close) +
+        ' · <span class="' + (dir === "up" ? "g" : "r") + '">' + fmtInt(c.volume) + "</span> monthly searches";
     }
 
     function draw() {
@@ -284,7 +284,7 @@
     var cap = document.createElement("p");
     cap.className = "tv-legend mono";
     cap.textContent = samples.length + " Google Shopping prices · " + money(min) + "–" + money(max) +
-      (band && band.low != null ? " · gold bars overlap the recommended band " + money(band.low) + "–" + money(band.high) : "");
+      (band && band.low != null ? " · gold bars overlap the recommended price range " + money(band.low) + "–" + money(band.high) : "");
     var axis = document.createElement("div");
     axis.className = "px-hist-axis mono";
     axis.innerHTML = "<span>" + money(min) + "</span><span>" + money((min + max) / 2) + "</span><span>" + money(max) + "</span>";

@@ -105,7 +105,7 @@ window.MS_CONFIG = {
     ["Margin / ROAS breakeven calculator", false, false, false, "Coming soon"],
     ["Profit simulator", false, false, false, "Coming soon"],
     { group: "Market terminal" },
-    ["Ticker tape, movers & desk feed", true, true, true, true],
+    ["Live snapshot tape, movers and desk feed", true, true, true, true],
     ["Market Terminal history", "7 days", "30 days", "12 months", "24 months"],
     ["Category indices", false, true, true, true],
     ["Events calendar", false, true, true, true],
