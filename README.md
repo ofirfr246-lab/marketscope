@@ -31,10 +31,10 @@ The Terminal desk (`terminal.html` and related pages) is a capital-markets-style
 Watchlists and portfolios persist in Supabase (`watchlist`, `portfolio` tables in `supabase/schema.sql`) when the two keys are set and the user is signed in; otherwise they use `localStorage`.
 
 ### Plan mapping (data sources)
-Live today: **Google Shopping** and **Google Search** on every plan. Amazon, Meta Ad Library, TikTok and AliExpress keep the tier mapping below and are labelled Coming soon until their collectors are connected.
+Live today: **Google Shopping** and **Google Search** on every plan. Amazon, Meta Ad Library, TikTok, AliExpress and Shopify keep the tier mapping below and are labelled Coming soon until their collectors are connected.
 - **Free & Starter** — Google Shopping, Google Search (Live) and Amazon (Coming soon; listings and pricing on both; Amazon BSR and review velocity on Starter). Starter answers “Is there demand?”
 - **Plus** — everything in Starter, plus Meta Ad Library and TikTok ads and Creative Center trends (Coming soon). Answers “How is it being sold?”
-- **Pro** — everything in Plus, plus AliExpress supplier cost, order volume and a true margin calculator (Coming soon). Answers “How much will I make?”
+- **Pro** — everything in Plus, plus AliExpress supplier cost, order volume and a true margin calculator, and Shopify competitor stores (store count, price bands, top stores and newest launches) (Coming soon). Answers “How much will I make?”
 
 ### Plan mapping (Terminal features)
 - **Free** — Terminal desk (tape, movers, news feed), 7-day charts, 1 Watchlist slot
@@ -48,5 +48,5 @@ Live today: **Google Shopping** and **Google Search** on every plan. Amazon, Met
 - Contact form saves to `localStorage` (`marketscope_contact`) and isn't sent anywhere.
 - Login, sign-up, password reset, dashboard and account talk to Supabase once the two keys are set. Forms do not create accounts while keys are still placeholders.
 - Cookie banner stores the choice in `localStorage` (`ms_consent`). No analytics are loaded.
-- Dashboard reports use **live Google Shopping and Google Search** data when the analyze function is configured. Amazon, Meta, TikTok and AliExpress are coming soon.
+- Dashboard reports use **live Google Shopping and Google Search** data when the analyze function is configured. Amazon, Meta, TikTok, AliExpress and Shopify are coming soon.
 - All market data, customers/testimonials, status and API samples on marketing pages are illustrative examples.
