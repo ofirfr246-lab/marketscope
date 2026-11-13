@@ -48,7 +48,10 @@
         <h1 data-welcome>Welcome back</h1>
         <p class="sub" style="margin:0">Your credits, plan and reports. New reports pull live data via Google Shopping &amp; Search (1 credit).</p>
       </div>
-      <a class="btn btn-sm btn-ghost" href="account.html">Account settings</a>
+      <div class="hist-top-actions">
+        <a class="btn btn-sm btn-ghost" href="reports.html">Reports</a>
+        <a class="btn btn-sm btn-ghost" href="account.html">Account settings</a>
+      </div>
     </div>
     <p class="form-msg" data-dash-error hidden role="status"></p>
     <p class="form-msg ok" data-checkout-toast hidden role="status"></p>
@@ -60,7 +63,7 @@
           <button type="button" class="btn btn-sm btn-ghost" data-manage-billing hidden>Manage billing</button>
         </p>
       </div>
-      <div class="stat"><div class="k">REPORTS</div><div class="v" data-report-count>0</div><p>Saved to your account</p></div>
+      <div class="stat"><div class="k">REPORTS</div><div class="v" data-report-count>0</div><p>Saved to your account · <a href="reports.html">View history</a></p></div>
     </div>
     <div class="term-launch" aria-label="Market Terminal">
       <a href="terminal.html"><b>TERMINAL</b>Multi-panel desk, tape and charts</a>
@@ -145,8 +148,13 @@
         </div>
       </div>
       <div class="dash-card">
-        <h2>Recent reports</h2>
-        <p class="muted" style="margin-top:0">Only you can see these. Click a row to open it.</p>
+        <div class="set-row-head" style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">
+          <div>
+            <h2 style="margin-bottom:6px">Recent reports</h2>
+            <p class="muted" style="margin:0">Only you can see these. Click a row to open it.</p>
+          </div>
+          <a class="btn btn-sm btn-ghost" href="reports.html">View all</a>
+        </div>
         <div class="note" data-report-empty>No reports yet. Run your first one from the form.</div>
         <div class="report-list" data-report-list></div>
       </div>
