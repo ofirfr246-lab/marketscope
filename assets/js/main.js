@@ -19,6 +19,14 @@
     var open = burger.getAttribute("aria-expanded") === "true";
     burger.setAttribute("aria-expanded", String(!open)); menu.hidden = open;
     burger.setAttribute("aria-label", open ? "Open menu" : "Close menu");
+    if (!open) {
+      var current = menu.querySelector("a.active, a[aria-current]");
+      if (current && current.scrollIntoView) {
+        requestAnimationFrame(function () {
+          current.scrollIntoView({ block: "center", inline: "nearest", behavior: reduce ? "auto" : "smooth" });
+        });
+      }
+    }
   });
   $$(".nav-trigger").forEach(function (t) {
     t.addEventListener("click", function (e) {
@@ -30,6 +38,134 @@
   });
   document.addEventListener("click", function () { $$(".nav-group.open").forEach(function (x) { x.classList.remove("open"); }); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") $$(".nav-group.open").forEach(function (x) { x.classList.remove("open"); }); });
+
+  /* ---------- current page in nav ---------- */
+  var navRoot = $("header.nav") || $(".nav");
+  var sectionObs = null;
+  function navFile(pathname) {
+    var p = (pathname || "/").split("?")[0].split("#")[0];
+    try { p = decodeURIComponent(p); } catch (e) {}
+    p = p.replace(/\/+$/, "") || "/";
+    var last = p.split("/").pop() || "";
+    if (!last || /^index\.html$/i.test(last)) return "index.html";
+    return last.toLowerCase();
+  }
+  function navHref(a) {
+    var raw = a.getAttribute("href");
+    if (!raw || raw.charAt(0) === "#" || /^(mailto:|tel:|javascript:)/i.test(raw)) return null;
+    try { return new URL(raw, location.href); } catch (e) { return null; }
+  }
+  function isNavCandidate(a) {
+    if (!a || a.closest(".brand") || a.classList.contains("btn") || a.classList.contains("nav-cta")) return false;
+    return !!(a.closest(".nav-links, #mobile-menu, .account-drop, .nav-right"));
+  }
+  function clearNavCurrent() {
+    if (!navRoot) return;
+    $$(".nav-group.active", navRoot).forEach(function (g) { g.classList.remove("active"); });
+    $$(".account-menu.has-current", navRoot).forEach(function (m) { m.classList.remove("has-current"); });
+    $$("a.active, a[aria-current]", navRoot).forEach(function (a) {
+      a.classList.remove("active");
+      a.removeAttribute("aria-current");
+    });
+  }
+  function markNavLink(a, current) {
+    a.classList.add("active");
+    a.setAttribute("aria-current", current);
+    var group = a.closest(".nav-group");
+    if (group) group.classList.add("active");
+    var menu = a.closest(".account-menu");
+    if (menu) menu.classList.add("has-current");
+  }
+  function setSectionCurrent(id) {
+    if (!navRoot || !id) return;
+    var file = navFile(location.pathname);
+    $$("a[href]", navRoot).forEach(function (a) {
+      if (!isNavCandidate(a)) return;
+      var url = navHref(a);
+      if (!url || navFile(url.pathname) !== file) return;
+      var hash = (url.hash || "").replace(/^#/, "");
+      if (!hash) return;
+      var on = hash === id;
+      a.classList.toggle("active", on);
+      if (on) {
+        a.setAttribute("aria-current", "location");
+        var group = a.closest(".nav-group");
+        if (group) group.classList.add("active");
+      } else {
+        a.removeAttribute("aria-current");
+      }
+    });
+  }
+  function bindSectionObserver(ids) {
+    if (sectionObs) { sectionObs.disconnect(); sectionObs = null; }
+    if (!ids.length) return;
+    if (location.hash) {
+      var start = location.hash.replace(/^#/, "");
+      if (ids.indexOf(start) !== -1) setSectionCurrent(start);
+    }
+    if (!("IntersectionObserver" in window)) return;
+    var visible = {};
+    sectionObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        visible[en.target.id] = en.isIntersecting ? en.intersectionRatio : 0;
+      });
+      if (menu && !menu.hidden) return;
+      var hashId = (location.hash || "").replace(/^#/, "");
+      var hashVisible = hashId && ids.indexOf(hashId) !== -1 && (visible[hashId] || 0) > 0;
+      var anyVisible = ids.some(function (id) { return (visible[id] || 0) > 0; });
+      if (hashVisible || (hashId && ids.indexOf(hashId) !== -1 && !anyVisible)) {
+        setSectionCurrent(hashId);
+        return;
+      }
+      var bestId = null, best = 0;
+      ids.forEach(function (id) {
+        var v = visible[id] || 0;
+        if (v > best) { best = v; bestId = id; }
+      });
+      if (bestId) setSectionCurrent(bestId);
+    }, { rootMargin: "-28% 0px -55% 0px", threshold: [0, 0.1, 0.25, 0.5, 1] });
+    ids.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) sectionObs.observe(el);
+    });
+  }
+  function markCurrentNav() {
+    if (!navRoot) return;
+    clearNavCurrent();
+    var file = navFile(location.pathname);
+    var hash = (location.hash || "").replace(/^#/, "");
+    var pageLinks = [];
+    var sectionIds = [];
+    var seenIds = {};
+    $$("a[href]", navRoot).forEach(function (a) {
+      if (!isNavCandidate(a)) return;
+      var url = navHref(a);
+      if (!url || navFile(url.pathname) !== file) return;
+      var linkHash = (url.hash || "").replace(/^#/, "");
+      if (linkHash) {
+        if (document.getElementById(linkHash) && !seenIds[linkHash]) {
+          seenIds[linkHash] = true;
+          sectionIds.push(linkHash);
+        }
+        if (hash && linkHash === hash) pageLinks.push(a);
+        return;
+      }
+      pageLinks.push(a);
+    });
+    pageLinks.forEach(function (a) { markNavLink(a, "page"); });
+    navRoot.classList.add("nav-ready");
+    bindSectionObserver(sectionIds);
+  }
+  markCurrentNav();
+  window.addEventListener("hashchange", markCurrentNav);
+  if (navRoot && "MutationObserver" in window) {
+    var navMoTimer;
+    var navMo = new MutationObserver(function () {
+      clearTimeout(navMoTimer);
+      navMoTimer = setTimeout(markCurrentNav, 0);
+    });
+    navMo.observe(navRoot, { childList: true, subtree: true });
+  }
 
   /* ---------- cookie consent (no analytics are loaded either way) ---------- */
   var ck = $("#cookie");
