@@ -7,7 +7,8 @@
    sold?”, Pro “How much will I make?”.
    Data sources: Free & Starter = Google Shopping + Google Search
    (Live) + Amazon (Coming soon). Plus adds Meta Ad Library + TikTok
-   (Coming soon). Pro adds AliExpress (Coming soon).
+   (Coming soon). Pro adds AliExpress and Shopify competitor stores
+   (Coming soon).
    Only Google Shopping and Google Search are live today.
    ===================================================================== */
 window.MS_CONFIG = {
@@ -63,11 +64,12 @@ window.MS_CONFIG = {
       blurb: "For brands and teams making big bets.",
       question: "Answers “How much will I make?”",
       cta: "Choose Pro",
-      sources: ["Google Shopping", "Google Search", "Amazon", "Meta Ad Library", "TikTok", "AliExpress"],
+      sources: ["Google Shopping", "Google Search", "Amazon", "Meta Ad Library", "TikTok", "AliExpress", "Shopify"],
       features: [
         "200 credits every month",
         "Everything in Plus, plus:",
         "AliExpress supplier finder with landed cost <span class=\"chip soon\">Coming soon</span>",
+        "Shopify competitor stores — store count, price bands, top stores and newest launches <span class=\"chip soon\">Coming soon</span>",
         "Margin / ROAS breakeven &amp; profit simulator <span class=\"chip soon\">Coming soon</span>",
         "Unlimited tracked stores, watch slots & 24-month history",
         "Portfolio desk & white-label PDF reports (early access)",
@@ -92,6 +94,7 @@ window.MS_CONFIG = {
     ["Meta Ad Library", false, false, "Coming soon", "Coming soon"],
     ["TikTok ads & Creative Center", false, false, "Coming soon", "Coming soon"],
     ["AliExpress (supplier cost, orders, margin)", false, false, false, "Coming soon"],
+    ["Shopify (competitor stores, price bands, launches)", false, false, false, "Coming soon"],
     { group: "Analysis & scores" },
     ["Demand / Competition / Saturation / Opportunity scores", true, true, true, true],
     ["Verdict (STRONG BUY → AVOID)", true, true, true, true],
