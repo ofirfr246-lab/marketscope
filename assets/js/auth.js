@@ -179,7 +179,7 @@ function renderSignedInNav(user, profile) {
         "</button>" +
         '<div class="account-drop" role="menu">' +
           '<a href="dashboard.html" role="menuitem">Dashboard</a>' +
-          '<a href="account.html" role="menuitem">Account</a>' +
+          '<a href="settings.html" role="menuitem">Settings</a>' +
           '<button type="button" class="link-btn" data-sign-out role="menuitem">Log out</button>' +
         "</div>" +
       "</div>";
@@ -198,7 +198,7 @@ function renderSignedInNav(user, profile) {
       var wrap = document.createElement("div");
       wrap.className = "mob-auth";
       wrap.innerHTML =
-        '<a href="account.html">Account</a>' +
+        '<a href="settings.html">Settings</a>' +
         '<button type="button" class="btn btn-ghost btn-block" data-sign-out>Log out</button>';
       signupLink.replaceWith(wrap);
     }
@@ -960,7 +960,9 @@ async function initDashboard() {
     var tabQ = new URLSearchParams(location.search).get("tab");
     if (tabQ === "describe") setTab("describe");
     else if (pendingUrl || tabQ === "link") setTab("link");
+    else if (readPrefs().defaultTab === "describe") setTab("describe");
   } catch (e) { /* keep default */ }
+  applyDefaultMarket();
 
   var importForm = $("form[data-auth-form='import-report']");
   if (importForm && Imp) {
@@ -1146,8 +1148,62 @@ async function initAccount() {
   });
 }
 
+/* ---------- device preferences (set on settings.html) ---------- */
+function readPrefs() {
+  try { return JSON.parse(localStorage.getItem("ms_prefs") || "{}") || {}; } catch (e) { return {}; }
+}
+function applyDefaultMarket() {
+  var m = readPrefs().defaultMarket;
+  if (!m) return;
+  $$("#ir-market, #nr-market").forEach(function (sel) {
+    if (sel.value) return;
+    Array.prototype.forEach.call(sel.options, function (o) { if (o.value === m) sel.value = m; });
+  });
+}
+function applyAppearance() {
+  var a;
+  try { a = JSON.parse(localStorage.getItem("ms_appearance") || "{}") || {}; } catch (e) { a = {}; }
+  var root = document.documentElement;
+  root.setAttribute("data-ms-theme", a.theme || "dark");
+  root.setAttribute("data-ms-text", a.text || "standard");
+  root.setAttribute("data-ms-density", a.density || "comfortable");
+  root.setAttribute("data-ms-motion", a.motion || "full");
+  if (document.getElementById("ms-appearance-css")) return;
+  var css =
+    'html[data-ms-theme="midnight"]{--bg:#000;--bg2:#030304;--panel:#07080a;--panel2:#0b0d10;--line:#16191f}' +
+    'html[data-ms-theme="dim"]{--bg:#111419;--bg2:#151920;--panel:#1a1f27;--panel2:#1f252e;--line:#2a313b;--line2:#38414d}' +
+    'html[data-ms-text="large"] body{font-size:18px}html[data-ms-text="large"]{font-size:112.5%}' +
+    'html[data-ms-density="compact"] .section{padding:clamp(40px,6vw,72px) 0}' +
+    'html[data-ms-density="compact"] .dash-card,html[data-ms-density="compact"] .set-card{padding:16px}' +
+    'html[data-ms-motion="reduced"] *,html[data-ms-motion="reduced"] *::before,html[data-ms-motion="reduced"] *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}';
+  var st = document.createElement("style");
+  st.id = "ms-appearance-css";
+  st.textContent = css;
+  document.head.appendChild(st);
+}
+window.MSApplyAppearance = applyAppearance;
+
+var SHORTCUTS = { d: "dashboard.html", s: "settings.html", p: "pricing.html", t: "terminal.html", h: "index.html", w: "watchlist.html" };
+function bindShortcuts() {
+  var armed = 0;
+  document.addEventListener("keydown", function (e) {
+    if (readPrefs().shortcuts === false) return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    var t = e.target;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+    var k = (e.key || "").toLowerCase();
+    if (k === "?") { window.location.href = pageUrl("settings.html") + "#shortcuts"; return; }
+    if (k === "g") { armed = Date.now(); return; }
+    if (armed && Date.now() - armed < 1200 && SHORTCUTS[k]) {
+      armed = 0;
+      window.location.href = pageUrl(SHORTCUTS[k]);
+    }
+  });
+}
+
 /* ---------- boot ---------- */
 async function boot() {
+  try { applyAppearance(); bindShortcuts(); } catch (e) { /* never block the page */ }
   try {
     await refreshNav();
   } catch (e) {
