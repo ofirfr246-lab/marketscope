@@ -57,9 +57,39 @@ p{margin:0 0 1em}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.12rem;letter-spacing:-.02em}
 .brand b{color:var(--amber);font-weight:800}
 .nav-links{display:flex;align-items:center;gap:2px;margin-left:12px;flex:1}
-.nav-trigger,.nav-plain{background:none;border:0;color:var(--muted);padding:8px 12px;border-radius:8px;cursor:pointer;font-size:.92rem;font-weight:500;display:flex;align-items:center;gap:6px}
+.nav-trigger,.nav-plain{background:none;border:0;color:var(--muted);padding:8px 12px;border-radius:8px;cursor:pointer;font-size:.92rem;font-weight:500;display:flex;align-items:center;gap:6px;position:relative}
 .nav-trigger:hover,.nav-plain:hover,.nav-group:hover .nav-trigger,.nav-group.open .nav-trigger{color:var(--text);background:rgba(255,255,255,.04)}
-.nav-group.active .nav-trigger,.nav-plain.active{color:var(--amber)}
+.nav-ready .nav-group.active .nav-trigger,
+.nav-ready .nav-group.active:hover .nav-trigger,
+.nav-ready .nav-group.active.open .nav-trigger,
+.nav-ready .nav-plain.active,
+.nav-ready .nav-plain.active:hover{
+  color:var(--amber);
+  background:rgba(255,176,0,.08)
+}
+.nav-ready .nav-group.active .nav-trigger::after,
+.nav-ready .nav-plain.active::after{
+  content:"";
+  position:absolute;
+  left:12px;right:12px;bottom:3px;
+  height:2px;
+  background:var(--amber);
+  border-radius:1px
+}
+.nav-ready .mm-item.active{background:rgba(255,176,0,.08);box-shadow:inset 2px 0 0 var(--amber)}
+.nav-ready .mm-item.active b{color:var(--amber)}
+.nav-ready .mobile-menu a.active{
+  color:var(--amber);
+  font-weight:600;
+  background:rgba(255,176,0,.08);
+  border-radius:8px;
+  margin:0 -12px;
+  padding-left:12px;
+  padding-right:12px;
+  box-shadow:inset 3px 0 0 var(--amber)
+}
+.nav-ready .account-drop a.active{color:var(--amber);background:rgba(255,176,0,.08)}
+.nav-ready .account-menu.has-current .account-btn{border-color:var(--amber)}
 .nav-group{position:relative}
 .mega{position:absolute;left:-10px;top:100%;padding-top:10px;opacity:0;visibility:hidden;transform:translateY(6px);transition:.18s}
 .nav-group:hover .mega,.nav-group.open .mega,.nav-group:focus-within .mega{opacity:1;visibility:visible;transform:none}
