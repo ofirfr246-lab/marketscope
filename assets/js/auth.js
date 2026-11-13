@@ -179,6 +179,7 @@ function renderSignedInNav(user, profile) {
         "</button>" +
         '<div class="account-drop" role="menu">' +
           '<a href="dashboard.html" role="menuitem">Dashboard</a>' +
+          '<a href="reports.html" role="menuitem">Reports</a>' +
           '<a href="settings.html" role="menuitem">Settings</a>' +
           '<button type="button" class="link-btn" data-sign-out role="menuitem">Log out</button>' +
         "</div>" +
@@ -198,6 +199,7 @@ function renderSignedInNav(user, profile) {
       var wrap = document.createElement("div");
       wrap.className = "mob-auth";
       wrap.innerHTML =
+        '<a href="reports.html">Reports</a>' +
         '<a href="settings.html">Settings</a>' +
         '<button type="button" class="btn btn-ghost btn-block" data-sign-out>Log out</button>';
       signupLink.replaceWith(wrap);
@@ -688,6 +690,12 @@ async function initDashboard() {
     return data || [];
   }
 
+  async function loadReportById(id) {
+    var { data, error } = await supabase.from("reports").select("id,product,market,cost,source,source_url,verdict,scores,content,result,is_example,status,created_at").eq("id", id).maybeSingle();
+    if (error) throw error;
+    return data || null;
+  }
+
   function renderList(rows) {
     var list = $("[data-report-list]");
     var empty = $("[data-report-empty]");
@@ -855,11 +863,25 @@ async function initDashboard() {
     return '<div class="score-card" data-score-key="' + escapeHtml(String(label).toLowerCase()) + '"><div class="ring-plain mono"' + count + ">" + escapeHtml(String(v)) + '</div><div><h3>' + escapeHtml(label) + "</h3><p class='muted'>" + (live ? "Live score" : "Sample score") + "</p></div></div>";
   }
 
+  var reportRows = [];
   try {
-    renderList(await loadReports());
+    reportRows = await loadReports();
+    renderList(reportRows);
   } catch (e) {
     var errBox = $("[data-dash-error]");
     if (errBox) { errBox.hidden = false; errBox.textContent = "Could not load reports: " + friendlyError(e); }
+  }
+  var reportQ = new URLSearchParams(location.search).get("report");
+  if (reportQ) {
+    var opened = reportRows.filter(function (r) { return r.id === reportQ; })[0];
+    if (!opened) {
+      try { opened = await loadReportById(reportQ); } catch (e4) { opened = null; }
+    }
+    if (opened) showReport(opened);
+    else {
+      var missing = $("[data-dash-error]");
+      if (missing) { missing.hidden = false; missing.textContent = "That report was not found in your account."; }
+    }
   }
 
   async function parseFnError(inv) {
@@ -1203,7 +1225,7 @@ function applyAppearance() {
 }
 window.MSApplyAppearance = applyAppearance;
 
-var SHORTCUTS = { d: "dashboard.html", s: "settings.html", p: "pricing.html", t: "terminal.html", h: "index.html", w: "watchlist.html" };
+var SHORTCUTS = { d: "dashboard.html", r: "reports.html", s: "settings.html", p: "pricing.html", t: "terminal.html", h: "index.html", w: "watchlist.html" };
 function bindShortcuts() {
   var armed = 0;
   document.addEventListener("keydown", function (e) {
@@ -1217,6 +1239,65 @@ function bindShortcuts() {
     if (armed && Date.now() - armed < 1200 && SHORTCUTS[k]) {
       armed = 0;
       window.location.href = pageUrl(SHORTCUTS[k]);
+    }
+  });
+}
+
+/* ---------- report history ---------- */
+async function initReports() {
+  var gate = $("[data-hist-gate]");
+  var shell = $("[data-hist-shell]");
+  var errBox = $("[data-hist-error]");
+  function showShell() {
+    if (gate) gate.hidden = true;
+    if (shell) shell.hidden = false;
+  }
+  function fail(msg) {
+    showShell();
+    if (errBox) { errBox.hidden = false; errBox.textContent = msg; }
+  }
+  if (!configured()) {
+    window.location.replace(pageUrl("login.html") + "?next=reports.html");
+    return;
+  }
+  var supabase;
+  try { supabase = await getClient(); } catch (e) {
+    window.location.replace(pageUrl("login.html") + "?next=reports.html");
+    return;
+  }
+  var sessionRes = await supabase.auth.getSession();
+  var session = sessionRes.data && sessionRes.data.session;
+  if (!session) {
+    window.location.replace(pageUrl("login.html") + "?next=reports.html");
+    return;
+  }
+  showShell();
+  var Hist = window.MSReportHistory;
+  if (!Hist) {
+    fail("The report history script did not load.");
+    return;
+  }
+  var rows = [];
+  var capped = false;
+  try {
+    var res = await supabase.from("reports").select("id,product,market,cost,source,source_url,verdict,scores,content,result,is_example,status,created_at").order("created_at", { ascending: false }).limit(500);
+    if (res.error) throw res.error;
+    rows = res.data || [];
+    capped = rows.length === 500;
+  } catch (e) {
+    fail("Could not load reports: " + friendlyError(e));
+    rows = [];
+  }
+  Hist.init({
+    rows: rows,
+    userId: session.user.id,
+    canDelete: true,
+    capped: capped,
+    openUrl: function (id) { return pageUrl("dashboard.html") + "?report=" + encodeURIComponent(id); },
+    onDelete: async function (id) {
+      var { error } = await supabase.from("reports").delete().eq("id", id);
+      if (error) return { error: error.message || "The report could not be deleted." };
+      return {};
     }
   });
 }
@@ -1236,6 +1317,7 @@ async function boot() {
     else if (page === "signup") await initSignup();
     else if (page === "reset") await initReset();
     else if (page === "dashboard") await initDashboard();
+    else if (page === "reports") await initReports();
     else if (page === "account") await initAccount();
     else bindOAuthButtons();
   } catch (e) {
