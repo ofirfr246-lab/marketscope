@@ -789,9 +789,11 @@ async function initDashboard() {
       }).join("") + "</ul>";
   }
 
-  function showReport(row) {
+  function showReport(row, opts) {
+    opts = opts || {};
     var panel = $("[data-report-view]");
     if (!panel) return;
+    panel.classList.remove("is-revealing", "is-revealed");
     var c = row.content || row.result || {};
     var scores = row.scores || c.scores || {};
     var live = isLiveReport(row);
@@ -808,7 +810,7 @@ async function initDashboard() {
         "<div><h2>" + escapeHtml(row.product || c.product || "") + ' <span class="muted">·</span> <span class="amber">' + escapeHtml(row.market || c.market || "") + "</span></h2>" +
         '<p class="mono muted" style="margin:0">Generated ' + escapeHtml(formatWhen(row.created_at || c.generated_at)) + " · " + escapeHtml(creditLabel) + " · " + escapeHtml(kindLabel) + (row.source || row.source_url ? " · " + escapeHtml((row.source || "link")) + (row.source_url ? " · " + escapeHtml(row.source_url) : "") : "") + "</p></div>" +
         '<div class="big-verdict panel"><div class="label mono">VERDICT</div><div class="verdict mono" data-verdict="' + escapeHtml(row.verdict || c.verdict || "HOLD") + '">' + escapeHtml(row.verdict || c.verdict || "HOLD") + "</div>" +
-        '<div class="opp"><span class="mono big g">' + escapeHtml(String(scores.opportunity != null ? scores.opportunity : "—")) + '</span><span class="mono small">/100<br>OPPORTUNITY</span></div></div>' +
+        '<div class="opp"><span class="mono big g"' + (scores.opportunity != null && isFinite(Number(scores.opportunity)) ? ' data-count-to="' + escapeHtml(String(Number(scores.opportunity))) + '"' : "") + '>' + escapeHtml(String(scores.opportunity != null ? scores.opportunity : "—")) + '</span><span class="mono small">/100<br>OPPORTUNITY</span></div></div>' +
       "</div>" +
       '<div class="score-grid compact">' +
         scoreCard("Demand", scores.demand, live) +
@@ -822,9 +824,10 @@ async function initDashboard() {
       (live ? relatedHtml(c) : "") +
       '<div class="advisor-box"><h3>AI Advisor' + (live ? "" : " · SAMPLE") + "</h3><p>" + escapeHtml(c.advisor || "") + "</p></div>" +
       '<button type="button" class="btn btn-ghost btn-sm" data-close-report>Close</button>';
-    panel.scrollIntoView({ behavior: "smooth", block: "start" });
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    panel.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
     var close = $("[data-close-report]", panel);
-    if (close) close.addEventListener("click", function () { panel.hidden = true; });
+    if (close) close.addEventListener("click", function () { panel.hidden = true; panel.classList.remove("is-revealing", "is-revealed"); });
     if (live && window.MSTrading) {
       var months = (c.demand_detail && c.demand_detail.monthly_searches) || [];
       var samples = (c.prices && (c.prices.samples || c.prices.price_samples)) || [];
@@ -838,11 +841,15 @@ async function initDashboard() {
         band: c.prices && c.prices.recommended_band
       });
     }
+    if (opts.reveal && window.MSAnalyzeOverlay && typeof window.MSAnalyzeOverlay.reveal === "function") {
+      window.MSAnalyzeOverlay.reveal(panel);
+    }
   }
 
   function scoreCard(label, value, live) {
     var v = value != null ? value : "—";
-    return '<div class="score-card"><div class="ring-plain mono">' + escapeHtml(String(v)) + '</div><div><h3>' + escapeHtml(label) + "</h3><p class='muted'>" + (live ? "Live score" : "Sample score") + "</p></div></div>";
+    var count = value != null && value !== "" && isFinite(Number(value)) ? ' data-count-to="' + escapeHtml(String(Number(value))) + '"' : "";
+    return '<div class="score-card"><div class="ring-plain mono"' + count + ">" + escapeHtml(String(v)) + '</div><div><h3>' + escapeHtml(label) + "</h3><p class='muted'>" + (live ? "Live score" : "Sample score") + "</p></div></div>";
   }
 
   try {
@@ -880,7 +887,13 @@ async function initDashboard() {
     if (have < REPORT_COST) { setMsg(msg, "You need at least " + REPORT_COST + " credit to run a report. Upgrade or add a credit pack from Pricing."); return; }
     btn.disabled = true;
     if (form && form.classList) form.classList.add("report-loading");
-    setMsg(msg, "Gathering live Google Shopping and Search data… this can take up to a minute.", true);
+    var pendingReport = null;
+    if (window.MSAnalyzeOverlay && typeof window.MSAnalyzeOverlay.start === "function") {
+      window.MSAnalyzeOverlay.start({ plan: profile && profile.plan, product: product, market: market });
+      setMsg(msg, "", true);
+    } else {
+      setMsg(msg, "Analyzing your market… this usually takes about a minute.", true);
+    }
     try {
       var inv = await supabase.functions.invoke("analyze", {
         body: { product: product || "", market: market, source: source, source_url: sourceUrl || null }
@@ -894,13 +907,13 @@ async function initDashboard() {
         if (form && form.reset) form.reset();
         setMsg(msg, payload.error || "Report saved. Live data via Google Shopping & Search.", !payload.error);
         try { renderList(await loadReports()); } catch (e2) { /* list refresh best-effort */ }
-        showReport(payload.report);
+        pendingReport = payload.report;
         return;
       }
       if (status === 503 || code === "provider_not_configured") {
         var sample = buildSampleReport(product || "this product", market, { source: source, source_url: sourceUrl });
         setMsg(msg, "Live data is being connected. Showing a labelled example so you can preview the report. You were not charged.", true);
-        showReport({
+        pendingReport = {
           product: sample.product,
           market: sample.market,
           cost: 0,
@@ -912,7 +925,7 @@ async function initDashboard() {
           is_example: true,
           status: "complete",
           created_at: sample.generated_at
-        });
+        };
         return;
       }
       if (status === 401 || code === "unauthorized") {
@@ -931,8 +944,12 @@ async function initDashboard() {
     } catch (err) {
       setMsg(msg, friendlyError(err), false);
     } finally {
+      if (window.MSAnalyzeOverlay && typeof window.MSAnalyzeOverlay.finish === "function") {
+        try { await window.MSAnalyzeOverlay.finish(); } catch (e0) { /* ignore */ }
+      }
       btn.disabled = false;
       if (form && form.classList) form.classList.remove("report-loading");
+      if (pendingReport) showReport(pendingReport, { reveal: true });
       try {
         var fresh = await loadProfile(supabase, session.user);
         paintProfile(fresh);
