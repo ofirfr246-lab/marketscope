@@ -177,6 +177,27 @@
   <p><b>Cookies &amp; local storage.</b> We use essential storage to run this site and remember your choices. Optional analytics are off unless you allow them. <a href="cookies.html">Cookie Policy</a></p>
   <div class="cookie-actions"><button class="btn btn-sm btn-ghost" data-consent="essential">Essential only</button><button class="btn btn-sm btn-amber" data-consent="all">Accept all</button></div>
 </div>
+
+<div class="analyze-overlay" data-analyze-overlay hidden>
+  <div class="analyze-panel" data-analyze-panel role="dialog" aria-modal="true" aria-labelledby="analyze-title" tabindex="-1">
+    <p class="kicker mono" aria-hidden="true">LIVE ANALYSIS</p>
+    <h2 class="analyze-title" id="analyze-title" data-analyze-title>Analyzing your market… this usually takes about a minute.</h2>
+    <p class="analyze-subject" data-analyze-subject hidden></p>
+    <div class="analyze-progress">
+      <div class="analyze-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="In progress" aria-label="Analysis progress" data-analyze-bar-wrap>
+        <i data-analyze-bar></i>
+      </div>
+    </div>
+    <p class="analyze-plan-line mono" data-analyze-plan-line>Sources included in your plan</p>
+    <ul class="analyze-sources" data-analyze-sources></ul>
+    <p class="analyze-tip" data-analyze-tip></p>
+    <p class="analyze-meta mono">
+      <span class="analyze-elapsed">Elapsed <b data-analyze-elapsed>0:00</b></span>
+      <span class="analyze-slow" data-analyze-slow hidden>Still working — big markets take longer</span>
+    </p>
+    <p class="sr" aria-live="polite" data-analyze-live></p>
+  </div>
+</div>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/import-url.js"></script>
 <script type="module" src="assets/js/leads.js"></script>
@@ -186,6 +207,7 @@
 <script src="assets/js/live-report.js"></script>
 <script src="assets/js/stripe-prices.js"></script>
 <script type="module" src="assets/js/billing.js"></script>
+<script src="assets/js/analyze-overlay.js"></script>
 <script type="module" src="assets/js/auth.js"></script>
 </body>
 </html>
