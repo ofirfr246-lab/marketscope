@@ -1,2 +1,9 @@
 User-agent: *
 Allow: /
+
+# Auth and account pages are also marked noindex in their HTML.
+# They are left crawlable so Google can see the noindex tag.
+# Function source is not a public document.
+Disallow: /supabase/
+
+Sitemap: https://marketscope.space/sitemap.xml

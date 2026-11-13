@@ -3,35 +3,225 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MarketScope — The Bloomberg Terminal for e-commerce</title>
-<meta name="description" content="Pick a product and a market. Get Demand, Competition, Saturation and Opportunity scores, competitor pricing and an AI Advisor verdict before you invest.">
+<title>MarketScope — Product Research Tool for E-commerce</title>
+<meta name="description" content="Product research tool for e-commerce sellers and dropshippers. Score demand, competition and opportunity with live Google Shopping and Search data. Start free.">
+<link rel="canonical" href="https://marketscope.space/">
 <meta name="theme-color" content="#07080a">
 <meta name="color-scheme" content="dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="MarketScope">
-<meta property="og:title" content="MarketScope — The Bloomberg Terminal for e-commerce">
-<meta property="og:description" content="Pick a product and a market. Get Demand, Competition, Saturation and Opportunity scores, competitor pricing and an AI Advisor verdict before you invest.">
-<meta property="og:image" content="assets/og-image.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://marketscope.space/">
+<meta property="og:title" content="MarketScope — Product Research Tool for E-commerce">
+<meta property="og:description" content="Product research tool for e-commerce sellers and dropshippers. Score demand, competition and opportunity with live Google Shopping and Search data. Start free.">
+<meta property="og:image" content="https://marketscope.space/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="MarketScope — product research and market intelligence for e-commerce">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MarketScope — Product Research Tool for E-commerce">
+<meta name="twitter:description" content="Product research tool for e-commerce sellers and dropshippers. Score demand, competition and opportunity with live Google Shopping and Search data. Start free.">
+<meta name="twitter:image" content="https://marketscope.space/assets/og-image.png">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://marketscope.space/#organization",
+      "name": "MarketScope",
+      "url": "https://marketscope.space/",
+      "logo": "https://marketscope.space/favicon.svg",
+      "image": "https://marketscope.space/assets/og-image.png",
+      "description": "Product research and market-intelligence software for e-commerce sellers, dropshippers and Amazon founders."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://marketscope.space/#website",
+      "name": "MarketScope",
+      "url": "https://marketscope.space/",
+      "inLanguage": "en",
+      "publisher": {
+        "@id": "https://marketscope.space/#organization"
+      },
+      "description": "Product research tool and market intelligence for e-commerce."
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://marketscope.space/#app",
+      "name": "MarketScope",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "url": "https://marketscope.space/",
+      "image": "https://marketscope.space/assets/og-image.png",
+      "description": "A product research tool for e-commerce sellers and dropshippers. MarketScope scores demand, competition, saturation and opportunity using live Google Shopping and Google Search data, with an AI Advisor verdict before you invest. Amazon, Meta, TikTok and AliExpress are coming soon.",
+      "publisher": {
+        "@id": "https://marketscope.space/#organization"
+      },
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Free",
+          "price": "0",
+          "priceCurrency": "USD",
+          "url": "https://marketscope.space/pricing.html",
+          "description": "5 one-time credits. Google Shopping and Google Search are live. Amazon is coming soon.",
+          "availability": "https://schema.org/OnlineOnly"
+        },
+        {
+          "@type": "Offer",
+          "name": "Starter (monthly)",
+          "price": "39.00",
+          "priceCurrency": "USD",
+          "url": "https://marketscope.space/pricing.html",
+          "description": "30 credits every month. Billed monthly.",
+          "availability": "https://schema.org/OnlineOnly",
+          "priceSpecification": {
+            "@type": "UnitPriceSpecification",
+            "price": "39.00",
+            "priceCurrency": "USD",
+            "billingDuration": "P1M"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "Starter (yearly)",
+          "price": "390.00",
+          "priceCurrency": "USD",
+          "url": "https://marketscope.space/pricing.html",
+          "description": "Yearly billing: pay 10 months and get 12. Monthly credit quota still refreshes each month.",
+          "availability": "https://schema.org/OnlineOnly",
+          "priceSpecification": {
+            "@type": "UnitPriceSpecification",
+            "price": "390.00",
+            "priceCurrency": "USD",
+            "billingDuration": "P1Y"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "Plus (monthly)",
+          "price": "149.00",
+          "priceCurrency": "USD",
+          "url": "https://marketscope.space/pricing.html",
+          "description": "100 credits every month. Billed monthly.",
+          "availability": "https://schema.org/OnlineOnly",
+          "priceSpecification": {
+            "@type": "UnitPriceSpecification",
+            "price": "149.00",
+            "priceCurrency": "USD",
+            "billingDuration": "P1M"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "Plus (yearly)",
+          "price": "1490.00",
+          "priceCurrency": "USD",
+          "url": "https://marketscope.space/pricing.html",
+          "description": "Yearly billing: pay 10 months and get 12. Monthly credit quota still refreshes each month.",
+          "availability": "https://schema.org/OnlineOnly",
+          "priceSpecification": {
+            "@type": "UnitPriceSpecification",
+            "price": "1490.00",
+            "priceCurrency": "USD",
+            "billingDuration": "P1Y"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "Pro (monthly)",
+          "price": "349.00",
+          "priceCurrency": "USD",
+          "url": "https://marketscope.space/pricing.html",
+          "description": "200 credits every month. Billed monthly.",
+          "availability": "https://schema.org/OnlineOnly",
+          "priceSpecification": {
+            "@type": "UnitPriceSpecification",
+            "price": "349.00",
+            "priceCurrency": "USD",
+            "billingDuration": "P1M"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "Pro (yearly)",
+          "price": "3490.00",
+          "priceCurrency": "USD",
+          "url": "https://marketscope.space/pricing.html",
+          "description": "Yearly billing: pay 10 months and get 12. Monthly credit quota still refreshes each month.",
+          "availability": "https://schema.org/OnlineOnly",
+          "priceSpecification": {
+            "@type": "UnitPriceSpecification",
+            "price": "3490.00",
+            "priceCurrency": "USD",
+            "billingDuration": "P1Y"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "10 credit top-up",
+          "price": "19.00",
+          "priceCurrency": "USD",
+          "url": "https://marketscope.space/pricing.html",
+          "description": "One-time Credit Wallet pack. 10 credits.",
+          "availability": "https://schema.org/OnlineOnly"
+        },
+        {
+          "@type": "Offer",
+          "name": "50 credit top-up",
+          "price": "85.00",
+          "priceCurrency": "USD",
+          "url": "https://marketscope.space/pricing.html",
+          "description": "One-time Credit Wallet pack. 50 credits.",
+          "availability": "https://schema.org/OnlineOnly"
+        },
+        {
+          "@type": "Offer",
+          "name": "150 credit top-up",
+          "price": "225.00",
+          "priceCurrency": "USD",
+          "url": "https://marketscope.space/pricing.html",
+          "description": "One-time Credit Wallet pack. 150 credits.",
+          "availability": "https://schema.org/OnlineOnly"
+        }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://marketscope.space/#webpage",
+      "url": "https://marketscope.space/",
+      "name": "MarketScope — Product Research Tool for E-commerce",
+      "description": "Product research tool for e-commerce sellers and dropshippers. Score demand, competition and opportunity with live Google Shopping and Search data. Start free.",
+      "isPartOf": {
+        "@id": "https://marketscope.space/#website"
+      },
+      "publisher": {
+        "@id": "https://marketscope.space/#organization"
+      },
+      "inLanguage": "en"
+    }
+  ]
+}
+</script>
 </head>
 <body class="" data-page="home">
 <a class="skip" href="#main">Skip to content</a>
 <header class="nav" id="top">
   <div class="wrap nav-in">
     <a href="index.html" class="brand" aria-label="MarketScope home"><img src="favicon.svg" alt="" width="30" height="30"><span>Market<b>Scope</b></span></a>
-    <nav class="nav-links" aria-label="Primary"><div class="nav-group"><button class="nav-trigger" aria-expanded="false">Product<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 4l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button><div class="mega"><div class="mega-in"><a href="product.html" class="mm-item"><b>Platform overview</b><span>All seven modules, one decision desk</span></a><a href="demo.html" class="mm-item"><b>Real report</b><span>Magnetic phone mount, US · live Google data</span></a><a href="app.html" class="mm-item"><b>App preview</b><span>Dashboard, terminal and watchlist</span></a><a href="integrations.html" class="mm-item"><b>Integrations</b><span>Data sources and exports</span></a><a href="changelog.html" class="mm-item"><b>Changelog</b><span>What's new in MarketScope</span></a></div></div></div><div class="nav-group"><button class="nav-trigger" aria-expanded="false">Terminal<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 4l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button><div class="mega"><div class="mega-in"><a href="terminal.html" class="mm-item"><b>Market Terminal</b><span>Multi-panel desk, charts and tape</span></a><a href="screener.html" class="mm-item"><b>Screener</b><span>Filter and sort example names</span></a><a href="heatmap.html" class="mm-item"><b>Heatmap</b><span>Categories × countries</span></a><a href="indices.html" class="mm-item"><b>Category indices</b><span>Kitchen, Pet, Beauty and more</span></a><a href="watchlist.html" class="mm-item"><b>Watchlist</b><span>Stars and example alert rules</span></a><a href="portfolio.html" class="mm-item"><b>Portfolio</b><span>Allocation, risk, diversification</span></a><a href="backtest.html" class="mm-item"><b>Backtest</b><span>What if you entered 6 months ago</span></a><a href="calendar.html" class="mm-item"><b>Events calendar</b><span>Holidays, seasons, niche ‘earnings’</span></a><a href="stores.html" class="mm-item"><b>Store Intelligence</b><span>Competitor store profiles · early access</span></a></div></div></div><div class="nav-group"><button class="nav-trigger" aria-expanded="false">Solutions<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 4l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button><div class="mega"><div class="mega-in"><a href="solutions.html#dropshippers" class="mm-item"><b>Dropshippers</b><span>Validate before you test ads</span></a><a href="solutions.html#amazon" class="mm-item"><b>Amazon sellers</b><span>Size a niche before you source</span></a><a href="solutions.html#dtc" class="mm-item"><b>DTC brands</b><span>Pick your next market with data</span></a><a href="solutions.html#agencies" class="mm-item"><b>Agencies</b><span>Research for every client, fast</span></a><a href="compare.html" class="mm-item"><b>MarketScope vs typical tools</b><span>How our approach is different</span></a></div></div></div><div class="nav-group"><button class="nav-trigger" aria-expanded="false">Resources<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 4l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button><div class="mega"><div class="mega-in"><a href="blog.html" class="mm-item"><b>Blog & guides</b><span>Market research playbooks</span></a><a href="docs.html" class="mm-item"><b>API & docs</b><span>Developer preview</span></a><a href="methodology.html" class="mm-item"><b>Data & methodology</b><span>How scores are calculated</span></a><a href="status.html" class="mm-item"><b>System status</b><span>Service health (preview)</span></a></div></div></div><div class="nav-group"><button class="nav-trigger" aria-expanded="false">Company<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 4l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button><div class="mega"><div class="mega-in"><a href="about.html" class="mm-item"><b>About</b><span>Why we're building MarketScope</span></a><a href="security.html" class="mm-item"><b>Trust Center</b><span>Security, privacy and data handling</span></a><a href="careers.html" class="mm-item"><b>Careers</b><span>Join the team</span></a><a href="contact.html" class="mm-item"><b>Contact</b><span>Talk to us</span></a></div></div></div><a href="pricing.html" class="nav-plain">Pricing</a></nav>
+    <nav class="nav-links" aria-label="Primary"><div class="nav-group"><button class="nav-trigger" aria-expanded="false">Product<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 4l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button><div class="mega"><div class="mega-in"><a href="product.html" class="mm-item"><b>Platform overview</b><span>All seven modules, one decision desk</span></a><a href="demo.html" class="mm-item"><b>Real report</b><span>Magnetic phone mount, US · live Google data</span></a><a href="app.html" class="mm-item"><b>App preview</b><span>Dashboard, terminal and watchlist</span></a><a href="integrations.html" class="mm-item"><b>Integrations</b><span>Data sources and exports</span></a><a href="changelog.html" class="mm-item"><b>Changelog</b><span>What's new in MarketScope</span></a></div></div></div><div class="nav-group"><button class="nav-trigger" aria-expanded="false">Terminal<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 4l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button><div class="mega"><div class="mega-in"><a href="terminal.html" class="mm-item"><b>Market Terminal</b><span>Multi-panel desk, charts and tape</span></a><a href="screener.html" class="mm-item"><b>Screener</b><span>Filter and sort example names</span></a><a href="heatmap.html" class="mm-item"><b>Heatmap</b><span>Categories × countries</span></a><a href="indices.html" class="mm-item"><b>Category indices</b><span>Kitchen, Pet, Beauty and more</span></a><a href="watchlist.html" class="mm-item"><b>Watchlist</b><span>Stars and example alert rules</span></a><a href="portfolio.html" class="mm-item"><b>Portfolio</b><span>Allocation, risk, diversification</span></a><a href="backtest.html" class="mm-item"><b>Backtest</b><span>What if you entered 6 months ago</span></a><a href="calendar.html" class="mm-item"><b>Events calendar</b><span>Holidays, seasons, niche ‘earnings’</span></a><a href="stores.html" class="mm-item"><b>Store Intelligence</b><span>Competitor store profiles · early access</span></a></div></div></div><div class="nav-group"><button class="nav-trigger" aria-expanded="false">Solutions<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 4l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button><div class="mega"><div class="mega-in"><a href="solutions.html#dropshippers" class="mm-item"><b>Dropshippers</b><span>Validate before you test ads</span></a><a href="solutions.html#amazon" class="mm-item"><b>Amazon sellers</b><span>Size a niche before you source</span></a><a href="solutions.html#dtc" class="mm-item"><b>DTC brands</b><span>Pick your next market with data</span></a><a href="solutions.html#agencies" class="mm-item"><b>Agencies</b><span>Research for every client, fast</span></a><a href="compare.html" class="mm-item"><b>MarketScope vs typical tools</b><span>How our approach is different</span></a></div></div></div><div class="nav-group"><button class="nav-trigger" aria-expanded="false">Resources<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 4l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button><div class="mega"><div class="mega-in"><a href="blog.html" class="mm-item"><b>Blog & guides</b><span>Market research playbooks</span></a><a href="how-to-find-winning-products.html" class="mm-item"><b>How to find winning products</b><span>Validate demand before you spend on ads</span></a><a href="docs.html" class="mm-item"><b>API & docs</b><span>Developer preview</span></a><a href="methodology.html" class="mm-item"><b>Data & methodology</b><span>How scores are calculated</span></a><a href="status.html" class="mm-item"><b>System status</b><span>Service health (preview)</span></a></div></div></div><div class="nav-group"><button class="nav-trigger" aria-expanded="false">Company<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 4l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button><div class="mega"><div class="mega-in"><a href="about.html" class="mm-item"><b>About</b><span>Why we're building MarketScope</span></a><a href="security.html" class="mm-item"><b>Trust Center</b><span>Security, privacy and data handling</span></a><a href="careers.html" class="mm-item"><b>Careers</b><span>Join the team</span></a><a href="contact.html" class="mm-item"><b>Contact</b><span>Talk to us</span></a></div></div></div><a href="pricing.html" class="nav-plain">Pricing</a></nav>
     <div class="nav-right"><a href="login.html" class="nav-login">Log in</a><a href="signup.html" class="btn btn-sm btn-amber nav-cta">Start free</a></div>
     <button class="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span></button>
   </div>
-  <div class="mobile-menu" id="mobile-menu" hidden><div class="mob-group"><div class="mob-label mono">PRODUCT</div><a href="product.html">Platform overview</a><a href="demo.html">Real report</a><a href="app.html">App preview</a><a href="integrations.html">Integrations</a><a href="changelog.html">Changelog</a></div><div class="mob-group"><div class="mob-label mono">TERMINAL</div><a href="terminal.html">Market Terminal</a><a href="screener.html">Screener</a><a href="heatmap.html">Heatmap</a><a href="indices.html">Category indices</a><a href="watchlist.html">Watchlist</a><a href="portfolio.html">Portfolio</a><a href="backtest.html">Backtest</a><a href="calendar.html">Events calendar</a><a href="stores.html">Store Intelligence</a></div><div class="mob-group"><div class="mob-label mono">SOLUTIONS</div><a href="solutions.html#dropshippers">Dropshippers</a><a href="solutions.html#amazon">Amazon sellers</a><a href="solutions.html#dtc">DTC brands</a><a href="solutions.html#agencies">Agencies</a><a href="compare.html">MarketScope vs typical tools</a></div><div class="mob-group"><div class="mob-label mono">RESOURCES</div><a href="blog.html">Blog & guides</a><a href="docs.html">API & docs</a><a href="methodology.html">Data & methodology</a><a href="status.html">System status</a></div><div class="mob-group"><div class="mob-label mono">COMPANY</div><a href="about.html">About</a><a href="security.html">Trust Center</a><a href="careers.html">Careers</a><a href="contact.html">Contact</a></div><div class="mob-group"><a href="pricing.html">Pricing</a><a href="login.html">Log in</a></div><a href="signup.html" class="btn btn-amber">Start free — 5 credits</a></div>
+  <div class="mobile-menu" id="mobile-menu" hidden><div class="mob-group"><div class="mob-label mono">PRODUCT</div><a href="product.html">Platform overview</a><a href="demo.html">Real report</a><a href="app.html">App preview</a><a href="integrations.html">Integrations</a><a href="changelog.html">Changelog</a></div><div class="mob-group"><div class="mob-label mono">TERMINAL</div><a href="terminal.html">Market Terminal</a><a href="screener.html">Screener</a><a href="heatmap.html">Heatmap</a><a href="indices.html">Category indices</a><a href="watchlist.html">Watchlist</a><a href="portfolio.html">Portfolio</a><a href="backtest.html">Backtest</a><a href="calendar.html">Events calendar</a><a href="stores.html">Store Intelligence</a></div><div class="mob-group"><div class="mob-label mono">SOLUTIONS</div><a href="solutions.html#dropshippers">Dropshippers</a><a href="solutions.html#amazon">Amazon sellers</a><a href="solutions.html#dtc">DTC brands</a><a href="solutions.html#agencies">Agencies</a><a href="compare.html">MarketScope vs typical tools</a></div><div class="mob-group"><div class="mob-label mono">RESOURCES</div><a href="blog.html">Blog & guides</a><a href="how-to-find-winning-products.html">How to find winning products</a><a href="docs.html">API & docs</a><a href="methodology.html">Data & methodology</a><a href="status.html">System status</a></div><div class="mob-group"><div class="mob-label mono">COMPANY</div><a href="about.html">About</a><a href="security.html">Trust Center</a><a href="careers.html">Careers</a><a href="contact.html">Contact</a></div><div class="mob-group"><a href="pricing.html">Pricing</a><a href="login.html">Log in</a></div><a href="signup.html" class="btn btn-amber">Start free — 5 credits</a></div>
 </header>
 <main id="main">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"MarketScope","applicationCategory":"BusinessApplication","operatingSystem":"Web","description":"E-commerce market intelligence: demand, competition, saturation and opportunity scores with an AI Advisor verdict."}</script>
 
 <!-- HERO -->
 <section class="hero">
@@ -40,7 +230,7 @@
     <div class="hero-copy">
       <div class="eyebrow"><span class="dot live"></span> Live now · Google Shopping &amp; Search reports</div>
       <h1>The <span class="amber">Bloomberg Terminal</span><br> for e-commerce.</h1>
-      <p class="lead">Pick a product and a market — or paste a link. MarketScope already pulls <b>live Google Shopping and Google Search data</b>, scores demand, competition, saturation and opportunity, and gives you a clear verdict <em>before</em> you invest a dollar. Amazon, Meta, TikTok and AliExpress are coming soon.</p>
+      <p class="lead">MarketScope is a <b>product research tool</b> for e-commerce sellers, dropshippers and Amazon founders. Pick a product and a market — or paste a link. It already pulls <b>live Google Shopping and Google Search data</b>, scores demand, competition, saturation and opportunity, and gives you a clear verdict <em>before</em> you invest a dollar. Amazon, Meta, TikTok and AliExpress are coming soon.</p>
       <form class="hero-form paste-form" data-import-form novalidate>
         <label class="sr" for="hero-url">Product link</label>
         <div class="paste-row">
@@ -133,7 +323,7 @@
   <div class="wrap narrow center">
     <div class="kicker mono">// THE PROBLEM</div>
     <h2>Most founders guess. Then they pay for the guess.</h2>
-    <p class="sub">Inventory, ads, a store, months of work, all committed before anyone checks whether the market has room. MarketScope puts numbers on that decision first.</p>
+    <p class="sub">Inventory, ads, a store, months of work, all committed before anyone checks whether the market has room. Product research should come first: validate demand and competition before you treat something as a winning product.</p>
     <blockquote class="honesty">
       <span class="q mono">“</span>
       We don't sell a promise that a product will succeed. We sell <span class="amber">better information</span>, <span class="amber">structured analysis</span>, and <span class="amber">smarter decisions</span>.
@@ -191,6 +381,7 @@
         <div class="vs v-avoid"><b class="mono">AVOID</b><span>Saturated or weak. Keep your capital.</span></div>
       </div>
     </div>
+    <p class="center" style="margin-top:32px"><a class="hero-link mono" href="how-to-find-winning-products.html">Read the guide: how to find winning products before you spend on ads →</a></p>
   </div>
 </section>
 
@@ -200,7 +391,7 @@
     <div class="sec-head">
       <div class="kicker mono">// WHY MARKETSCOPE</div>
       <h2>Not another product-spy tool.</h2>
-      <p class="sub">Typical tools tell you what's trending. MarketScope tells you whether <em>your</em> product can win in <em>your</em> market.</p>
+      <p class="sub">Typical product research tools tell you what's trending. MarketScope tests whether <em>your</em> product can win in <em>your</em> market — demand, competition, saturation and price room, not just a list of winning products.</p>
     </div>
     <div class="table-wrap reveal">
       <table class="compare">
@@ -299,7 +490,7 @@
     <div class="sec-head">
       <div class="kicker mono">// WHO IT'S FOR</div>
       <h2>Built for people who'd rather know than hope.</h2>
-      <p class="sub">Illustrative examples of the founders we're building for. These are placeholder quotes, not real customers. Early-access stories coming soon.</p>
+      <p class="sub">Illustrative examples of the founders we're building for — dropshippers, Amazon sellers and DTC brands who want product research with data. These are placeholder quotes, not real customers. Early-access stories coming soon.</p>
     </div>
     <div class="quotes">
       <figure class="quote reveal"><span class="ex-tag">EXAMPLE</span><p>“I used to test five products with ads and hope one stuck. Now I check the market first and only test the ones with room to win.”</p><figcaption class="who"><span class="avatar">DS</span><span>Dropshipping founder<small>Persona · US market</small></span></figcaption></figure>
@@ -319,7 +510,7 @@
     <div class="sec-head">
       <div class="kicker mono">// PRICING</div>
       <h2>Start free. Unlock more data as you grow.</h2>
-      <p class="sub">Every plan includes reports, scores and the AI Advisor. Starter answers “Is there demand?”, Plus “How is it being sold?”, and Pro “How much will I make?”</p>
+      <p class="sub">Product research plans from free to Pro. Every plan includes reports, scores and the AI Advisor. Starter answers “Is there demand?”, Plus “How is it being sold?”, and Pro “How much will I make?”</p>
     </div>
     <div class="billing-toggle"><span>Monthly</span><button class="switch" role="switch" aria-checked="false" aria-label="Bill yearly"></button><span>Yearly <span class="save" data-annual-note>2 months free</span></span></div>
     <div class="pricing" id="pricing-grid"></div>
@@ -384,7 +575,7 @@
     </div>
     <div><h4 class="mono">PRODUCT</h4><a href="product.html">Platform</a><a href="demo.html">Real report</a><a href="app.html">App preview</a><a href="integrations.html">Integrations</a><a href="pricing.html">Pricing</a><a href="changelog.html">Changelog</a></div>
     <div><h4 class="mono">SOLUTIONS</h4><a href="solutions.html#dropshippers">Dropshippers</a><a href="solutions.html#amazon">Amazon sellers</a><a href="solutions.html#dtc">DTC brands</a><a href="solutions.html#agencies">Agencies</a><a href="compare.html">Compare</a></div>
-    <div><h4 class="mono">RESOURCES</h4><a href="blog.html">Blog</a><a href="docs.html">API &amp; docs</a><a href="methodology.html">Methodology</a><a href="status.html">Status</a></div>
+    <div><h4 class="mono">RESOURCES</h4><a href="blog.html">Blog</a><a href="how-to-find-winning-products.html">Winning products guide</a><a href="docs.html">API &amp; docs</a><a href="methodology.html">Methodology</a><a href="status.html">Status</a></div>
     <div><h4 class="mono">COMPANY</h4><a href="about.html">About</a><a href="security.html">Trust Center</a><a href="careers.html">Careers</a><a href="contact.html">Contact</a></div>
     <div><h4 class="mono">LEGAL</h4><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="cookies.html">Cookies</a><a href="refunds.html">Refunds &amp; credits</a><a href="acceptable-use.html">Acceptable use</a><button class="link-btn" data-cookie-settings>Cookie settings</button></div>
   </div>
