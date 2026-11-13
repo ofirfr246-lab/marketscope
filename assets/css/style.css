@@ -710,3 +710,208 @@ pre.code{background:#090b0e;border:1px solid var(--line);border-radius:12px;padd
 
 .topup .btn{margin-top:10px}
 button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
+
+
+/* Data sources logo bar */
+.sources{
+  position:relative;
+  padding:42px 0 36px;
+  border-bottom:1px solid var(--line);
+  background:
+    radial-gradient(800px 180px at 50% 0%, rgba(255,176,0,.07), transparent 70%),
+    linear-gradient(180deg, #090b0e 0%, var(--bg) 100%);
+  overflow:visible;
+}
+.sources::before{
+  content:"";
+  position:absolute;
+  inset:auto 10% -80px;
+  height:160px;
+  background:radial-gradient(ellipse at center, rgba(77,163,255,.08), transparent 70%);
+  pointer-events:none;
+}
+.sources-head{text-align:center;margin:0 auto 28px;position:relative}
+.sources-head .kicker{margin-bottom:8px}
+.sources-caption{
+  margin:0 auto;
+  font-size:clamp(1.15rem,2.2vw,1.55rem);
+  font-weight:700;
+  letter-spacing:-.03em;
+  line-height:1.25;
+  max-width:720px;
+  color:var(--text);
+}
+.sources-grid{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:16px;
+  perspective:1200px;
+  position:relative;
+}
+.sources-cell{
+  perspective:900px;
+  transform-style:preserve-3d;
+}
+.sources-card{
+  --rx:8deg;
+  --ry:-8deg;
+  --fy:0px;
+  --mx:50%;
+  --my:12%;
+  position:relative;
+  isolation:isolate;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  gap:10px;
+  min-height:188px;
+  padding:22px 14px 16px;
+  border-radius:18px;
+  color:var(--text);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.015) 46%, rgba(14,17,21,.88));
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:
+    0 22px 40px -22px rgba(0,0,0,.85),
+    0 1px 0 rgba(255,255,255,.14) inset,
+    0 -20px 30px -24px rgba(0,0,0,.7) inset;
+  backdrop-filter:blur(16px) saturate(1.2);
+  -webkit-backdrop-filter:blur(16px) saturate(1.2);
+  transform-style:preserve-3d;
+  transform:rotateX(var(--rx)) rotateY(var(--ry)) translateY(var(--fy)) translateZ(0);
+  transform-origin:center center;
+  animation:sources-float 6.4s ease-in-out infinite;
+  will-change:transform;
+}
+.sources-cell:nth-child(1) .sources-card{--ry:-10deg;animation-delay:0s}
+.sources-cell:nth-child(2) .sources-card{--ry:-5deg;animation-delay:.35s}
+.sources-cell:nth-child(3) .sources-card{--rx:10deg;--ry:0deg;animation-delay:.7s}
+.sources-cell:nth-child(4) .sources-card{--ry:5deg;animation-delay:1.05s}
+.sources-cell:nth-child(5) .sources-card{--ry:10deg;animation-delay:1.4s}
+@keyframes sources-float{
+  0%,100%{transform:rotateX(var(--rx)) rotateY(var(--ry)) translateY(0) translateZ(0)}
+  50%{transform:rotateX(var(--rx)) rotateY(var(--ry)) translateY(-8px) translateZ(10px)}
+}
+.sources-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  background:linear-gradient(145deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,.04) 28%, transparent 46%);
+  mix-blend-mode:screen;
+  opacity:.85;
+  transform:translateZ(1px);
+}
+.sources-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  background:radial-gradient(180px 80px at var(--mx) var(--my), rgba(255,255,255,.28), transparent 60%);
+  opacity:.55;
+  mix-blend-mode:screen;
+  transform:translateZ(2px);
+}
+.sources-card.is-live{
+  box-shadow:
+    0 22px 40px -22px rgba(0,0,0,.85),
+    0 0 0 1px rgba(25,210,124,.18),
+    0 0 28px -8px rgba(25,210,124,.28),
+    0 1px 0 rgba(255,255,255,.14) inset;
+}
+.sources-card:hover,
+.sources-card:focus-visible{
+  border-color:rgba(var(--brand-rgb), .55);
+  box-shadow:
+    0 28px 48px -18px rgba(0,0,0,.8),
+    0 0 36px rgba(var(--brand-rgb), .38),
+    0 0 0 1px rgba(var(--brand-rgb), .28),
+    0 1px 0 rgba(255,255,255,.2) inset;
+  z-index:2;
+}
+.sources-card:hover .sources-logo,
+.sources-card:focus-visible .sources-logo{
+  color:rgb(var(--brand-rgb));
+  filter:drop-shadow(0 0 10px rgba(var(--brand-rgb), .55));
+  transform:translateZ(28px) scale(1.06);
+}
+.sources-logo{
+  width:52px;
+  height:52px;
+  color:#f4f6f8;
+  display:block;
+  flex:none;
+  transform:translateZ(22px);
+  transition:color .25s, filter .25s, transform .25s;
+  filter:drop-shadow(0 8px 14px rgba(0,0,0,.45));
+}
+.sources-logo.is-wide{
+  width:120px;
+  height:32px;
+  margin:10px 0 4px;
+}
+.sources-copy{transform:translateZ(16px);margin-top:2px}
+.sources-name{font-weight:700;font-size:.95rem;letter-spacing:-.02em;line-height:1.2}
+.sources-sub{color:var(--muted);font-size:.75rem;margin-top:3px}
+.sources-card .chip{
+  margin-top:auto;
+  transform:translateZ(18px);
+  padding:4px 9px;
+}
+.sources-card .chip.live{display:inline-flex;align-items:center;gap:6px}
+.sources-card .chip .dot{margin:0;width:6px;height:6px}
+.sources-note{
+  text-align:center;
+  margin:18px auto 0;
+  max-width:720px;
+  color:var(--dim);
+  font-size:.7rem;
+  position:relative;
+}
+@media (max-width:980px){
+  .sources-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .sources-cell{grid-column:span 2}
+  .sources-cell:nth-child(4){grid-column:2 / span 2}
+  .sources-cell:nth-child(5){grid-column:4 / span 2}
+}
+@media (max-width:720px){
+  .sources{padding:32px 0 24px}
+  .sources-grid{
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+    overflow-y:visible;
+    scroll-snap-type:x mandatory;
+    padding:8px 2px 16px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;
+    grid-template-columns:none;
+  }
+  .sources-cell{
+    flex:0 0 min(200px,72vw);
+    scroll-snap-align:start;
+  }
+  .sources-cell:nth-child(4),
+  .sources-cell:nth-child(5){grid-column:auto}
+  .sources-card{min-height:176px}
+}
+@media (prefers-reduced-motion:reduce){
+  .sources-card,
+  .sources-card.is-live{
+    animation:none !important;
+    transform:none !important;
+    will-change:auto;
+  }
+  .sources-logo,
+  .sources-copy,
+  .sources-card .chip{transform:none}
+  .sources-card:hover .sources-logo,
+  .sources-card:focus-visible .sources-logo{transform:none}
+  .ticker-track{animation:none}
+}
