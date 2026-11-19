@@ -13,7 +13,10 @@ const ALLOWED_ORIGINS = new Set([
   "http://127.0.0.1:4174",
 ]);
 
-const RETURN_URL = "https://marketscope.space/dashboard.html";
+/** Public site base URL. Override with the SITE_URL Edge Function secret
+    (e.g. "https://marketscope.space/") to switch domains without a code change. */
+const SITE_URL = ((Deno.env.get("SITE_URL") || "").trim() || "https://ofirfr246-lab.github.io/marketscope/").replace(/\/*$/, "/");
+const RETURN_URL = SITE_URL + "dashboard.html";
 
 type Json = Record<string, unknown>;
 
@@ -23,7 +26,7 @@ function env(name: string): string {
 
 function corsHeaders(req: Request): Record<string, string> {
   const origin = req.headers.get("Origin") || "";
-  const allow = ALLOWED_ORIGINS.has(origin) ? origin : "https://marketscope.space";
+  const allow = ALLOWED_ORIGINS.has(origin) ? origin : "https://ofirfr246-lab.github.io";
   return {
     "Access-Control-Allow-Origin": allow,
     "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
