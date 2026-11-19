@@ -4,10 +4,12 @@ import {
   icon, PLATFORMS, pf, pfBadge, OBJECTIVES, objLabel, bidLabel, CURRENCIES, money, estimate, ESTIMATE_NOTE,
   validateCampaign, friendlyError, statusChip, tagInput, CM_LIMITS
 } from "./josy-cm.js";
+import { mediaPicker } from "./josy-media.js";
+import { autoBell } from "./josy-notify.js";
 
 var S = { sb: null, step: 0, dirty: false, saving: false, c: null };
 
-function blankAd(i) { return { name: "Ad " + (i + 1), format: "", primary_text: "", headline: "", description: "", cta: "", destination_url: "", media_url: "" }; }
+function blankAd(i) { return { name: "Ad " + (i + 1), format: "", primary_text: "", headline: "", description: "", cta: "", destination_url: "", media_url: "", media_id: null }; }
 function blankGroup(i) { return { name: (S.c && S.c.platform ? pf(S.c.platform).group : "Ad set") + " " + (i + 1), optimization: "", audience_notes: "", ads: [blankAd(0)] }; }
 
 function newCampaign() {
@@ -21,6 +23,7 @@ async function boot() {
   var r = await requireSession("josy-campaign-new.html" + location.search);
   if (!r.session) return;
   S.sb = r.sb;
+  autoBell(S.sb);
   var qs = new URLSearchParams(location.search), id = qs.get("id");
   S.c = newCampaign();
   if (id) {
@@ -30,7 +33,7 @@ async function boot() {
     var groups = (d.josy_ad_groups || []).sort(function (a, b) { return a.position - b.position; }).map(function (g) {
       return { name: g.name, optimization: g.optimization || "", audience_notes: g.audience_notes || "",
         ads: (g.josy_ads || []).sort(function (a, b) { return a.position - b.position; }).map(function (a) {
-          return { name: a.name, format: a.format || "", primary_text: a.primary_text || "", headline: a.headline || "", description: a.description || "", cta: a.cta || "", destination_url: a.destination_url || "", media_url: a.media_url || "" };
+          return { name: a.name, format: a.format || "", primary_text: a.primary_text || "", headline: a.headline || "", description: a.description || "", cta: a.cta || "", destination_url: a.destination_url || "", media_url: a.media_url || "", media_id: a.media_id || null };
         }) };
     });
     S.c = Object.assign(newCampaign(), {
@@ -187,7 +190,8 @@ function stepAds() {
             rows.push(fld(f.label.toUpperCase(), el, { full: true, for: "f-" + (base + k).replace(/\./g, "-"), cnt: cnt(base + k, f.max), help: esc(f.help) + (f.hard ? "" : " Recommendation.") }));
           });
           rows.push(fld("DESTINATION URL", inp(base + "destination_url", 'type="url" placeholder="https://" maxlength="2000"'), { full: true, for: "f-" + (base + "destination_url").replace(/\./g, "-") }));
-          rows.push(fld("MEDIA URL", inp(base + "media_url", 'type="url" placeholder="Link to the image or video (optional)" maxlength="2000"'), { full: true, for: "f-" + (base + "media_url").replace(/\./g, "-"), help: "Paste a link to your creative (e.g. from your drive). It isn't uploaded anywhere." }));
+          rows.push('<div class="fld full"><span class="lbl">CREATIVE</span><div data-picker="' + gi + "," + ai + '"></div></div>');
+          rows.push(fld("OR MEDIA URL", inp(base + "media_url", 'type="url" placeholder="Link to the image or video (optional)" maxlength="2000"'), { full: true, for: "f-" + (base + "media_url").replace(/\./g, "-"), help: "Uploaded files are stored privately in your MarketScope media library." }));
           return '<div class="ad"><div class="ad-h">' + inp(base + "name", 'maxlength="120" aria-label="Ad name"') + '<span class="sp"></span><button type="button" class="icon-btn" data-adup="' + gi + "," + ai + '" title="Duplicate ad" aria-label="Duplicate ad">' + icon("copy") + '</button><button type="button" class="icon-btn danger" data-adel="' + gi + "," + ai + '" title="Remove ad" aria-label="Remove ad">' + icon("trash") + '</button></div><div class="fgrid">' + rows.join("") + "</div></div>";
         }).join("") + "</div></div>";
     }).join("");
@@ -222,6 +226,10 @@ function bindBody(body) {
       renderSummary();
     });
     if (el.tagName === "SELECT") el.addEventListener("change", function () { setPath(el.getAttribute("data-k"), el.value); renderSummary(); });
+  });
+  $$("[data-picker]", body).forEach(function (el) {
+    var p = el.getAttribute("data-picker").split(","), ad = S.c.ad_groups[+p[0]].ads[+p[1]];
+    mediaPicker(el, { sb: S.sb, value: ad.media_id, onChange: function (row) { ad.media_id = row ? row.id : null; S.dirty = true; renderSummary(); } });
   });
   $$("[data-tags]", body).forEach(function (el) {
     var k = el.getAttribute("data-tags");

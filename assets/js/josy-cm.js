@@ -128,7 +128,7 @@ export var ORG = {
 export var ORG_KEYS = ["instagram", "facebook", "tiktok", "linkedin", "x"];
 
 export function statusChip(s) {
-  var L = { draft: "Draft", ready: "Ready", paused: "Paused", archived: "Archived", scheduled: "Scheduled", published: "Published" };
+  var L = { draft: "Draft", ready: "Ready", paused: "Paused", archived: "Archived", launched: "Live · marked by you", scheduled: "Scheduled", published: "Published" };
   return '<span class="st ' + esc(s) + '">' + (L[s] || esc(s)) + "</span>";
 }
 
@@ -195,7 +195,7 @@ export function validateCampaign(c) {
       if (ad.destination_url && !isUrl(ad.destination_url)) E.push({ step: 6, msg: an + ": destination URL must start with https://" });
       else if (!ad.destination_url && needsUrl) E.push({ step: 6, msg: an + ": add a destination URL for a " + objLabel(c.objective).toLowerCase() + " campaign." });
       if (ad.media_url && !isUrl(ad.media_url)) E.push({ step: 6, msg: an + ": media URL must be a valid link." });
-      if (!ad.media_url && c.platform !== "google") W.push({ step: 6, msg: an + ": no media link yet." });
+      if (!ad.media_url && !ad.media_id && c.platform !== "google") W.push({ step: 6, msg: an + ": no media yet — upload a file or add a link." });
       if (!ad.cta && c.platform !== "google") W.push({ step: 6, msg: an + ": no call to action chosen." });
     });
   });

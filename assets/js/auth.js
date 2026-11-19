@@ -183,6 +183,7 @@ function renderSignedInNav(user, profile) {
           '<a href="josy-chat.html" role="menuitem">Josy chat</a>' +
           '<a href="josy-plans.html" role="menuitem">My plans</a>' +
           '<a href="josy-campaigns.html" role="menuitem">Campaign manager</a>' +
+          '<a href="dashboard.html?tour=1" role="menuitem">Take the tour</a>' +
           '<a href="settings.html" role="menuitem">Settings</a>' +
           '<button type="button" class="link-btn" data-sign-out role="menuitem">Log out</button>' +
         "</div>" +

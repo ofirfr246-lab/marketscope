@@ -1,11 +1,13 @@
 /* Josy Campaign Manager — hub */
 import { requireSession, $, esc, fmtDate, relTime } from "./josy-core.js";
 import { icon, pf, pfBadge, objLabel, money, statusChip, connectCards, emptyState, CM_LIMITS, PLAN_NAMES, getPlan, ORG } from "./josy-cm.js";
+import { autoBell } from "./josy-notify.js";
 
 async function boot() {
   var r = await requireSession("josy-campaigns.html");
   if (!r.session) return;
   var sb = r.sb, uid = r.session.user.id;
+  autoBell(sb);
   var res = await Promise.all([
     sb.from("josy_campaigns").select("id, platform, name, objective, status, budget_type, budget_amount, currency, start_date, end_date, updated_at").order("updated_at", { ascending: false }).limit(1000),
     sb.from("josy_organic_posts").select("id, title, content, platforms, status, scheduled_at, published_at").order("scheduled_at", { ascending: true, nullsFirst: false }).limit(2000),

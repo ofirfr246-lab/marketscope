@@ -3,6 +3,7 @@ import {
   requireSession, $, $$, esc, dirOf, toast, copyText, download, slug, confirmDialog,
   renderMarkdown, bindCodeCopy, icon, fmtDate, planToMarkdown, planToCsv
 } from "./josy-core.js";
+import { mountBell } from "./josy-notify.js";
 
 var S = { sb: null, plans: [], filter: "all", plan: null, items: [], view: "calendar" };
 
@@ -10,6 +11,7 @@ async function boot() {
   var r = await requireSession("josy-plans.html");
   if (!r.session) return;
   S.sb = r.sb;
+  (function () { var pt = document.querySelector(".plans-top"), a = pt && pt.querySelector("a.btn"); if (!a) return; var g = document.createElement("div"); g.style.cssText = "display:flex;gap:10px;align-items:center"; a.before(g); mountBell(S.sb, g, { cls: "in-hero" }); g.appendChild(a); })();
   $("[data-gate]").hidden = true;
   $("[data-shell]").hidden = false;
   bind();

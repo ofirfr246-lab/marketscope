@@ -3,6 +3,7 @@ import {
   requireSession, callJosy, $, $$, esc, dirOf, isRtl, toast, copyText, download, slug, confirmDialog,
   renderMarkdown, bindCodeCopy, sourceChips, demandCard, icon, relTime, JOSY_LIMITS, PLAN_NAMES
 } from "./josy-core.js";
+import { autoBell } from "./josy-notify.js";
 
 var S = { sb: null, user: null, convs: [], current: null, messages: [], busy: false, market: "US", usage: null, credits: null, starterLang: "en" };
 
@@ -33,6 +34,7 @@ async function boot() {
     return;
   }
   S.sb = r.sb; S.user = r.session.user;
+  autoBell(S.sb);
   S.market = localStorage.getItem("josy.market") || "US";
   S.starterLang = localStorage.getItem("josy.lang") || ((navigator.language || "").toLowerCase().indexOf("he") === 0 ? "he" : "en");
   $("[data-gate]").hidden = true;

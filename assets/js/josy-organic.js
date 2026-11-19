@@ -1,6 +1,8 @@
 /* Josy Campaign Manager — organic planner: compose, schedule, calendar, import from My plans */
 import { requireSession, $, $$, esc, toast, confirmDialog, copyText, fmtDate, isRtl } from "./josy-core.js";
 import { icon, ORG, ORG_KEYS, statusChip, emptyState, friendlyError, isUrl, tagInput } from "./josy-cm.js";
+import { mediaPicker, getMedia, signedUrl } from "./josy-media.js";
+import { publishedToast, autoBell } from "./josy-notify.js";
 
 var S = { sb: null, posts: [], items: [], plans: [], view: "list", month: null, edit: null, prevPf: null };
 
@@ -8,6 +10,7 @@ async function boot() {
   var r = await requireSession("josy-organic.html");
   if (!r.session) return;
   S.sb = r.sb;
+  autoBell(S.sb);
   var d = new Date(); S.month = new Date(d.getFullYear(), d.getMonth(), 1);
   await Promise.all([loadPosts(), loadPlanItems()]);
   $("[data-gate]").hidden = true; $("[data-shell]").hidden = false;
@@ -40,7 +43,9 @@ async function loadPlanItems() {
 
 /* ---------- composer ---------- */
 function openComposer(p) {
-  S.edit = p ? JSON.parse(JSON.stringify(p)) : { id: null, title: "", platforms: [], content: "", hashtags: [], media_url: "", media_notes: "", status: "draft", scheduled_at: null, published_at: null, plan_item_id: null };
+  S.edit = p ? JSON.parse(JSON.stringify(p)) : { id: null, title: "", platforms: [], content: "", hashtags: [], media_url: "", media_notes: "", media_id: null, status: "draft", scheduled_at: null, published_at: null, plan_item_id: null };
+  S.edit._prevStatus = p ? p.status : null;
+  S.previewMedia = null;
   S.edit.dirty = false;
   S.prevPf = S.edit.platforms[0] || "instagram";
   $("[data-composer-wrap]").hidden = false;
@@ -57,7 +62,7 @@ function fullText(e) { var t = (e.content || "").trim(); var h = (e.hashtags || 
 function checks(e) {
   var E = [], W = [], len = fullText(e).length;
   if (!e.platforms.length) E.push("Choose at least one platform.");
-  if (!(e.content || "").trim() && !e.media_url) E.push("Write something or add a media link.");
+  if (!(e.content || "").trim() && !e.media_url && !e.media_id) E.push("Write something or add media.");
   if (e.status === "scheduled" && !e.scheduled_at) E.push("Pick a date and time to schedule.");
   if (e.media_url && !isUrl(e.media_url)) E.push("Media URL must be a valid link.");
   e.platforms.forEach(function (k) {
@@ -66,7 +71,7 @@ function checks(e) {
     if (o.tagsHard && e.hashtags.length > o.tags) (e.status === "draft" ? W : E).push(o.label + " allows up to " + o.tags + " hashtags.");
     else if (o.tags && !o.tagsHard && e.hashtags.length > o.tags) W.push(o.label + ": more than " + o.tags + " hashtags is usually too many.");
   });
-  if ((e.platforms.indexOf("tiktok") >= 0 || e.platforms.indexOf("instagram") >= 0) && !e.media_url && !e.media_notes) W.push("Instagram and TikTok posts need an image or video — add a media link or notes.");
+  if ((e.platforms.indexOf("tiktok") >= 0 || e.platforms.indexOf("instagram") >= 0) && !e.media_url && !e.media_id && !e.media_notes) W.push("Instagram and TikTok posts need an image or video — upload one or add a link.");
   if (e.status === "scheduled" && e.scheduled_at && new Date(e.scheduled_at) < new Date()) W.push("Scheduled time is in the past.");
   return { errors: E, warnings: W };
 }
@@ -81,7 +86,8 @@ function renderComposer() {
     '<div class="fld full"><span class="lbl">PLATFORMS</span><div class="pf-pick">' + ORG_KEYS.map(function (k) { return '<span class="pf-chip' + (e.platforms.indexOf(k) >= 0 ? " on" : "") + '" role="checkbox" tabindex="0" aria-checked="' + (e.platforms.indexOf(k) >= 0) + '" data-pf="' + k + '"><span class="pf-dot" style="background:' + ORG[k].color + '"></span>' + ORG[k].label + "</span>"; }).join("") + "</div></div>" +
     '<div class="fld full"><label for="o-content">POST TEXT</label><textarea class="ta" id="o-content" data-f="content" rows="7" maxlength="10000" dir="' + (isRtl(e.content) ? "rtl" : "auto") + '" placeholder="Write your caption…">' + esc(e.content || "") + '</textarea><div class="limits-row" data-limits></div></div>' +
     '<div class="fld full"><span class="lbl">HASHTAGS</span><div class="tags" data-hashtags></div><div class="help">Without the # — press Enter after each. Instagram allows up to 30.</div></div>' +
-    '<div class="fld"><label for="o-media">MEDIA URL</label><input class="inp" id="o-media" data-f="media_url" type="url" maxlength="2000" placeholder="https://" value="' + esc(e.media_url || "") + '"></div>' +
+    '<div class="fld full"><span class="lbl">MEDIA</span><div data-picker></div></div>' +
+    '<div class="fld"><label for="o-media">OR MEDIA URL</label><input class="inp" id="o-media" data-f="media_url" type="url" maxlength="2000" placeholder="https://" value="' + esc(e.media_url || "") + '"></div>' +
     '<div class="fld"><label for="o-mnotes">MEDIA NOTES</label><input class="inp" id="o-mnotes" data-f="media_notes" maxlength="2000" dir="auto" placeholder="e.g. 15s vertical video, product close-up" value="' + esc(e.media_notes || "") + '"></div>' +
     '<div class="fld full"><span class="lbl">STATUS</span><div class="cseg" role="group">' + [["draft", "Draft"], ["scheduled", "Scheduled"], ["published", "Published"]].map(function (s) { return '<button type="button" data-st="' + s[0] + '" class="' + (e.status === s[0] ? "on" : "") + '">' + s[1] + "</button>"; }).join("") + "</div>" +
     '<div class="help">MarketScope doesn\'t post for you. “Scheduled” is your plan; mark it “Published” after you post it yourself.</div></div>' +
@@ -94,6 +100,7 @@ function renderComposer() {
   if (!e.platforms.length || e.platforms.indexOf(S.prevPf) < 0) S.prevPf = e.platforms[0] || "instagram";
   tagInput($("[data-hashtags]", el), e.hashtags, { label: "Hashtags", placeholder: "e.g. smallbusiness", max: 60, maxLen: 100,
     transform: function (v) { return v.replace(/^#+/, "").replace(/\s+/g, ""); }, onChange: function (vals) { e.hashtags = vals; e.dirty = true; live(); } });
+  mediaPicker($("[data-picker]", el), { sb: S.sb, value: e.media_id, onChange: function (row) { e.media_id = row ? row.id : null; e.dirty = true; S.previewMedia = null; live(); } });
   $$("[data-f]", el).forEach(function (i) { i.addEventListener("input", function () { e[i.getAttribute("data-f")] = i.value; e.dirty = true; if (i.tagName === "TEXTAREA") i.setAttribute("dir", isRtl(i.value) ? "rtl" : "auto"); live(); }); });
   $$("[data-pf]", el).forEach(function (c) {
     var t = function () { var k = c.getAttribute("data-pf"), i = e.platforms.indexOf(k); if (i >= 0) e.platforms.splice(i, 1); else { e.platforms.push(k); S.prevPf = k; } e.dirty = true; c.classList.toggle("on", i < 0); c.setAttribute("aria-checked", String(i < 0)); live(); };
@@ -125,10 +132,15 @@ function renderPreview() {
   var shown = text + (tags ? (text ? "\n\n" : "") + tags : "");
   var truncated = fullText(e).length > o.max;
   var media = e.media_url && /\.(png|jpe?g|gif|webp|avif)(\?|$)/i.test(e.media_url) ? '<img src="' + esc(e.media_url) + '" alt="" style="width:100%;height:100%;object-fit:cover" referrerpolicy="no-referrer">' : esc(e.media_url ? "Media: " + e.media_url : (e.media_notes || "No media yet"));
+  if (e.media_id) {
+    var pm = S.previewMedia;
+    if (pm && pm.id === e.media_id) media = pm.kind === "video" ? '<video src="' + esc(pm.url) + '" muted playsinline autoplay loop style="width:100%;height:100%;object-fit:cover"></video>' : '<img src="' + esc(pm.url) + '" alt="" style="width:100%;height:100%;object-fit:cover">';
+    else { media = "Loading media…"; getMedia(S.sb, e.media_id).then(function (m) { if (!m) return; return signedUrl(S.sb, m.path).then(function (u) { if (S.edit && S.edit.media_id === m.id) { S.previewMedia = { id: m.id, kind: m.kind, url: u }; renderPreview(); } }); }); }
+  }
   el.innerHTML = (e.platforms.length > 1 ? '<div class="cseg" style="margin-bottom:10px;flex-wrap:wrap">' + e.platforms.map(function (p) { return '<button type="button" data-pv="' + p + '" class="' + (p === k ? "on" : "") + '">' + ORG[p].label + "</button>"; }).join("") + "</div>" : "") +
     '<div class="post-prev"><div class="ph-top"><span class="av"></span><div><b>Your account</b><small>' + o.label + (e.scheduled_at ? " · " + fmtDate(e.scheduled_at, true) : "") + "</small></div></div>" +
     (k === "instagram" || k === "tiktok" ? '<div class="media">' + media + '</div><div class="acts2">' + icon("heart") + icon("comment") + icon("share") + '</div><div class="body2" dir="auto" style="padding-top:10px">' + (shown || '<span style="color:var(--dim)">Your caption appears here</span>') + "</div>"
-      : '<div class="body2" dir="auto">' + (shown || '<span style="color:var(--dim)">Your post appears here</span>') + "</div>" + (e.media_url || e.media_notes ? '<div class="media" style="aspect-ratio:16/10">' + media + "</div>" : "") + '<div class="acts2">' + icon("heart") + icon("comment") + icon("share") + "</div>") +
+      : '<div class="body2" dir="auto">' + (shown || '<span style="color:var(--dim)">Your post appears here</span>') + "</div>" + (e.media_url || e.media_id || e.media_notes ? '<div class="media" style="aspect-ratio:16/10">' + media + "</div>" : "") + '<div class="acts2">' + icon("heart") + icon("comment") + icon("share") + "</div>") +
     "</div>" + (truncated ? '<p class="fine" style="color:var(--red);margin-top:8px">Over ' + o.label + "'s " + o.max.toLocaleString() + "-character limit.</p>" : "") +
     '<p class="fine" style="margin-top:8px">Simplified preview — each platform renders posts differently.</p>';
   $$("[data-pv]", el).forEach(function (b) { b.onclick = function () { S.prevPf = b.getAttribute("data-pv"); renderPreview(); }; });
@@ -138,11 +150,13 @@ async function savePost() {
   var e = S.edit, c = checks(e);
   if (c.errors.length) { toast(c.errors[0]); return; }
   var row = { title: (e.title || "").trim() || null, platforms: e.platforms, content: e.content || "", hashtags: e.hashtags, media_url: (e.media_url || "").trim() || null, media_notes: (e.media_notes || "").trim() || null,
-    status: e.status, scheduled_at: e.scheduled_at, published_at: e.status === "published" ? (e.published_at || new Date().toISOString()) : null, plan_item_id: e.plan_item_id || null };
+    status: e.status, scheduled_at: e.scheduled_at, published_at: e.status === "published" ? (e.published_at || new Date().toISOString()) : null, plan_item_id: e.plan_item_id || null, media_id: e.media_id || null };
   var r = e.id ? await S.sb.from("josy_organic_posts").update(row).eq("id", e.id).select("*").single() : await S.sb.from("josy_organic_posts").insert(row).select("*").single();
   if (r.error) { toast(friendlyError(r.error)); return; }
   S.posts = S.posts.filter(function (x) { return x.id !== r.data.id; }); S.posts.unshift(r.data);
-  e.dirty = false; closeComposer(); renderPosts(); toast(e.id ? "Post updated" : "Post saved");
+  e.dirty = false; closeComposer(); renderPosts();
+  if (r.data.status === "published" && e._prevStatus !== "published") publishedToast(r.data.platforms, r.data.title || r.data.content, { entity: "post" });
+  else toast(e.id ? "Post updated" : "Post saved");
 }
 
 /* ---------- list / calendar ---------- */
@@ -180,7 +194,7 @@ function renderPosts() {
       groups[k].map(function (p) {
         var w = when(p), d = w ? new Date(w) : null;
         return '<div class="post-row" data-open="' + p.id + '"><div class="when">' + (d ? d.toLocaleDateString(undefined, { month: "short", day: "numeric" }) + "<small>" + d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" }) + "</small>" : "<small>No date</small>") + "</div>" +
-          '<div style="min-width:0"><div class="t" dir="auto">' + esc(p.title || (p.content || "").split("\n")[0].slice(0, 80) || "Untitled post") + '</div><div class="x" dir="auto">' + esc((p.content || "").replace(/\s+/g, " ").slice(0, 160)) + '</div><div class="meta2">' + pfTags(p) + (p.plan_item_id ? '<span class="lim">from plan</span>' : "") + "</div></div>" +
+          '<div style="min-width:0"><div class="t" dir="auto">' + esc(p.title || (p.content || "").split("\n")[0].slice(0, 80) || "Untitled post") + '</div><div class="x" dir="auto">' + esc((p.content || "").replace(/\s+/g, " ").slice(0, 160)) + '</div><div class="meta2">' + pfTags(p) + (p.plan_item_id ? '<span class="lim">from plan</span>' : "") + (p.media_id ? '<span class="lim">media</span>' : "") + "</div></div>" +
           '<div style="display:flex;gap:6px;align-items:center">' + statusChip(p.status) +
           (p.status !== "published" ? '<button type="button" class="icon-btn" data-mark="' + p.id + '" title="Mark published" aria-label="Mark published">' + icon("check") + "</button>" : "") +
           '<button type="button" class="icon-btn" data-dupp="' + p.id + '" title="Duplicate" aria-label="Duplicate">' + icon("copy") + '</button><button type="button" class="icon-btn danger" data-delp="' + p.id + '" title="Delete" aria-label="Delete">' + icon("trash") + "</button></div></div>";
@@ -190,8 +204,8 @@ function renderPosts() {
 }
 function bindRows(el) {
   $$("[data-open]", el).forEach(function (r) { r.addEventListener("click", function (ev) { if (ev.target.closest("button")) return; var p = S.posts.find(function (x) { return x.id === r.getAttribute("data-open"); }); if (p) openComposer(p); }); });
-  $$("[data-mark]", el).forEach(function (b) { b.onclick = async function () { var id = b.getAttribute("data-mark"); var r = await S.sb.from("josy_organic_posts").update({ status: "published", published_at: new Date().toISOString() }).eq("id", id).select("*").single(); if (r.error) return toast(friendlyError(r.error)); S.posts = S.posts.map(function (x) { return x.id === id ? r.data : x; }); renderPosts(); toast("Marked as published"); }; });
-  $$("[data-dupp]", el).forEach(function (b) { b.onclick = async function () { var p = S.posts.find(function (x) { return x.id === b.getAttribute("data-dupp"); }); var r = await S.sb.from("josy_organic_posts").insert({ title: p.title ? (p.title + " (copy)").slice(0, 160) : null, platforms: p.platforms, content: p.content, hashtags: p.hashtags, media_url: p.media_url, media_notes: p.media_notes, status: "draft" }).select("*").single(); if (r.error) return toast(friendlyError(r.error)); S.posts.unshift(r.data); renderPosts(); toast("Duplicated as a draft"); }; });
+  $$("[data-mark]", el).forEach(function (b) { b.onclick = async function () { var id = b.getAttribute("data-mark"); var r = await S.sb.from("josy_organic_posts").update({ status: "published", published_at: new Date().toISOString() }).eq("id", id).select("*").single(); if (r.error) return toast(friendlyError(r.error)); var was = (S.posts.find(function (x) { return x.id === id; }) || {}).status; S.posts = S.posts.map(function (x) { return x.id === id ? r.data : x; }); renderPosts(); if (was !== "published") publishedToast(r.data.platforms, r.data.title || r.data.content, { entity: "post" }); }; });
+  $$("[data-dupp]", el).forEach(function (b) { b.onclick = async function () { var p = S.posts.find(function (x) { return x.id === b.getAttribute("data-dupp"); }); var r = await S.sb.from("josy_organic_posts").insert({ title: p.title ? (p.title + " (copy)").slice(0, 160) : null, platforms: p.platforms, content: p.content, hashtags: p.hashtags, media_url: p.media_url, media_notes: p.media_notes, media_id: p.media_id || null, status: "draft" }).select("*").single(); if (r.error) return toast(friendlyError(r.error)); S.posts.unshift(r.data); renderPosts(); toast("Duplicated as a draft"); }; });
   $$("[data-delp]", el).forEach(function (b) { b.onclick = async function () { if (!(await confirmDialog("Delete post?", "This post will be permanently deleted.", "Delete"))) return; var id = b.getAttribute("data-delp"); var r = await S.sb.from("josy_organic_posts").delete().eq("id", id); if (r.error) return toast(friendlyError(r.error)); S.posts = S.posts.filter(function (x) { return x.id !== id; }); renderPosts(); toast("Deleted"); }; });
 }
 

@@ -1,6 +1,7 @@
 /* Josy Campaign Manager — paid campaigns list */
 import { requireSession, $, $$, esc, toast, confirmDialog, relTime, fmtDate } from "./josy-core.js";
 import { icon, pf, pfBadge, objLabel, money, statusChip, estimate, emptyState, friendlyError } from "./josy-cm.js";
+import { autoBell } from "./josy-notify.js";
 
 var S = { sb: null, rows: [] };
 
@@ -8,6 +9,7 @@ async function boot() {
   var r = await requireSession("josy-paid.html");
   if (!r.session) return;
   S.sb = r.sb;
+  autoBell(S.sb);
   var p = new URLSearchParams(location.search);
   if (p.get("platform")) $("[data-f-platform]").value = p.get("platform");
   if (p.get("status") != null) $("[data-f-status]").value = p.get("status");

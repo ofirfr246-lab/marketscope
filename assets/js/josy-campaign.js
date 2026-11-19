@@ -1,6 +1,8 @@
 /* Josy Campaign Manager — campaign detail */
 import { requireSession, $, $$, esc, toast, confirmDialog, copyText, download, slug, fmtDate, relTime } from "./josy-core.js";
 import { icon, pf, pfBadge, objLabel, bidLabel, money, statusChip, estimate, ESTIMATE_NOTE, validateCampaign, friendlyError, connectCards, emptyState } from "./josy-cm.js";
+import { getMedia, mediaTag } from "./josy-media.js";
+import { publishedToast, autoBell } from "./josy-notify.js";
 
 var S = { sb: null, c: null, tab: "overview" };
 
@@ -9,6 +11,7 @@ async function boot() {
   var r = await requireSession("josy-campaign.html" + location.search);
   if (!r.session) return;
   S.sb = r.sb;
+  autoBell(S.sb);
   if (!id) { location.replace("josy-paid.html"); return; }
   var res = await S.sb.from("josy_campaigns").select("*, josy_ad_groups(*, josy_ads(*))").eq("id", id).maybeSingle();
   if (res.error || !res.data) { $("[data-gate]").innerHTML = emptyState("search", "Campaign not found", "It may have been deleted.", '<a class="btn btn-ghost" href="josy-paid.html">Back to campaigns</a>'); return; }
@@ -34,9 +37,10 @@ function renderHead() {
   $("[data-crumb]").textContent = c.name;
   $("[data-sub]").innerHTML = pfBadge(c.platform, true) + " " + P.label + " · " + objLabel(c.objective) + " · " + statusChip(c.status) + ' <span class="mono" style="font-size:.72rem;color:var(--dim)">edited ' + relTime(c.updated_at) + "</span>";
   $("[data-sub]").style.display = "flex"; $("[data-sub]").style.gap = "8px"; $("[data-sub]").style.alignItems = "center"; $("[data-sub]").style.flexWrap = "wrap";
-  var pausable = c.status === "draft" || c.status === "ready";
+  var pausable = c.status === "draft" || c.status === "ready" || c.status === "launched";
   $("[data-hero-actions]").innerHTML =
-    '<a class="btn btn-amber" href="josy-campaign-new.html?id=' + c.id + '">' + icon("edit") + " Edit</a>" +
+    (c.status === "ready" ? '<button type="button" class="btn btn-amber" data-launch>' + icon("check") + " Mark as live</button>" : "") +
+    '<a class="btn ' + (c.status === "ready" ? "btn-ghost" : "btn-amber") + '" href="josy-campaign-new.html?id=' + c.id + '">' + icon("edit") + " Edit</a>" +
     '<button type="button" class="btn btn-ghost" data-dup>' + icon("copy") + " Duplicate</button>" +
     (c.status === "archived" ? '<button type="button" class="btn btn-ghost" data-unarch>' + icon("archive") + " Unarchive</button>"
       : (pausable ? '<button type="button" class="btn btn-ghost" data-pause>' + icon("pause") + " Pause</button>" : '<button type="button" class="btn btn-ghost" data-resume>' + icon("play") + " Resume</button>") +
@@ -45,6 +49,15 @@ function renderHead() {
   var A = $("[data-hero-actions]");
   $("[data-dup]", A).onclick = async function () { var r = await S.sb.rpc("josy_duplicate_campaign", { p_id: c.id }); if (r.error) return toast(friendlyError(r.error)); toast("Duplicated"); location.href = "josy-campaign.html?id=" + r.data; };
   var b;
+  if ((b = $("[data-launch]", A))) b.onclick = async function () {
+    if (!(await confirmDialog("Mark as live?", "Use this after you've created and launched this campaign yourself in " + P.label + "'s ads manager. MarketScope doesn't publish it for you.", "Mark as live"))) return;
+    var was = c.status;
+    var r = await S.sb.from("josy_campaigns").update({ status: "launched", launched_at: new Date().toISOString() }).eq("id", c.id).select("updated_at, launched_at").maybeSingle();
+    if (r.error) return toast(friendlyError(r.error));
+    c.status = "launched"; if (r.data) { c.updated_at = r.data.updated_at; c.launched_at = r.data.launched_at; }
+    renderHead(); renderTab();
+    if (was !== "launched") publishedToast([c.platform], c.name, { entity: "campaign" });
+  };
   if ((b = $("[data-pause]", A))) b.onclick = function () { setStatus("paused", "Paused — this draft is on hold"); };
   if ((b = $("[data-resume]", A))) b.onclick = function () { var ok = !validateCampaign(vShape()).errors.length; setStatus(ok ? "ready" : "draft", ok ? "Resumed as ready" : "Resumed as draft — some checks still need fixing"); };
   if ((b = $("[data-arch]", A))) b.onclick = function () { setStatus("archived", "Archived"); };
@@ -93,7 +106,7 @@ function overview() {
 }
 
 function adPreview(ad, c) {
-  var P = pf(c.platform), media = ad.media_url && /\.(png|jpe?g|gif|webp|avif)(\?|$)/i.test(ad.media_url) ? '<img src="' + esc(ad.media_url) + '" alt="" loading="lazy" referrerpolicy="no-referrer">' : esc(ad.media_url ? "Media: " + ad.media_url : "No media link yet");
+  var P = pf(c.platform), media = ad.media_id ? '<span data-media-id="' + esc(ad.media_id) + '">Loading media…</span>' : ad.media_url && /\.(png|jpe?g|gif|webp|avif)(\?|$)/i.test(ad.media_url) ? '<img src="' + esc(ad.media_url) + '" alt="" loading="lazy" referrerpolicy="no-referrer">' : esc(ad.media_url ? "Media: " + ad.media_url : "No media link yet");
   if (c.platform === "google" && /search/i.test(ad.format || "")) {
     return '<div class="ad-prev" style="padding:14px"><div class="mono" style="font-size:.7rem;color:var(--dim)">Sponsored · ' + esc(hostOf(ad.destination_url) || "your-site.com") + '</div><div style="color:#8ab4ff;font-size:1.02rem;margin:4px 0">' + esc(ad.headline || "Headline") + '</div><div style="font-size:.84rem;color:#c3cad3">' + esc(ad.description || "Description") + "</div></div>";
   }
@@ -114,7 +127,7 @@ function adsTab() {
         var F = P.fields;
         return '<div class="ad"><div class="ad-h"><b>' + esc(ad.name) + "</b>" + (ad.format ? '<span class="lim">' + esc(ad.format) + "</span>" : "") + '<span class="sp"></span><button type="button" class="btn btn-sm btn-ghost" data-copy-ad="' + ad.id + '" style="margin:0">' + icon("copy") + " Copy text</button></div>" +
           '<div class="d-grid" style="grid-template-columns:minmax(0,1fr) 300px">' +
-          "<div>" + kv([[F.primary_text ? F.primary_text.label : "Text", esc(ad.primary_text || "")], [F.headline ? F.headline.label : "Headline", esc(ad.headline || "")]].concat(F.description ? [[F.description.label, esc(ad.description || "")]] : []).concat([["CTA", esc(ad.cta || "")], ["Destination", ad.destination_url ? '<a href="' + esc(ad.destination_url) + '" target="_blank" rel="noopener noreferrer" style="color:var(--amber)">' + esc(ad.destination_url) + "</a>" : ""], ["Media", esc(ad.media_url || "")]])) + "</div>" +
+          "<div>" + kv([[F.primary_text ? F.primary_text.label : "Text", esc(ad.primary_text || "")], [F.headline ? F.headline.label : "Headline", esc(ad.headline || "")]].concat(F.description ? [[F.description.label, esc(ad.description || "")]] : []).concat([["CTA", esc(ad.cta || "")], ["Destination", ad.destination_url ? '<a href="' + esc(ad.destination_url) + '" target="_blank" rel="noopener noreferrer" style="color:var(--amber)">' + esc(ad.destination_url) + "</a>" : ""], ["Media", ad.media_id ? "Uploaded file" + (ad.media_url ? " · " + esc(ad.media_url) : "") : esc(ad.media_url || "")]])) + "</div>" +
           "<div>" + adPreview(ad, c) + "</div></div></div>";
       }).join("") : '<p class="fine">No ads in this ' + esc(P.group.toLowerCase()) + ".</p>") + "</div></div>";
   }).join("");
@@ -154,6 +167,9 @@ function brief() {
 
 function bindPanel(el) {
   var b;
+  $$("[data-media-id]", el).forEach(function (sp) {
+    getMedia(S.sb, sp.getAttribute("data-media-id")).then(function (m) { return m ? mediaTag(S.sb, m, "") : '<span>Media file was deleted</span>'; }).then(function (h) { sp.outerHTML = h; });
+  });
   if ((b = $("[data-goto-pub]", el))) b.onclick = function () { S.tab = "publishing"; history.replaceState(null, "", "#publishing"); renderTab(); };
   if ((b = $("[data-export-md]", el))) b.onclick = function () { download(slug(S.c.name) + "-brief.md", brief(), "text/markdown"); };
   if ((b = $("[data-export-json]", el))) b.onclick = function () {

@@ -115,11 +115,29 @@ async function startCheckout(lookup, btn) {
   var ident = sessionIdentity(session);
   setBusy(btn, true);
   toast("Opening secure Stripe checkout…", true);
+  await rememberCheckout(lookup, ident.id);
   clearPending();
   window.location.href = withParams(href, {
     client_reference_id: ident.id,
     prefilled_email: ident.email
   });
+}
+
+/* Remember what the account looked like before checkout so the success screen can tell
+   when Stripe's webhook has actually updated the plan/credits. */
+async function rememberCheckout(lookup, uid) {
+  var ctx = { lookup: lookup, at: Date.now(), plan: null, credits: null };
+  try {
+    var sb = await getSb();
+    if (sb && uid) {
+      var r = await Promise.race([
+        sb.from("profiles").select("plan,credits").eq("id", uid).maybeSingle(),
+        new Promise(function (res) { setTimeout(function () { res({}); }, 1500); })
+      ]);
+      if (r && r.data) { ctx.plan = r.data.plan || "free"; ctx.credits = typeof r.data.credits === "number" ? r.data.credits : null; }
+    }
+  } catch (e) { /* ignore */ }
+  try { localStorage.setItem("ms_checkout_ctx", JSON.stringify(ctx)); } catch (e) { /* ignore */ }
 }
 
 async function startPortal(btn) {
@@ -182,6 +200,7 @@ async function showSuccess() {
   try {
     var q = new URLSearchParams(location.search);
     if (q.get("checkout") !== "success") return;
+    if (document.querySelector("script[src*='ms-welcome.js']")) return; /* the welcome screen handles it */
     toast("Payment received. Your plan and credits will update in a few seconds — you can refresh if they have not yet.", true);
   } catch (e) { /* ignore */ }
 }
