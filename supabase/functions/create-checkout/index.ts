@@ -15,8 +15,11 @@ const ALLOWED_ORIGINS = new Set([
   "http://127.0.0.1:4174",
 ]);
 
-const SUCCESS_URL = "https://marketscope.space/dashboard.html?checkout=success";
-const CANCEL_URL = "https://marketscope.space/pricing.html";
+/** Public site base URL. Override with the SITE_URL Edge Function secret
+    (e.g. "https://marketscope.space/") to switch domains without a code change. */
+const SITE_URL = ((Deno.env.get("SITE_URL") || "").trim() || "https://ofirfr246-lab.github.io/marketscope/").replace(/\/*$/, "/");
+const SUCCESS_URL = SITE_URL + "dashboard.html?checkout=success";
+const CANCEL_URL = SITE_URL + "pricing.html";
 
 /** Live prices created on the Growege Stripe account. Public IDs, not secrets. */
 const PRICES: Record<string, { id: string; kind: "subscription" | "topup"; plan: string | null; credits: number }> = {
@@ -42,7 +45,7 @@ function env(name: string): string {
 
 function corsHeaders(req: Request): Record<string, string> {
   const origin = req.headers.get("Origin") || "";
-  const allow = ALLOWED_ORIGINS.has(origin) ? origin : "https://marketscope.space";
+  const allow = ALLOWED_ORIGINS.has(origin) ? origin : "https://ofirfr246-lab.github.io";
   return {
     "Access-Control-Allow-Origin": allow,
     "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
