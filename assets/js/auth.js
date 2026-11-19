@@ -180,6 +180,9 @@ function renderSignedInNav(user, profile) {
         '<div class="account-drop" role="menu">' +
           '<a href="dashboard.html" role="menuitem">Dashboard</a>' +
           '<a href="reports.html" role="menuitem">Reports</a>' +
+          '<a href="josy-chat.html" role="menuitem">Josy chat</a>' +
+          '<a href="josy-plans.html" role="menuitem">My plans</a>' +
+          '<a href="josy-campaigns.html" role="menuitem">Campaign manager</a>' +
           '<a href="settings.html" role="menuitem">Settings</a>' +
           '<button type="button" class="link-btn" data-sign-out role="menuitem">Log out</button>' +
         "</div>" +
@@ -1225,7 +1228,7 @@ function applyAppearance() {
 }
 window.MSApplyAppearance = applyAppearance;
 
-var SHORTCUTS = { d: "dashboard.html", r: "reports.html", s: "settings.html", p: "pricing.html", t: "terminal.html", h: "index.html", w: "watchlist.html" };
+var SHORTCUTS = { j: "josy-chat.html", c: "josy-campaigns.html", d: "dashboard.html", r: "reports.html", s: "settings.html", p: "pricing.html", t: "terminal.html", h: "index.html", w: "watchlist.html" };
 function bindShortcuts() {
   var armed = 0;
   document.addEventListener("keydown", function (e) {
