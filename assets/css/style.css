@@ -849,6 +849,13 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
   mix-blend-mode:screen;
   transform:translateZ(2px);
 }
+
+.sources-card.src-search{--brand:var(--violet);--brand-rgb:167,139,250}
+.sources-card.src-marketplace{--brand:var(--blue);--brand-rgb:77,163,255}
+.sources-card.src-social{--brand:var(--amber);--brand-rgb:255,176,0}
+.sources-card.src-video{--brand:var(--green);--brand-rgb:25,210,124}
+.sources-card.src-suppliers{--brand:#6ec8b8;--brand-rgb:110,200,184}
+.sources-card.src-storefronts{--brand:#f0c987;--brand-rgb:240,201,135}
 .sources-card.is-live{
   box-shadow:
     0 22px 40px -22px rgba(0,0,0,.85),
@@ -1023,8 +1030,8 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
   flex:1;
 }
 .hero-source{
-  --brand:#4285F4;
-  --brand-rgb:66,133,244;
+  --brand:var(--violet);
+  --brand-rgb:167,139,250;
   --brand-2:var(--brand);
   position:relative;
   display:inline-flex;
@@ -1169,12 +1176,12 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
   }
 }
 
-.hero-source.brand-google{--brand:#4285F4;--brand-rgb:66,133,244}
-.hero-source.brand-amazon{--brand:#FF9900;--brand-rgb:255,153,0}
-.hero-source.brand-meta{--brand:#0866FF;--brand-rgb:8,102,255}
-.hero-source.brand-tiktok{--brand:#25F4EE;--brand-rgb:37,244,238;--brand-2:#FE2C55}
-.hero-source.brand-aliexpress{--brand:#FF4747;--brand-rgb:255,71,71}
-.hero-source.brand-shopify{--brand:#95BF47;--brand-rgb:149,191,71}
+.hero-source.src-search{--brand:var(--violet);--brand-rgb:167,139,250}
+.hero-source.src-marketplace{--brand:var(--blue);--brand-rgb:77,163,255}
+.hero-source.src-social{--brand:var(--amber);--brand-rgb:255,176,0}
+.hero-source.src-video{--brand:var(--green);--brand-rgb:25,210,124}
+.hero-source.src-suppliers{--brand:#6ec8b8;--brand-rgb:110,200,184}
+.hero-source.src-storefronts{--brand:#f0c987;--brand-rgb:240,201,135}
 .hero-source:hover,
 .hero-source:focus,
 .hero-source:focus-visible,
@@ -1192,19 +1199,6 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
   transform:translateY(-2px) scale(1.04);
   outline:none;
 }
-.hero-source.brand-tiktok:hover,
-.hero-source.brand-tiktok:focus,
-.hero-source.brand-tiktok:focus-visible,
-.hero-source.brand-tiktok:active,
-.hero-source.brand-tiktok.is-glow{
-  border-color:rgba(37,244,238,.75);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.14),
-    0 0 0 1px rgba(37,244,238,.45),
-    0 0 22px rgba(37,244,238,.55),
-    0 0 12px rgba(254,44,85,.32),
-    0 8px 22px -8px rgba(37,244,238,.45);
-}
 .hero-source:hover .hero-source-logo,
 .hero-source:focus .hero-source-logo,
 .hero-source:focus-visible .hero-source-logo,
@@ -1212,14 +1206,6 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
 .hero-source.is-glow .hero-source-logo{
   color:var(--brand);
   filter:drop-shadow(0 0 8px rgba(var(--brand-rgb),.75));
-}
-.hero-source.brand-tiktok:hover .hero-source-logo,
-.hero-source.brand-tiktok:focus .hero-source-logo,
-.hero-source.brand-tiktok:focus-visible .hero-source-logo,
-.hero-source.brand-tiktok:active .hero-source-logo,
-.hero-source.brand-tiktok.is-glow .hero-source-logo{
-  color:#25F4EE;
-  filter:drop-shadow(0 0 7px rgba(37,244,238,.85)) drop-shadow(0 0 10px rgba(254,44,85,.4));
 }
 @media (prefers-reduced-motion:reduce){
   .hero-source,
@@ -1231,7 +1217,7 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
   .hero-source.is-glow{transform:none}
 }
 
-/* Six data-source chips (Shopify added): keep the hero row on one line on phones */
+/* Six data-source chips: keep the hero row on one line on phones */
 @media (max-width:640px){
   .hero-sources-row{gap:2px;padding:10px 3px;margin:-10px -3px}
   .hero-source{height:26px;padding:0 3px;gap:2px}
@@ -1242,7 +1228,7 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
   .hero-source-soon{width:4px;height:4px}
 }
 @media (min-width:370px) and (max-width:640px){
-  /* the row fits, so let the brand glow spill out instead of being clipped */
+  /* the row fits, so let the source glow spill out instead of being clipped */
   .hero-sources-row{overflow:visible}
 }
 
@@ -1935,8 +1921,8 @@ body.is-analyzing{overflow:hidden}
   50%{transform:translate3d(0,-2px,3px)}
 }
 .source-card-face{
-  --brand:#4285F4;
-  --brand-rgb:66,133,244;
+  --brand:var(--violet);
+  --brand-rgb:167,139,250;
   position:relative;
   width:100%;
   height:100%;
@@ -2055,12 +2041,12 @@ body.is-analyzing{overflow:hidden}
   line-height:1.4;
   max-width:20em;
 }
-.source-card.brand-google{--brand:#4285F4;--brand-rgb:66,133,244}
-.source-card.brand-amazon{--brand:#FF9900;--brand-rgb:255,153,0}
-.source-card.brand-meta{--brand:#0866FF;--brand-rgb:8,102,255}
-.source-card.brand-tiktok{--brand:#25F4EE;--brand-rgb:37,244,238}
-.source-card.brand-aliexpress{--brand:#FF4747;--brand-rgb:255,71,71}
-.source-card.brand-shopify{--brand:#95BF47;--brand-rgb:149,191,71}
+.source-card.src-search .source-card-face{--brand:var(--violet);--brand-rgb:167,139,250}
+.source-card.src-marketplace .source-card-face{--brand:var(--blue);--brand-rgb:77,163,255}
+.source-card.src-social .source-card-face{--brand:var(--amber);--brand-rgb:255,176,0}
+.source-card.src-video .source-card-face{--brand:var(--green);--brand-rgb:25,210,124}
+.source-card.src-suppliers .source-card-face{--brand:#6ec8b8;--brand-rgb:110,200,184}
+.source-card.src-storefronts .source-card-face{--brand:#f0c987;--brand-rgb:240,201,135}
 .source-card.is-live .source-card-face{
   border-color:rgba(25,210,124,.42);
   box-shadow:
@@ -2097,18 +2083,6 @@ body.is-analyzing{overflow:hidden}
     0 24px 50px -16px rgba(0,0,0,.9),
     0 0 36px rgba(var(--brand-rgb),.45),
     0 0 22px -8px rgba(255,176,0,.4);
-}
-.source-card.brand-tiktok:hover .source-card-face,
-.source-card.brand-tiktok:focus-visible .source-card-face,
-.source-card-slot:hover .source-card.brand-tiktok .source-card-face,
-.source-card-slot:focus-within .source-card.brand-tiktok .source-card-face{
-  border-color:rgba(37,244,238,.7);
-  box-shadow:
-    0 0 0 1px rgba(37,244,238,.4),
-    inset 0 1px 0 rgba(255,255,255,.12),
-    0 24px 50px -16px rgba(0,0,0,.9),
-    0 0 32px rgba(37,244,238,.4),
-    0 0 18px rgba(254,44,85,.28);
 }
 .source-card:focus-visible .source-card-face{
   outline:2px solid var(--amber);
