@@ -2208,3 +2208,8 @@ body.is-analyzing{overflow:hidden}
     transform:translateZ(40px) translateY(-6px);
   }
 }
+
+/* Josy nav link (Josy Market) */
+.nav-plain.nav-josy{gap:7px}
+.nav-new{font:700 .58rem var(--mono);color:#111;background:var(--amber);border-radius:4px;padding:2px 5px;letter-spacing:.04em;line-height:1.2}
+@media (max-width:1180px){.nav-plain.nav-josy .nav-new{display:none}}
