@@ -11,6 +11,11 @@
    (Coming soon).
    Only Google Shopping and Google Search are live today.
    ===================================================================== */
+/* Public base URL of the site (canonical/og/sitemap use the same value).
+   Change it everywhere with: scripts/set-site-url.sh <new-url-with-trailing-slash>
+   Page navigation is relative, so this is only for absolute links. */
+window.MS_SITE_URL = "https://ofirfr246-lab.github.io/marketscope/";
+
 window.MS_CONFIG = {
   currency: "$",
   annualMonthsFree: 2, // yearly billing = pay 10 months, get 12
