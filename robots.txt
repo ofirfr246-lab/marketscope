@@ -6,4 +6,4 @@ Allow: /
 # Function source is not a public document.
 Disallow: /supabase/
 
-Sitemap: https://marketscope.space/sitemap.xml
+Sitemap: https://ofirfr246-lab.github.io/marketscope/sitemap.xml
