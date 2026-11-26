@@ -28,8 +28,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="stylesheet" href="assets/css/workspace.css">
+<link rel="stylesheet" href="assets/css/exchange.css">
 </head>
-<body>
+<body class="xt-page">
 <a class="skip" href="#main">Skip to content</a>
 <header class="nav" id="top">
   <div class="wrap nav-in">
@@ -40,34 +41,83 @@
   </div>
   <div class="mobile-menu" id="mobile-menu" hidden><div class="mob-group"><div class="mob-label mono">PRODUCT</div><a href="product.html">Platform overview</a><a href="demo.html">Real report</a><a href="app.html">App preview</a><a href="integrations.html">Integrations</a><a href="changelog.html">Changelog</a></div><div class="mob-group"><div class="mob-label mono">TERMINAL</div><a href="terminal.html">Market Terminal</a><a href="screener.html">Screener</a><a href="heatmap.html">Heatmap</a><a href="indices.html">Category indices</a><a href="watchlist.html">Watchlist</a><a href="portfolio.html">Portfolio</a><a href="backtest.html">Backtest</a><a href="calendar.html">Events calendar</a><a href="stores.html">Store Intelligence</a></div><div class="mob-group"><div class="mob-label mono">SOLUTIONS</div><a href="solutions.html#dropshippers">Dropshippers</a><a href="solutions.html#amazon">Amazon sellers</a><a href="solutions.html#dtc">DTC brands</a><a href="solutions.html#agencies">Agencies</a><a href="compare.html">MarketScope vs typical tools</a></div><div class="mob-group"><div class="mob-label mono">RESOURCES</div><a href="blog.html">Blog & guides</a><a href="how-to-find-winning-products.html">How to find winning products</a><a href="docs.html">API & docs</a><a href="methodology.html">Data & methodology</a><a href="status.html">System status</a></div><div class="mob-group"><div class="mob-label mono">COMPANY</div><a href="about.html">About</a><a href="security.html">Trust Center</a><a href="careers.html">Careers</a><a href="contact.html">Contact</a></div><div class="mob-group"><a href="josy.html">Josy · AI marketing assistant</a><a href="josy-chat.html">Josy chat</a><a href="josy-plans.html">My plans</a><a href="josy-campaigns.html">Campaign manager</a><a href="pricing.html">Pricing</a><a href="login.html">Log in</a></div><a href="signup.html" class="btn btn-amber">Start free — 5 credits</a></div>
 </header>
-<main id="main">
-<section class="ws-hero"><div class="ws-deco" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 17l5-5 4 4 8-8"/><path d="M15 8h5v5"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="6" width="16" height="12" rx="2"/><path d="M10 9.5l4 2.5-4 2.5z"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 7h12l-1.5 11h-9z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg></div><div class="wrap">
-<div class="kicker mono">MARKETSCOPE EXCHANGE · SIMULATION</div>
-<h1><span class="ws-logo"><img src="favicon.svg" alt="" width="26" height="26"></span>MarketScope Exchange <span class="ws-sim-badge">SIMULATION</span></h1>
-<p class="sub">Practice market thinking on products. Each product you research becomes a symbol whose index value is its latest Opportunity score (0–100). Trade it with virtual credits, place limit orders, read candles built from your snapshots and track a virtual portfolio.</p>
-<div class="ws-src" aria-label="Data sources"><span class="on">Google Shopping · live</span><span class="on">Google Search · live</span><span class="on">Google Ads keyword data · live</span><span class="">Google Trends · planned</span><span class="">Amazon · planned</span><span class="">AliExpress · planned</span><span class="">Shopify stores · planned</span><span class="">Meta ad library · planned</span><span class="">TikTok ads · planned</span></div>
-<nav class="ws-sub" data-ws-sub aria-label="Workspace pages"></nav>
-</div></section>
-<div class="wrap"><div class="ws-banner"><span class="ws-sim-badge">VIRTUAL</span><div><b>Simulation only — virtual credits, no real money.</b> Virtual credits (VC) have no monetary value, cannot be bought, sold, deposited or withdrawn, and are not linked to your subscription or payment method. MarketScope does not offer real-money trading. Offering it would require financial-services licensing, regulatory approval and audited infrastructure, which MarketScope does not have.</div></div></div><div class="wrap" data-gate><p class="mono muted" style="padding:30px 0">Loading…</p></div><div data-shell hidden>
-<div class="term-desk">
-  <section class="t-panel span-12"><div class="ws-kpis" data-kpis></div></section>
-  <section class="t-panel span-3"><h2>Symbols</h2><div data-symbols></div></section>
-  <section class="t-panel span-6"><h2><span data-sym-title>Chart</span><span class="ws-mini" data-sym-last></span></h2><div data-candles></div>
-    <p class="ws-mini">Candles: daily open/high/low/close of the Opportunity score across your live snapshots of this product. One snapshot per day draws a flat candle.</p></section>
-  <section class="t-panel span-3"><h2>Order ticket</h2>
-    <form class="ws-form" data-ticket style="grid-template-columns:1fr 1fr">
-      <label>SIDE<select name="side"><option value="buy">Buy</option><option value="sell">Sell</option></select></label>
-      <label>TYPE<select name="type"><option value="market">Market</option><option value="limit">Limit</option></select></label>
-      <label>UNITS<input name="qty" type="number" min="0.01" step="0.01" value="10" required></label>
-      <label>LIMIT<input name="limit" type="number" min="0.01" max="1000" step="0.01" disabled></label>
-      <button class="btn btn-sm btn-amber full" type="submit">Place simulated order</button></form>
-    <p class="ws-mini">Market orders fill at the last index value. Limit orders fill when a new snapshot crosses your price. Simulated fee 0.1% per fill.</p></section>
-  <section class="t-panel span-4"><h2>Order book <span class="ws-mini">Your open simulated orders</span></h2><div data-book></div></section>
-  <section class="t-panel span-8"><h2>Positions</h2><div data-positions></div></section>
-  <section class="t-panel span-6"><h2>Category indices <span class="ws-mini">Average latest Opportunity of your products per category</span></h2><div data-cat-idx></div></section>
-  <section class="t-panel span-6"><h2>Orders</h2><div data-orders></div></section>
-  <section class="t-panel span-12"><div class="ws-row" style="justify-content:space-between"><span class="ws-mini">Start balance 100,000 VC. Reset clears your simulated orders and positions.</span><button type="button" class="btn btn-sm btn-ghost" data-reset style="margin:0">Reset simulation</button></div></section>
-</div></div>
+<main id="main" class="xt">
+<div class="xt-strip" role="note"><span class="xt-badge">SIMULATION</span><span><b>Virtual credits only, no real money.</b> No deposits, payments or cash-out. Index values are Opportunity scores from your own live reports.</span><a href="#xt-legal">Details</a></div>
+<div class="xt-grid">
+  <div class="xt-gate" data-gate><p class="mono muted">Loading the terminal…</p></div>
+
+  <aside class="xt-left" data-shell hidden aria-label="Watchlist">
+    <div class="xt-sec">
+      <div class="xt-sec-h"><span>WATCHLIST</span><span class="xt-seg" role="tablist"><button type="button" class="on" data-wl="all">ALL</button><button type="button" data-wl="star">★</button></span></div>
+      <input class="xt-search" type="search" placeholder="Filter symbols" aria-label="Filter symbols" data-filter>
+    </div>
+    <div class="xt-scroll" data-symbols></div>
+    <div class="xt-sec" style="border-top:1px solid var(--xt-line);border-bottom:0">
+      <div class="xt-sec-h"><span>CATEGORY INDICES</span><a class="ws-mini amber" href="my-terminal.html">Assign</a></div>
+      <div data-cat-idx></div>
+    </div>
+  </aside>
+
+  <section class="xt-center" data-shell hidden aria-label="Chart">
+    <div class="xt-head">
+      <div class="xt-title"><span class="ic"><img src="favicon.svg" alt="" width="20" height="20"></span><div><h1 data-sym-name>Select a symbol</h1><div class="sub" data-sym-sub>MSX · simulation</div></div></div>
+      <div><div class="xt-last" data-last>—</div></div>
+      <div class="xt-chg" data-chg></div>
+      <div data-verdict></div>
+      <div class="xt-stats" data-hstats></div>
+    </div>
+    <div class="xt-tools" role="toolbar" aria-label="Chart controls">
+      <span class="lbl">SERIES</span>
+      <span class="xt-seg" data-metric><button type="button" class="on" data-m="opportunity">Opportunity</button><button type="button" data-m="demand">Demand</button><button type="button" data-m="price_median">Median price</button><button type="button" data-m="searches">Search history</button></span>
+      <span class="sep"></span><span class="lbl">CANDLE</span>
+      <span class="xt-seg" data-interval><button type="button" class="on" data-i="D">1D</button><button type="button" data-i="W">1W</button><button type="button" data-i="M">1M</button></span>
+      <span class="sep"></span><span class="lbl">RANGE</span>
+      <span class="xt-seg" data-range><button type="button" data-r="30">1M</button><button type="button" data-r="90">3M</button><button type="button" data-r="365">1Y</button><button type="button" class="on" data-r="0">ALL</button></span>
+      <span class="sep"></span><span class="lbl">INDICATORS</span>
+      <button type="button" class="xt-tog on" data-ind="ma3">MA 3</button><button type="button" class="xt-tog" data-ind="ma7">MA 7</button><button type="button" class="xt-tog" data-ind="spread">Demand − Comp.</button><button type="button" class="xt-tog on" data-ind="vol">Volume</button>
+    </div>
+    <div class="xt-chartwrap">
+      <div class="xt-watermark" aria-hidden="true"><span data-wm>MarketScope</span></div>
+      <div class="xt-chart" data-chart role="img" aria-label="Candlestick chart of the selected symbol"></div>
+      <div class="xt-legend" data-legend></div>
+      <div class="xt-attr" data-attr hidden>Charts: <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener noreferrer">TradingView Lightweight Charts™</a></div>
+      <div class="xt-empty" data-chart-empty hidden></div>
+    </div>
+    <div class="xt-bottom">
+      <div class="xt-tabs" role="tablist">
+        <button type="button" class="on" data-tab="positions">Positions<span class="n" data-n="positions">0</span></button>
+        <button type="button" data-tab="open">Open orders<span class="n" data-n="open">0</span></button>
+        <button type="button" data-tab="history">Order history</button>
+        <button type="button" data-tab="book">Order book</button>
+        <button type="button" data-tab="account">Account &amp; P&amp;L</button>
+      </div>
+      <div class="xt-tabbody" data-tabbody></div>
+    </div>
+  </section>
+
+  <aside class="xt-right" data-shell hidden aria-label="Research and trading">
+    <div class="xt-rtabs" role="tablist"><button type="button" class="on" data-rt="research">Research</button><button type="button" data-rt="trade">Trade</button></div>
+    <div class="xt-scroll" data-rpanel="research"></div>
+    <div class="xt-scroll" data-rpanel="trade" hidden>
+      <div class="xt-sec">
+        <div class="xt-sec-h"><span>ORDER TICKET</span><span data-tk-sym></span></div>
+        <form data-ticket>
+          <div class="xt-side"><button type="button" class="buy on" data-side="buy">BUY</button><button type="button" class="sell" data-side="sell">SELL</button></div>
+          <div class="xt-row2">
+            <label class="xt-field">TYPE<select name="type"><option value="market">Market</option><option value="limit">Limit</option></select></label>
+            <label class="xt-field">LIMIT PRICE<input name="limit" type="number" min="0.01" max="1000" step="0.01" disabled></label>
+          </div>
+          <label class="xt-field">UNITS<input name="qty" type="number" min="0.01" step="0.01" value="10" required></label>
+          <div class="xt-est" data-est></div>
+          <button class="xt-place" type="submit" data-place>Place simulated buy</button>
+        </form>
+        <p class="ws-mini" style="margin-top:8px">Market orders fill at the last index value. Limit orders fill when a new live snapshot crosses your price. Simulated fee 0.1% per fill.</p>
+      </div>
+      <div class="xt-sec"><div class="xt-sec-h"><span>ORDER BOOK · YOUR ORDERS</span></div><div data-book-mini></div></div>
+    </div>
+  </aside>
+</div>
+<div class="xt-legal" id="xt-legal">MarketScope Exchange is a <b>simulation</b>. Virtual credits (VC) have no monetary value. You can't buy, sell, deposit or withdraw them, and they aren't linked to your subscription or payment method. MarketScope does not offer real-money trading. Offering it would require legal review, financial-services licensing and regulated infrastructure. A symbol's index value is the Opportunity score (0–100) from your latest live report on that product. Not financial advice. <a href="methodology.html#exact-formulas">How scores work</a> · <a href="roadmap.html">Roadmap</a></div>
 </main>
 <footer class="footer">
   <div class="wrap trust-strip">
@@ -96,6 +146,7 @@
 <script type="module" src="assets/js/leads.js"></script>
 <script src="assets/js/main.js" defer></script>
 <script type="module" src="assets/js/auth.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.3/dist/lightweight-charts.standalone.production.js" defer></script>
 <script type="module" src="assets/js/ws-exchange.js"></script>
 </body>
 </html>
