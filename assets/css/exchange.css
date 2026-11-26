@@ -137,3 +137,14 @@ body.xt-page .footer{display:none}
   .xt-bottom{min-height:240px}
   .xt-title h1{max-width:60vw}
 }
+
+/* v4 cleanup: keep the terminal inside the viewport on phones, readable control sizes */
+.xt-center{min-width:0;grid-template-columns:minmax(0,1fr)}
+.xt-seg button{font-size:.72rem;padding:5px 9px}
+.xt-tools .lbl{font-size:.66rem}
+@media (max-width:900px){
+  .xt-head,.xt-tools{min-width:0;max-width:100%}
+  .xt-head{gap:10px 14px}
+  .xt-tools{gap:6px}
+  .xt-title h1{max-width:100%}
+}
