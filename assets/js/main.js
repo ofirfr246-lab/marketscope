@@ -45,6 +45,23 @@
     }
   })();
 
+  /* ---------- micro-interactions: nav scroll state + card pointer glow ---------- */
+  (function () {
+    var hdr = $("header.nav");
+    if (hdr) {
+      var onScroll = function () { hdr.classList.toggle("is-scrolled", (window.scrollY || 0) > 8); };
+      onScroll(); window.addEventListener("scroll", onScroll, { passive: true });
+    }
+    if (reduce || !window.matchMedia || !matchMedia("(hover:hover)").matches) return;
+    document.addEventListener("pointermove", function (e) {
+      var c = e.target && e.target.closest && e.target.closest(".card,.mod,.quote,.dash-card");
+      if (!c) return;
+      var r = c.getBoundingClientRect();
+      c.style.setProperty("--mx", (e.clientX - r.left) + "px");
+      c.style.setProperty("--my", (e.clientY - r.top) + "px");
+    }, { passive: true });
+  })();
+
   /* ---------- nav ---------- */
   var burger = $(".burger"), menu = $("#mobile-menu");
   if (burger && menu) burger.addEventListener("click", function () {

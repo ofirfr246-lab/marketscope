@@ -49,6 +49,13 @@ async function boot() {
   var m = location.hash.match(/c=([0-9a-f-]{36})/i);
   if (m && S.convs.some(function (c) { return c.id === m[1]; })) await openConversation(m[1]);
   else renderWelcome();
+  /* ?ask=… (e.g. from the Exchange research panel) only pre-fills the box; it never sends by itself. */
+  var ask = new URLSearchParams(location.search).get("ask");
+  if (ask) {
+    var inp = $("[data-input]");
+    inp.value = ask.slice(0, 1000); autosize(inp); setBusy(false); inp.focus();
+    history.replaceState(null, "", location.pathname + location.hash);
+  }
 }
 
 /* ---------- status / usage ---------- */
