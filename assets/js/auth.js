@@ -178,14 +178,25 @@ function renderSignedInNav(user, profile) {
           '<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 4l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>' +
         "</button>" +
         '<div class="account-drop" role="menu">' +
-          '<a href="dashboard.html" role="menuitem">Dashboard</a>' +
-          '<a href="reports.html" role="menuitem">Reports</a>' +
-          '<a href="josy-chat.html" role="menuitem">Josy chat</a>' +
-          '<a href="josy-plans.html" role="menuitem">My plans</a>' +
-          '<a href="josy-campaigns.html" role="menuitem">Campaign manager</a>' +
-          '<a href="dashboard.html?tour=1" role="menuitem">Take the tour</a>' +
-          '<a href="settings.html" role="menuitem">Settings</a>' +
-          '<button type="button" class="link-btn" data-sign-out role="menuitem">Log out</button>' +
+          '<div class="account-sec" role="group" aria-labelledby="acc-sec-workspace">' +
+            '<p class="account-sec-label" id="acc-sec-workspace">Workspace</p>' +
+            '<a href="dashboard.html" role="menuitem">Dashboard</a>' +
+            '<a href="reports.html" role="menuitem">Reports</a>' +
+            '<a href="my-terminal.html" role="menuitem">Live Terminal</a>' +
+            '<a href="exchange.html" role="menuitem">Exchange · Simulation</a>' +
+          "</div>" +
+          '<div class="account-sec" role="group" aria-labelledby="acc-sec-josy">' +
+            '<p class="account-sec-label" id="acc-sec-josy">Josy</p>' +
+            '<a href="josy-chat.html" role="menuitem">Josy chat</a>' +
+            '<a href="josy-plans.html" role="menuitem">My plans</a>' +
+            '<a href="josy-campaigns.html" role="menuitem">Campaign manager</a>' +
+          "</div>" +
+          '<div class="account-sec" role="group" aria-labelledby="acc-sec-account">' +
+            '<p class="account-sec-label" id="acc-sec-account">Account</p>' +
+            '<a href="dashboard.html?tour=1" role="menuitem">Take the tour</a>' +
+            '<a href="settings.html" role="menuitem">Settings</a>' +
+            '<button type="button" class="link-btn" data-sign-out role="menuitem">Log out</button>' +
+          "</div>" +
         "</div>" +
       "</div>";
     bindAccountMenu($(".account-menu", right));

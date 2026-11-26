@@ -13,35 +13,242 @@
 
   $$(".year").forEach(function (e) { e.textContent = new Date().getFullYear(); });
 
-  /* ---------- Workspace nav group (vision modules), injected once for every page ---------- */
-  (function addWorkspaceNav() {
-    var WS = [
-      ["my-terminal.html", "Live Terminal", "History, movers and alerts from your reports"],
-      ["competitors.html", "Competitor Intelligence", "Stores, logged prices and alerts"],
-      ["suppliers.html", "Supplier Intelligence", "Compare cost, margin, shipping and MOQ"],
-      ["product-portfolio.html", "Product Portfolio", "Unit economics linked to live research"],
-      ["backtesting.html", "Backtesting", "Test rules on real history"],
-      ["exchange.html", "Exchange · Simulation", "Virtual credits only, no real money"],
-      ["roadmap.html", "Vision & roadmap", "What's live, in progress and planned"]
-    ];
+  /* ---------- Site nav: Workspace + Exchange, and section headings in every menu ---------- */
+  (function enhanceSiteNav() {
+    var CHEV = '<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 4l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>';
+    var WS = {
+      "Research desk": [
+        ["my-terminal.html", "Live Terminal", "History, movers and alerts from your reports"],
+        ["competitors.html", "Competitor Intelligence", "Stores, logged prices and alerts"],
+        ["suppliers.html", "Supplier Intelligence", "Compare cost, margin, shipping and MOQ"],
+        ["product-portfolio.html", "Product Portfolio", "Unit economics linked to live research"],
+        ["backtesting.html", "Backtesting", "Test rules on real history"]
+      ],
+      "Trading": [
+        ["exchange.html", "Exchange · Simulation", "Virtual credits only, no real money"]
+      ],
+      "Vision": [
+        ["roadmap.html", "Vision & roadmap", "What's live, in progress and planned"]
+      ]
+    };
+    var MEGA_GROUPS = {
+      Product: [
+        { label: "Research", hrefs: ["product.html", "demo.html", "app.html"] },
+        { label: "Platform", hrefs: ["integrations.html", "changelog.html"] }
+      ],
+      Terminal: [
+        { label: "Market desk", hrefs: ["terminal.html", "screener.html", "heatmap.html", "indices.html"] },
+        { label: "Tools", hrefs: ["watchlist.html", "portfolio.html", "backtest.html", "calendar.html", "stores.html"] }
+      ],
+      Solutions: [
+        { label: "By use case", hrefs: ["solutions.html#dropshippers", "solutions.html#amazon", "solutions.html#dtc", "solutions.html#agencies"] },
+        { label: "Compare", hrefs: ["compare.html"] }
+      ],
+      Resources: [
+        { label: "Guides", hrefs: ["blog.html", "how-to-find-winning-products.html"] },
+        { label: "Reference", hrefs: ["docs.html", "methodology.html", "status.html"] }
+      ],
+      Company: [
+        { label: "About", hrefs: ["about.html", "careers.html", "contact.html"] },
+        { label: "Trust", hrefs: ["security.html"] }
+      ]
+    };
+    var JOSY = {
+      "Assistant": [
+        ["josy.html", "Josy overview", "AI marketing assistant"],
+        ["josy-chat.html", "Josy chat", "Ask about a product or campaign"],
+        ["josy-plans.html", "My plans", "Saved content plans"]
+      ],
+      "Campaigns": [
+        ["josy-campaigns.html", "Campaign manager", "Organic posts and paid drafts"]
+      ]
+    };
+
+    function hrefKey(a) { return (a.getAttribute("href") || "").split("?")[0]; }
+    function slug(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
+    function sectionLabel(tag, className, id, text) {
+      var el = document.createElement(tag);
+      el.className = className;
+      el.id = id;
+      el.textContent = text;
+      return el;
+    }
+    function applyGroups(container, itemSel, groups, labelClass, secClass, prefix) {
+      if (!container || container.getAttribute("data-nav-sections")) return;
+      var map = {};
+      var all = $$(itemSel, container);
+      all.forEach(function (a) { map[hrefKey(a)] = a; });
+      var used = {};
+      groups.forEach(function (g) {
+        var id = "nav-sec-" + prefix + "-" + slug(g.label);
+        var sec = document.createElement("div");
+        sec.className = secClass;
+        sec.setAttribute("role", "group");
+        sec.setAttribute("aria-labelledby", id);
+        sec.appendChild(sectionLabel("p", labelClass, id, g.label));
+        g.hrefs.forEach(function (h) {
+          if (map[h]) { sec.appendChild(map[h]); used[h] = 1; }
+        });
+        if (sec.querySelector(itemSel)) container.appendChild(sec);
+      });
+      all.forEach(function (a) { if (!used[hrefKey(a)]) container.appendChild(a); });
+      container.setAttribute("data-nav-sections", "1");
+    }
+    function mmItem(href, title, sub) {
+      return '<a href="' + href + '" class="mm-item"><b>' + title + "</b><span>" + sub + "</span></a>";
+    }
+    function mmSections(groups) {
+      var html = "";
+      Object.keys(groups).forEach(function (label) {
+        var id = "nav-sec-ws-" + slug(label);
+        html += '<div class="mm-sec" role="group" aria-labelledby="' + id + '"><p class="mm-label" id="' + id + '">' + label + "</p>";
+        groups[label].forEach(function (w) { html += mmItem(w[0], w[1], w[2]); });
+        html += "</div>";
+      });
+      return html;
+    }
+    function decorateMobGroup(g, prefix) {
+      if (!g || g.getAttribute("role") === "group") return;
+      var lab = g.querySelector(".mob-label");
+      if (!lab) return;
+      if (!lab.id) lab.id = "nav-sec-mob-" + slug(prefix || lab.textContent);
+      g.setAttribute("role", "group");
+      g.setAttribute("aria-labelledby", lab.id);
+    }
+
     var links = $(".nav-links");
     if (links && !links.querySelector("[data-ws-nav]")) {
       var g = document.createElement("div");
       g.className = "nav-group"; g.setAttribute("data-ws-nav", "");
-      g.innerHTML = '<button class="nav-trigger" aria-expanded="false">Workspace<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 4l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button><div class="mega"><div class="mega-in">' +
-        WS.map(function (w) { return '<a href="' + w[0] + '" class="mm-item"><b>' + w[1] + "</b><span>" + w[2] + "</span></a>"; }).join("") + "</div></div>";
+      g.innerHTML = '<button class="nav-trigger" aria-expanded="false">Workspace' + CHEV + '</button><div class="mega"><div class="mega-in" data-nav-sections="1">' + mmSections(WS) + "</div></div>";
       var groups = links.querySelectorAll(".nav-group");
       var after = groups.length > 1 ? groups[1] : groups[0];
       if (after && after.nextSibling) links.insertBefore(g, after.nextSibling); else links.appendChild(g);
     }
+
+    if (links) {
+      $$(".nav-group", links).forEach(function (grp) {
+        var t = grp.querySelector(".nav-trigger");
+        var name = t ? t.textContent.trim() : "";
+        var plan = MEGA_GROUPS[name];
+        var mega = grp.querySelector(".mega-in");
+        if (plan && mega) applyGroups(mega, ".mm-item", plan, "mm-label", "mm-sec", slug(name));
+      });
+    }
+
+    /* Josy: turn the plain link into a labelled mega menu (Assistant / Campaigns). */
+    if (links && !links.querySelector("[data-josy-nav]")) {
+      var josyLink = links.querySelector("a.nav-plain.nav-josy, a.nav-plain[href='josy.html']");
+      if (josyLink) {
+        var jg = document.createElement("div");
+        jg.className = "nav-group"; jg.setAttribute("data-josy-nav", "");
+        jg.innerHTML = '<button class="nav-trigger nav-josy" aria-expanded="false">Josy <span class="nav-new">AI</span>' + CHEV + '</button><div class="mega"><div class="mega-in" data-nav-sections="1">' + mmSections(JOSY) + "</div></div>";
+        links.insertBefore(jg, josyLink);
+        josyLink.parentNode.removeChild(josyLink);
+      }
+    }
+
+    /* Top-level Exchange, next to Pricing, so it is visible without opening Workspace. */
+    if (links && !links.querySelector("[data-x-nav]")) {
+      var ex = document.createElement("a");
+      ex.href = "exchange.html";
+      ex.className = "nav-plain";
+      ex.setAttribute("data-x-nav", "");
+      ex.textContent = "Exchange";
+      var pricing = links.querySelector('a.nav-plain[href="pricing.html"]');
+      if (pricing) links.insertBefore(ex, pricing); else links.appendChild(ex);
+    }
+
     var mob = $("#mobile-menu");
     if (mob && !mob.querySelector("[data-ws-mob]")) {
       var m = document.createElement("div");
       m.className = "mob-group"; m.setAttribute("data-ws-mob", "");
-      m.innerHTML = '<div class="mob-label mono">WORKSPACE</div>' + WS.map(function (w) { return '<a href="' + w[0] + '">' + w[1] + "</a>"; }).join("");
+      m.setAttribute("role", "group");
+      m.setAttribute("aria-labelledby", "nav-sec-mob-workspace");
+      var mh = '<p class="mob-label mono" id="nav-sec-mob-workspace">Workspace</p>';
+      Object.keys(WS).forEach(function (label) {
+        if (label === "Trading") return; /* Exchange has its own mobile group, so it is not listed twice. */
+        var id = "nav-sec-mob-ws-" + slug(label);
+        mh += '<div class="mob-sec" role="group" aria-labelledby="' + id + '"><p class="mob-sub mono" id="' + id + '">' + label + "</p>";
+        WS[label].forEach(function (w) { mh += '<a href="' + w[0] + '">' + w[1] + "</a>"; });
+        mh += "</div>";
+      });
+      m.innerHTML = mh;
       var mg = mob.querySelectorAll(".mob-group");
       var ref = mg.length > 1 ? mg[1] : mg[0];
       if (ref && ref.nextSibling) mob.insertBefore(m, ref.nextSibling); else mob.appendChild(m);
+    }
+
+    if (mob && !mob.querySelector("[data-x-mob]")) {
+      var xg = document.createElement("div");
+      xg.className = "mob-group"; xg.setAttribute("data-x-mob", "");
+      xg.setAttribute("role", "group");
+      xg.setAttribute("aria-labelledby", "nav-sec-mob-exchange");
+      xg.innerHTML = '<p class="mob-label mono" id="nav-sec-mob-exchange">Exchange</p><a href="exchange.html">Exchange · Simulation</a>';
+      var wsMob = mob.querySelector("[data-ws-mob]");
+      if (wsMob && wsMob.nextSibling) mob.insertBefore(xg, wsMob.nextSibling);
+      else if (wsMob) mob.appendChild(xg);
+      else {
+        var jes = mob.querySelector('a[href="josy.html"]');
+        var jg0 = jes && jes.closest(".mob-group");
+        if (jg0) mob.insertBefore(xg, jg0); else mob.appendChild(xg);
+      }
+    }
+
+    if (mob && !mob.getAttribute("data-nav-sections")) {
+      $$(".mob-group", mob).forEach(function (grp) {
+        var lab = (grp.querySelector(".mob-label") || {}).textContent || "";
+        decorateMobGroup(grp, lab);
+        var trigger = lab.trim();
+        /* Match desktop groups: Product, Terminal, Solutions, Resources, Company. */
+        var plan = MEGA_GROUPS[trigger] || MEGA_GROUPS[trigger.charAt(0) + trigger.slice(1).toLowerCase()];
+        if (!plan && trigger.toUpperCase() === "PRODUCT") plan = MEGA_GROUPS.Product;
+        if (!plan && trigger.toUpperCase() === "TERMINAL") plan = MEGA_GROUPS.Terminal;
+        if (!plan && trigger.toUpperCase() === "SOLUTIONS") plan = MEGA_GROUPS.Solutions;
+        if (!plan && trigger.toUpperCase() === "RESOURCES") plan = MEGA_GROUPS.Resources;
+        if (!plan && trigger.toUpperCase() === "COMPANY") plan = MEGA_GROUPS.Company;
+        if (plan) applyGroups(grp, "a", plan, "mob-sub mono", "mob-sec", "mob-" + slug(trigger));
+      });
+      /* Split the unlabelled Josy / pricing / account cluster. */
+      $$(".mob-group", mob).forEach(function (grp) {
+        if (grp.querySelector(".mob-label, .mob-sub") || grp.getAttribute("data-ws-mob") || grp.getAttribute("data-x-mob")) return;
+        if (!grp.querySelector('a[href="josy.html"], a[href="josy-chat.html"]')) return;
+        var map = {};
+        $$("a, .btn, .mob-auth, [data-sign-out]", grp).forEach(function (el) {
+          if (el.matches && el.matches("a")) map[hrefKey(el)] = el;
+        });
+        var leftovers = Array.prototype.slice.call(grp.childNodes);
+        function take(hrefs) {
+          return hrefs.map(function (h) { return map[h]; }).filter(Boolean);
+        }
+        function emit(label, nodes, attr) {
+          if (!nodes.length) return;
+          var d = document.createElement("div");
+          d.className = "mob-group";
+          d.setAttribute("role", "group");
+          var id = "nav-sec-mob-" + slug(label);
+          d.setAttribute("aria-labelledby", id);
+          if (attr) d.setAttribute(attr, "");
+          d.appendChild(sectionLabel("p", "mob-label mono", id, label));
+          nodes.forEach(function (n) { d.appendChild(n); });
+          grp.parentNode.insertBefore(d, grp);
+        }
+        emit("Josy", take(["josy.html", "josy-chat.html", "josy-plans.html"]), "data-josy-mob");
+        emit("Campaigns", take(["josy-campaigns.html"]), "data-campaigns-mob");
+        var rest = leftovers.filter(function (n) { return n.parentNode === grp; });
+        if (rest.length) {
+          var acc = document.createElement("div");
+          acc.className = "mob-group";
+          acc.setAttribute("role", "group");
+          acc.setAttribute("aria-labelledby", "nav-sec-mob-account");
+          acc.setAttribute("data-account-mob", "");
+          acc.appendChild(sectionLabel("p", "mob-label mono", "nav-sec-mob-account", "Account"));
+          rest.forEach(function (n) { acc.appendChild(n); });
+          grp.parentNode.insertBefore(acc, grp);
+        }
+        grp.parentNode.removeChild(grp);
+      });
+      mob.setAttribute("data-nav-sections", "1");
     }
   })();
 
@@ -121,7 +328,14 @@
     a.classList.add("active");
     a.setAttribute("aria-current", current);
     var group = a.closest(".nav-group");
-    if (group) group.classList.add("active");
+    if (group) {
+      var href = navHref(a);
+      var file = href ? navFile(href.pathname) : "";
+      var plainMarks = file && $$(".nav-links > a.nav-plain", navRoot).some(function (p) {
+        var u = navHref(p); return u && navFile(u.pathname) === file;
+      });
+      if (!plainMarks) group.classList.add("active");
+    }
     var menu = a.closest(".account-menu");
     if (menu) menu.classList.add("has-current");
   }

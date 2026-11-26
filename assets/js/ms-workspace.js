@@ -139,9 +139,23 @@ export var WS_PAGES = [
   ["my-terminal.html", "Live Terminal"], ["competitors.html", "Competitors"], ["suppliers.html", "Suppliers"],
   ["product-portfolio.html", "Portfolio"], ["backtesting.html", "Backtesting"], ["exchange.html", "Exchange · Sim"], ["roadmap.html", "Roadmap"]
 ];
+export var WS_SECTIONS = [
+  { label: "Research", pages: ["my-terminal.html", "competitors.html", "suppliers.html", "product-portfolio.html", "backtesting.html"] },
+  { label: "Trading", pages: ["exchange.html"] },
+  { label: "Vision", pages: ["roadmap.html"] }
+];
 export function paintSubnav() {
   var host = $("[data-ws-sub]"); if (!host) return;
   var file = (location.pathname.split("/").pop() || "index.html");
-  host.innerHTML = WS_PAGES.map(function (p) { return '<a href="' + p[0] + '"' + (p[0] === file ? ' class="on" aria-current="page"' : "") + ">" + esc(p[1]) + "</a>"; }).join("");
+  var byHref = {};
+  WS_PAGES.forEach(function (p) { byHref[p[0]] = p; });
+  host.innerHTML = WS_SECTIONS.map(function (sec, i) {
+    var id = "ws-sub-sec-" + sec.label.toLowerCase();
+    var links = sec.pages.map(function (href) {
+      var p = byHref[href]; if (!p) return "";
+      return '<a href="' + p[0] + '"' + (p[0] === file ? ' class="on" aria-current="page"' : "") + ">" + esc(p[1]) + "</a>";
+    }).join("");
+    return '<div class="ws-sec" role="group" aria-labelledby="' + id + '"><p class="ws-sec-label" id="' + id + '">' + esc(sec.label) + "</p>" + links + "</div>";
+  }).join("");
 }
 paintSubnav();
