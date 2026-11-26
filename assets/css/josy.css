@@ -674,3 +674,11 @@ body.josy-app{overflow:hidden}
 .bell-empty{padding:26px 18px;text-align:center;display:grid;gap:6px}
 .bell-empty b{font-size:.9rem}.bell-empty span{font-size:.8rem;color:var(--muted)}
 .st.launched{color:var(--green);border-color:rgba(25,210,124,.5);background:rgba(25,210,124,.1)}
+
+/* Planned campaign connections (MarketScope palette, original initials only) */
+.pf-badge.planned-pf{background:transparent;color:var(--muted);border:1px dashed var(--line2)}
+.pf-badge.planned-pf.gshopping{color:var(--amber);border-color:rgba(255,176,0,.5)}
+.pf-badge.planned-pf.youtube{color:var(--violet);border-color:rgba(167,139,250,.5)}
+.pf-badge.planned-pf.shopify{color:var(--green);border-color:rgba(25,210,124,.5)}
+.opt.opt-planned{opacity:.55;cursor:not-allowed}
+.connect.planned-card{border-style:dashed}
