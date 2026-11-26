@@ -50,3 +50,15 @@ Live today: **Google Shopping** and **Google Search** on every plan. Amazon, Met
 - Cookie banner stores the choice in `localStorage` (`ms_consent`). No analytics are loaded.
 - Dashboard reports use **live Google Shopping and Google Search** data when the analyze function is configured. Amazon, Meta, TikTok, AliExpress and Shopify are coming soon.
 - All market data, customers/testimonials, status and API samples on marketing pages are illustrative examples.
+
+## Workspace modules (vision build, Nov 2026)
+Private, per-user modules. They start empty and use only the user's own live reports and the entries they add. There is no sample data.
+- **Live Terminal** (`my-terminal.html`): watchlist (`research_watchlist`), score/price/search history from `product_snapshots`, movers, category heatmap, country comparison, alert rules (`market_alerts`) and an alert inbox (`alert_events`).
+- **Competitor Intelligence** (`competitors.html`): `competitors` and `competitor_observations` (prices, launches, promotions and ads the user logs), with price alerts.
+- **Supplier Intelligence** (`suppliers.html`): `suppliers` with landed cost, margin, MOQ cash and a weighted fit score from the user's own weights.
+- **Product Portfolio** (`product-portfolio.html`): `product_portfolio` unit economics, linked to the latest snapshot.
+- **Backtesting** (`backtesting.html`): demand-history test on stored 12-month Google search volumes, and a snapshot strategy test. Saved runs go to `backtest_runs`.
+- **Exchange: simulation** (`exchange.html`): virtual credits only (`exchange_accounts`, `exchange_orders`, `exchange_positions`; RPCs `exchange_place_order`, `exchange_cancel_order`, `exchange_reset`). There are no deposits, payments or cash-out. A symbol's index value is the latest Opportunity score of the user's own snapshot.
+- **Roadmap** (`roadmap.html`): the 8 stages, each with an honest status.
+
+Snapshots are written by the trigger `reports_to_snapshot` on `public.reports`, and only for complete, non-example reports. Migrations: `supabase/migrations/20261126180000_vision_modules.sql` and `20261126181000_research_watchlist.sql`.
