@@ -309,6 +309,29 @@ const TOOL_DECLARATIONS = [
     description: "Read one saved plan with its items, by id (from list_plans).",
     parameters: { type: "object", properties: { plan_id: { type: "string" } }, required: ["plan_id"] },
   },
+  {
+    name: "get_my_research",
+    description: "Read the user's own stored MarketScope live research snapshots (latest per product and market, with scores, verdict, median Shopping price, monthly searches and capture date). Free — no credits. Use before recommending which of their researched products to focus on.",
+    parameters: { type: "object", properties: { product: { type: "string", description: "Optional product name filter (substring)." } } },
+  },
+  {
+    name: "add_to_watchlist",
+    description: "Add a product to the user's Live Terminal watchlist. Only call when the user explicitly asks you to add or follow a product.",
+    parameters: {
+      type: "object",
+      properties: {
+        product: { type: "string", description: "Product name as the user wrote it." },
+        market: { type: "string", description: "2-letter market code (US, GB, DE, FR, IT, ES, NL, CA, AU, IL). Defaults to the conversation market." },
+        note: { type: "string", description: "Optional short note." },
+      },
+      required: ["product"],
+    },
+  },
+  {
+    name: "get_workspace",
+    description: "Read the user's workspace: product portfolio (their own costs, prices and unit estimates), supplier quotes, tracked competitors and watchlist. Free — no credits. Use for pricing, margin, supplier or portfolio questions.",
+    parameters: { type: "object", properties: {} },
+  },
 ];
 
 type TurnState = {
@@ -321,6 +344,7 @@ type TurnState = {
   demand: DemandResult[];
   planIds: string[];
   toolsUsed: string[];
+  notes?: string[];
 };
 
 function unescapeNl(s: string): string {
@@ -421,6 +445,52 @@ async function runTool(admin: SupabaseClient, st: TurnState, name: string, args:
       .eq("user_id", st.userId).eq("id", id).maybeSingle();
     if (r.error || !r.data) return { ok: false, error: "Plan not found." };
     return { ok: true, plan: r.data };
+  }
+  if (name === "get_my_research") {
+    const r = await admin.from("product_snapshots")
+      .select("product, product_key, market, verdict, confidence, opportunity, demand, competition, saturation, price_median, currency, search_volume, trend_slope, captured_at")
+      .eq("user_id", st.userId).order("captured_at", { ascending: false }).limit(300);
+    if (r.error) return { ok: false, error: "Could not load research." };
+    const filter = str(args.product, 120).toLowerCase();
+    const seen = new Map<string, Json & { snapshots: number }>();
+    for (const row of (r.data || []) as Json[]) {
+      const k = String(row.product_key) + "|" + String(row.market);
+      if (filter && !String(row.product_key).includes(filter)) continue;
+      const cur = seen.get(k);
+      if (cur) cur.snapshots++;
+      else seen.set(k, { ...row, product_key: undefined, snapshots: 1 });
+    }
+    const products = Array.from(seen.values()).slice(0, 40);
+    (st.notes ||= []).push("get_my_research: " + products.map((p) => p.product + " " + p.market + " " + (p.verdict ?? "") + " opp " + (p.opportunity ?? "n/a") + " on " + String(p.captured_at).slice(0, 10)).join("; "));
+    return { ok: true, count: products.length, products, note: products.length ? "Stored snapshots from the user's own live reports; cite the capture date — they are not today's data unless captured today." : "The user has no live research reports yet. Suggest running one on the dashboard (app.html)." };
+  }
+  if (name === "add_to_watchlist") {
+    const product = str(args.product, 200).trim();
+    if (!product) return { ok: false, error: "Product name is required." };
+    const market = resolveMarket(args.market || st.defaultMarket);
+    const key = product.toLowerCase().replace(/\s+/g, " ").slice(0, 200);
+    const r = await admin.from("research_watchlist").upsert({
+      user_id: st.userId, product, product_key: key, market: market.name, note: str(args.note, 1000) || null, added_by: "josy",
+    }, { onConflict: "user_id,product_key,market", ignoreDuplicates: true });
+    if (r.error) return { ok: false, error: "Could not add to the watchlist." };
+    (st.notes ||= []).push("added to watchlist: " + product + " (" + market.name + ")");
+    return { ok: true, product, market: market.name, page: "my-terminal.html" };
+  }
+  if (name === "get_workspace") {
+    const [pf, sup, comp, wl] = await Promise.all([
+      admin.from("product_portfolio").select("product, market, status, unit_cost, shipping_cost, sell_price, fees_pct, ad_cost_per_unit, monthly_units, currency").eq("user_id", st.userId).limit(100),
+      admin.from("suppliers").select("name, product, unit_cost, shipping_cost, currency, shipping_days_min, shipping_days_max, moq, quality, reliability, target_sell_price").eq("user_id", st.userId).limit(100),
+      admin.from("competitors").select("name, platform, category, url").eq("user_id", st.userId).limit(100),
+      admin.from("research_watchlist").select("product, market").eq("user_id", st.userId).limit(100),
+    ]);
+    const n = (v: unknown) => (typeof v === "number" ? v : v == null ? null : Number(v));
+    const portfolio = ((pf.data || []) as Json[]).map((r) => {
+      const price = n(r.sell_price), cost = n(r.unit_cost);
+      const profit = price != null && cost != null ? price - cost - (n(r.shipping_cost) || 0) - price * (n(r.fees_pct) || 0) / 100 - (n(r.ad_cost_per_unit) || 0) : null;
+      return { ...r, profit_per_unit: profit != null ? Math.round(profit * 100) / 100 : null, margin_pct: profit != null && price ? Math.round(profit / price * 1000) / 10 : null };
+    });
+    return { ok: true, portfolio, suppliers: sup.data || [], competitors: comp.data || [], watchlist: wl.data || [],
+      note: "All values were entered by the user (estimates, not measured results). Never present unit estimates as real sales." };
   }
   return { ok: false, error: "Unknown tool." };
 }
@@ -523,6 +593,8 @@ YOUR JOB (v1 = ORGANIC marketing only): help the user grow with organic channels
 - Build organic marketing plans (save_plan) and dated content calendars (create_content_calendar); read saved ones with list_plans / get_plan.
 MarketScope has a Campaign manager (josy-campaigns.html) where the user works by hand: an organic planner (josy-organic.html) to compose posts per platform, schedule them on a calendar and mark them published themselves, and paid campaign drafts (josy-paid.html, new draft at josy-campaign-new.html) for Meta, TikTok and Google with objective, budget, schedule, audience, placements, bidding, ad sets / ad groups and ads. You can point users there and help them fill drafts (suggest copy within character limits, audiences, structure). You cannot see, create or edit their campaigns or posts yourself. Publishing to ad accounts or social networks is NOT available yet ("coming soon", requires platform approval) — never claim to publish, launch, run or pause ads or posts, and never invent reach, impressions, CPC, CTR, conversions or other performance numbers for campaigns.
 
+MARKETSCOPE WORKSPACE (you can read it with tools): the user's stored live research snapshots (get_my_research), their product portfolio, supplier quotes, competitors and watchlist (get_workspace). Pages: Live Terminal (my-terminal.html: history, movers, category heatmap, alerts), Competitor Intelligence (competitors.html), Supplier Intelligence (suppliers.html), Product Portfolio (product-portfolio.html), Backtesting (backtesting.html), MarketScope Exchange (exchange.html — a SIMULATION with virtual credits only; never suggest real-money trading, investing or that credits have value) and the roadmap (roadmap.html). You may add a product to the watchlist with add_to_watchlist only when the user asks. Use workspace data for pricing, margin, supplier and "what should I focus on" advice; always say research figures come from their report on a given date, and that portfolio/supplier numbers are their own entries. MarketScope scores: Opportunity 0–100 with ratings STRONG BUY, BUY, HOLD, UNDERPERFORM, AVOID (formulas on methodology.html). Never invent a score — scores only come from live reports.
+
 DATA HONESTY — HARD RULES:
 1. Never invent statistics, search volumes, trends, CPCs, follower counts, conversion rates, market sizes, prices, case studies, quotes or testimonials.
 2. Every demand number you mention must come from a check_demand result in this conversation. When you cite one, say it is from MarketScope live search data and name the market and that volumes are monthly Google searches.
@@ -566,6 +638,7 @@ function toolContext(st: TurnState): string {
       (d.related.length ? "; related: " + d.related.slice(0, 6).map((r) => r.keyword + "=" + (r.search_volume ?? "n/a")).join(", ") : ""));
   }
   if (st.planIds.length) parts.push("saved plan ids: " + st.planIds.join(", "));
+  for (const n of st.notes || []) parts.push(n);
   return parts.join(" | ").slice(0, 3000);
 }
 
