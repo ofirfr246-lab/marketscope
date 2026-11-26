@@ -83,3 +83,13 @@
 .ws-deco{position:absolute;right:4%;top:18px;display:flex;gap:10px;opacity:.55;z-index:0}
 .ws-deco svg{width:34px;height:34px;color:var(--amber)}
 @media (max-width:760px){.ws-step{grid-template-columns:44px 1fr}.ws-step .st{grid-column:2}.ws-book{grid-template-columns:1fr}.ws-deco{display:none}}
+
+/* Section headings in the in-app workspace page nav */
+.ws-sub{align-items:center;gap:10px 0}
+.ws-sec{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.ws-sec + .ws-sec{border-left:1px solid var(--line);margin-left:14px;padding-left:14px}
+.ws-sec-label{margin:0 2px 0 0;font:600 .62rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+@media (max-width:640px){
+  .ws-sec{flex-basis:100%}
+  .ws-sec + .ws-sec{border-left:0;margin-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:8px;margin-top:4px}
+}

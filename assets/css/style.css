@@ -2184,9 +2184,9 @@ body.is-analyzing{overflow:hidden}
 }
 
 /* Josy nav link (Josy Market) */
-.nav-plain.nav-josy{gap:7px}
+.nav-plain.nav-josy,.nav-trigger.nav-josy{gap:7px}
 .nav-new{font:700 .58rem var(--mono);color:#111;background:var(--amber);border-radius:4px;padding:2px 5px;letter-spacing:.04em;line-height:1.2}
-@media (max-width:1180px){.nav-plain.nav-josy .nav-new{display:none}}
+@media (max-width:1180px){.nav-plain.nav-josy .nav-new,.nav-trigger.nav-josy .nav-new{display:none}}
 
 /* =====================================================================
    Design system v2 — brings the classic pages in line with Josy
@@ -2424,3 +2424,20 @@ input[type=checkbox],input[type=radio],input[type=range]{accent-color:var(--ambe
   .btn-amber::after{display:none}
   .reveal{transition:none}
 }
+
+/* Nav section headings (design v3): small uppercase muted labels with a divider, inside every menu. */
+.nav .wrap{width:min(1360px,100% - 32px)}
+.nav-right{flex-shrink:0}
+.nav-login,.nav-cta,.nav-plain,.nav-trigger,.account-btn{white-space:nowrap}
+.nav-trigger,.nav-plain{padding:8px 10px}
+.mm-sec{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
+.mega-in>.mm-sec:first-child{margin-top:0;padding-top:0;border-top:0}
+.mm-label{grid-column:1/-1;margin:0;font:600 .62rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);padding:6px 14px 2px}
+.mob-label{display:block;margin:0;padding:10px 0 4px;font:600 .68rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+.mob-sub{display:block;margin:0;padding:8px 0 2px;font:600 .62rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.mob-sec{padding:2px 0}
+.mob-sec + .mob-sec{margin-top:4px;padding-top:8px;border-top:1px solid var(--line)}
+.account-drop{min-width:220px}
+.account-sec + .account-sec{margin-top:4px}
+.account-sec-label{margin:0;font:600 .62rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);padding:8px 12px 4px;border-top:1px solid var(--line)}
+.account-sec:first-child .account-sec-label{border-top:0;padding-top:4px}
