@@ -2300,3 +2300,127 @@ body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
   background-image:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);
   background-size:48px 48px;-webkit-mask-image:radial-gradient(ellipse 70% 90% at 60% 0%,#000 25%,transparent 75%);mask-image:radial-gradient(ellipse 70% 90% at 60% 0%,#000 25%,transparent 75%)}
 @media (max-width:520px){.wm-stats{grid-template-columns:repeat(3,1fr);gap:6px}.wm-stats div{padding:9px 6px;text-align:center}.wm-stats b{font-size:.95rem}.wm-stats span{font-size:.55rem}}
+
+/* =====================================================================
+   Design system v3 (Nov 2026): consistency, depth, micro-interactions.
+   CSS only, built on the theme tokens so Dark / Midnight / Dim all follow.
+   ===================================================================== */
+:root{
+  --r-card:16px;--r-ctl:11px;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --edge:inset 0 1px 0 rgba(255,255,255,.04);
+  --glow-amber:0 0 0 1px rgba(255,176,0,.22),0 20px 60px -28px rgba(255,176,0,.35);
+  --sp-1:4px;--sp-2:8px;--sp-3:12px;--sp-4:16px;--sp-5:24px;--sp-6:32px;
+}
+html{color-scheme:dark;scrollbar-color:var(--line2) transparent}
+body{font-feature-settings:"cv11","ss01","ss03";letter-spacing:-.003em}
+h1,h2,h3{text-wrap:balance}
+p,li{text-wrap:pretty}
+.mono,code,kbd{font-feature-settings:"zero","ss01"}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:var(--line2);border-radius:999px;border:2px solid var(--bg)}
+::-webkit-scrollbar-thumb:hover{background:#3a4450}
+::-webkit-scrollbar-track{background:transparent}
+a{transition:color .15s var(--ease)}
+
+/* nav: glass, scroll state, active indicator, refined mega menus */
+.nav{transition:background .25s var(--ease),box-shadow .25s var(--ease),border-color .25s var(--ease)}
+.nav.is-scrolled{background:color-mix(in srgb,var(--bg) 88%,transparent);box-shadow:0 10px 40px -20px rgba(0,0,0,.8);border-bottom-color:var(--line2)}
+.nav-trigger,.nav-plain{transition:color .15s var(--ease),background .15s var(--ease)}
+.nav-group.active>.nav-trigger,.nav-plain.active,.nav-plain[aria-current]{color:var(--text)}
+.nav-group.active>.nav-trigger::after,.nav-plain.active::after,.nav-plain[aria-current]::after{content:"";position:absolute;left:12px;right:12px;bottom:-12px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--amber),transparent)}
+.nav-trigger svg{transition:transform .2s var(--ease)}
+.nav-group:hover .nav-trigger svg,.nav-group.open .nav-trigger svg{transform:rotate(180deg)}
+.mega-in{border-radius:16px!important;box-shadow:0 30px 80px -30px rgba(0,0,0,.9),var(--edge)!important;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.mm-item{border-radius:12px;transition:background .15s var(--ease),transform .15s var(--ease)}
+.mm-item:hover{transform:translateX(2px)}
+.nav-cta{transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
+
+/* surfaces: one card language everywhere */
+.card,.mod,.quote,.plan,.dash-card,.set-card,.t-panel,.ws-kpi,.connect,.choice,.kpi{border-radius:var(--r-card)}
+.card,.mod,.quote,.dash-card{
+  --mx:50%;--my:0%;
+  background:radial-gradient(520px circle at var(--mx) var(--my),rgba(255,176,0,0),transparent 45%),var(--surface,var(--panel));
+  box-shadow:var(--edge);transition:border-color .25s var(--ease),transform .25s var(--ease),box-shadow .25s var(--ease),background .25s var(--ease)}
+.connect,.choice{transition:border-color .25s var(--ease),transform .25s var(--ease),box-shadow .25s var(--ease)}
+.connect:hover,.choice:hover{transform:translateY(-2px);box-shadow:var(--lift,0 18px 50px -24px rgba(0,0,0,.75))}
+.card:hover,.mod:hover,.quote:hover,.dash-card:hover{
+  background:radial-gradient(520px circle at var(--mx) var(--my),rgba(255,176,0,.07),transparent 45%),var(--surface,var(--panel));
+  border-color:var(--line2);transform:translateY(-2px);box-shadow:var(--edge),var(--lift,0 18px 50px -24px rgba(0,0,0,.75))}
+.t-panel{background:linear-gradient(180deg,rgba(255,255,255,.018),transparent 120px),var(--panel);box-shadow:var(--edge);padding:14px 16px}
+.t-panel h2,.t-panel h3{font-size:.8rem!important;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#c9d0d8;padding-bottom:10px;margin-bottom:12px!important;border-bottom:1px solid var(--line)}
+.term-desk{gap:14px}
+
+/* section rhythm */
+.section-head,.sec-head{margin-bottom:clamp(28px,4vw,48px)}
+.kicker{display:inline-flex;align-items:center;gap:8px}
+.kicker::before{content:"";width:18px;height:1px;background:currentColor;opacity:.6}
+.page-hero{border-bottom:1px solid var(--line)}
+.page-hero .sub,.hero-copy p,.lead{color:#b9c1cc}
+
+/* buttons: shine + press */
+.btn{position:relative;overflow:hidden;min-height:40px}
+.btn-sm{min-height:32px}
+.btn-amber::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);transform:translateX(-120%);transition:transform .6s var(--ease);pointer-events:none}
+.btn-amber:hover::after{transform:translateX(120%)}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(0) scale(.985)}
+.btn:disabled:hover,.btn[disabled]:hover{transform:none}
+.link-btn{transition:color .15s var(--ease)}
+
+/* form controls everywhere */
+input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea{transition:border-color .15s var(--ease),box-shadow .15s var(--ease),background .15s var(--ease)}
+input:not([type=checkbox]):not([type=radio]):not([type=range]):focus-visible,select:focus-visible,textarea:focus-visible{outline:none;border-color:var(--amber)!important;box-shadow:var(--ring,0 0 0 3px rgba(255,176,0,.16))}
+input[type=checkbox],input[type=radio],input[type=range]{accent-color:var(--amber)}
+:focus-visible{outline-color:var(--amber)}
+
+/* tables & pills */
+.data-table tbody tr,.ws-table tbody tr,.cm-table tbody tr{transition:background .12s var(--ease)}
+.data-table tbody tr:hover td{background:rgba(255,255,255,.02)}
+.pill{letter-spacing:.04em}
+.chip{letter-spacing:.05em}
+
+/* FAQ */
+.faq details{transition:border-color .2s var(--ease),background .2s var(--ease)}
+.faq details[open]{background:rgba(255,176,0,.025);border-color:rgba(255,176,0,.25)}
+
+/* footer */
+.footer{background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 70%,#000),#040506)}
+.foot-grid a,.foot-grid .link-btn{transition:color .15s var(--ease),transform .15s var(--ease)}
+.foot-grid a:hover{transform:translateX(2px)}
+.foot-bottom{gap:10px 24px;flex-wrap:wrap;line-height:1.6}
+
+/* reveal: softer, staggered */
+.reveal{transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal:nth-child(2){transition-delay:.06s}.reveal:nth-child(3){transition-delay:.12s}.reveal:nth-child(4){transition-delay:.18s}
+
+/* skip link */
+.skip{position:absolute;left:12px;top:-60px;z-index:300;background:var(--amber);color:#111;padding:8px 12px;border-radius:8px;font-weight:700;transition:top .2s var(--ease)}
+.skip:focus{top:10px}
+
+/* mobile */
+@media (max-width:900px){
+  .wrap{width:min(1200px,100% - 32px)}
+  .mobile-menu{background:color-mix(in srgb,var(--bg) 96%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+  .mobile-menu a{padding:11px 4px;border-radius:8px}
+  .mobile-menu a:active{background:rgba(255,176,0,.08)}
+  .mob-label{font-size:.66rem;letter-spacing:.12em;color:var(--dim)}
+  .card:hover,.mod:hover,.quote:hover,.dash-card:hover,.connect:hover,.choice:hover{transform:none}
+}
+@media (max-width:640px){
+  h1{font-size:clamp(2rem,9vw,2.6rem)}
+  h2{font-size:clamp(1.5rem,7vw,2rem)}
+  .section{padding:56px 0}
+  .btn{min-height:44px}
+  .btn-sm{min-height:36px}
+  .hero-form{flex-direction:column}
+  .hero-form .btn{width:100%}
+  .foot-grid{grid-template-columns:1fr 1fr!important;gap:22px}
+  .foot-brand{grid-column:1/-1}
+  .term-desk>[class*="span-"]{grid-column:1/-1!important}
+}
+@media (prefers-reduced-motion:reduce){
+  .card:hover,.mod:hover,.quote:hover,.dash-card:hover,.btn:hover,.mm-item:hover,.foot-grid a:hover{transform:none}
+  .btn-amber::after{display:none}
+  .reveal{transition:none}
+}
