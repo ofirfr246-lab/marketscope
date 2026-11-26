@@ -13,6 +13,38 @@
 
   $$(".year").forEach(function (e) { e.textContent = new Date().getFullYear(); });
 
+  /* ---------- Workspace nav group (vision modules), injected once for every page ---------- */
+  (function addWorkspaceNav() {
+    var WS = [
+      ["my-terminal.html", "Live Terminal", "History, movers and alerts from your reports"],
+      ["competitors.html", "Competitor Intelligence", "Stores, logged prices and alerts"],
+      ["suppliers.html", "Supplier Intelligence", "Compare cost, margin, shipping and MOQ"],
+      ["product-portfolio.html", "Product Portfolio", "Unit economics linked to live research"],
+      ["backtesting.html", "Backtesting", "Test rules on real history"],
+      ["exchange.html", "Exchange · Simulation", "Virtual credits only, no real money"],
+      ["roadmap.html", "Vision & roadmap", "What's live, in progress and planned"]
+    ];
+    var links = $(".nav-links");
+    if (links && !links.querySelector("[data-ws-nav]")) {
+      var g = document.createElement("div");
+      g.className = "nav-group"; g.setAttribute("data-ws-nav", "");
+      g.innerHTML = '<button class="nav-trigger" aria-expanded="false">Workspace<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 4l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button><div class="mega"><div class="mega-in">' +
+        WS.map(function (w) { return '<a href="' + w[0] + '" class="mm-item"><b>' + w[1] + "</b><span>" + w[2] + "</span></a>"; }).join("") + "</div></div>";
+      var groups = links.querySelectorAll(".nav-group");
+      var after = groups.length > 1 ? groups[1] : groups[0];
+      if (after && after.nextSibling) links.insertBefore(g, after.nextSibling); else links.appendChild(g);
+    }
+    var mob = $("#mobile-menu");
+    if (mob && !mob.querySelector("[data-ws-mob]")) {
+      var m = document.createElement("div");
+      m.className = "mob-group"; m.setAttribute("data-ws-mob", "");
+      m.innerHTML = '<div class="mob-label mono">WORKSPACE</div>' + WS.map(function (w) { return '<a href="' + w[0] + '">' + w[1] + "</a>"; }).join("");
+      var mg = mob.querySelectorAll(".mob-group");
+      var ref = mg.length > 1 ? mg[1] : mg[0];
+      if (ref && ref.nextSibling) mob.insertBefore(m, ref.nextSibling); else mob.appendChild(m);
+    }
+  })();
+
   /* ---------- nav ---------- */
   var burger = $(".burger"), menu = $("#mobile-menu");
   if (burger && menu) burger.addEventListener("click", function () {

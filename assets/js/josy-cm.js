@@ -220,12 +220,25 @@ export async function getPlan(sb, uid) {
   return (r.data && r.data.plan) || "free";
 }
 
+/* Planned connections: no draft builder yet, shown honestly as "planned · not connected". Original initials, no third-party logos. */
+export var PLANNED_PLATFORMS = {
+  gshopping: { label: "Google Shopping", sub: "Product listing ads from your catalog", short: "GS" },
+  youtube: { label: "YouTube", sub: "Video campaigns", short: "YT" },
+  shopify: { label: "Shopify", sub: "Store connection for products and orders", short: "SH" }
+};
+export function plannedBadge(id, sm) { var p = PLANNED_PLATFORMS[id]; return '<span class="pf-badge planned-pf ' + esc(id) + (sm ? " sm" : "") + '" aria-hidden="true">' + (p ? p.short : "?") + "</span>"; }
+
 export function connectCards() {
   return ["meta", "tiktok", "google"].map(function (id) {
     var p = pf(id);
-    return '<div class="connect"><div class="top">' + pfBadge(id) + '<div><h4>' + p.label + ' ad account</h4><span class="chip planned">Coming soon</span></div></div>' +
+    return '<div class="connect"><div class="top">' + pfBadge(id) + '<div><h4>' + p.label + (id === "google" ? " Ads" : "") + ' ad account</h4><span class="chip planned">Drafts ready · not connected</span></div></div>' +
       '<p>Publishing to ' + p.sub + ' requires an approved integration with ' + p.label + '. Until then, campaigns stay as drafts you can copy over manually.</p>' +
       '<button type="button" class="btn btn-sm btn-ghost" disabled aria-disabled="true">' + icon("link") + ' Connect — requires approval</button></div>';
+  }).join("") + Object.keys(PLANNED_PLATFORMS).map(function (id) {
+    var p = PLANNED_PLATFORMS[id];
+    return '<div class="connect planned-card"><div class="top">' + plannedBadge(id) + '<div><h4>' + p.label + '</h4><span class="chip planned">Planned · not connected</span></div></div>' +
+      '<p>' + p.sub + '. This connection is on the roadmap; nothing is sent to ' + p.label + ' today.</p>' +
+      '<button type="button" class="btn btn-sm btn-ghost" disabled aria-disabled="true">' + icon("link") + ' Planned</button></div>';
   }).join("");
 }
 

@@ -969,6 +969,10 @@ async function initDashboard() {
         setMsg(msg, payload.error || "You can run at most 20 reports per hour. Try again later.");
         return;
       }
+      if (code === "provider_balance" || code === "provider_failed" || code === "provider_auth_failed" || status === 502) {
+        setMsg(msg, "Live data is unavailable right now, so no score was calculated. MarketScope never estimates a score without data. You were not charged; please try again later.");
+        return;
+      }
       setMsg(msg, payload.error || parsed.message || "The report could not be run.");
     } catch (err) {
       setMsg(msg, friendlyError(err), false);

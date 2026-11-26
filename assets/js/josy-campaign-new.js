@@ -1,7 +1,7 @@
 /* Josy Campaign Manager — paid campaign wizard (create & edit). Saves drafts only. */
 import { requireSession, callJosy, $, $$, esc, toast, renderMarkdown, isRtl } from "./josy-core.js";
 import {
-  icon, PLATFORMS, pf, pfBadge, OBJECTIVES, objLabel, bidLabel, CURRENCIES, money, estimate, ESTIMATE_NOTE,
+  icon, PLATFORMS, PLANNED_PLATFORMS, plannedBadge, pf, pfBadge, OBJECTIVES, objLabel, bidLabel, CURRENCIES, money, estimate, ESTIMATE_NOTE,
   validateCampaign, friendlyError, statusChip, tagInput, CM_LIMITS
 } from "./josy-cm.js";
 import { mediaPicker } from "./josy-media.js";
@@ -117,6 +117,9 @@ function stepPlatform() {
     '<div class="opt-grid" style="margin-bottom:20px">' + ["meta", "tiktok", "google"].map(function (id) {
       var p = PLATFORMS[id];
       return '<button type="button" class="opt' + (S.c.platform === id ? " on" : "") + '" data-platform="' + id + '">' + pfBadge(id) + "<b>" + p.label + "</b><span>" + p.sub + " · campaign → " + p.groups.toLowerCase() + " → ads</span></button>";
+    }).join("") + Object.keys(PLANNED_PLATFORMS).map(function (id) {
+      var q = PLANNED_PLATFORMS[id];
+      return '<button type="button" class="opt opt-planned" disabled aria-disabled="true" title="Planned — not connected yet">' + plannedBadge(id) + "<b>" + q.label + "</b><span>" + q.sub + " · planned, not connected</span></button>";
     }).join("") + "</div>" +
     '<div class="fgrid">' + fld("CAMPAIGN NAME", inp("name", 'maxlength="120" placeholder="e.g. Spring sale — retargeting" dir="auto"'), { full: true, for: "f-name", cnt: cnt("name", 120) }) +
     fld("INTERNAL NOTES", ta("notes", 'maxlength="4000" rows="3" placeholder="Anything you want to remember about this campaign (optional)"'), { full: true, for: "f-notes" }) + "</div>";
