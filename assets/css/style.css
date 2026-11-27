@@ -2730,3 +2730,20 @@ a.amber{color:var(--text);text-decoration:underline;text-underline-offset:3px}
     --fy:0px;
   }
 }
+
+/* Honest reviews empty state + live status checks */
+.reviews-empty{
+  margin:8px auto 0;
+  max-width:520px;
+  padding:28px 22px;
+  border:1px dashed rgba(255,255,255,.14);
+  border-radius:16px;
+  background:rgba(255,255,255,.02);
+}
+.reviews-empty p{margin:0}
+.status-hero{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.status-check .svc{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+.tutorial-video{margin:28px auto 8px;max-width:920px}
+.tutorial-video video{display:block;width:100%;height:auto;border-radius:16px;background:#0b0d10;border:1px solid rgba(255,255,255,.08);box-shadow:0 22px 40px -22px rgba(0,0,0,.85)}
+.tutorial-video figcaption{margin-top:10px;color:var(--muted);font-size:.85rem;text-align:center}
