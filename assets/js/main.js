@@ -649,13 +649,31 @@
         var nameVal = (f.name && f.name.value || "").trim();
         var emailVal = (f.email && f.email.value || "").trim();
         var messageVal = (f.message && f.message.value || "").trim();
+        var topicEl = f.querySelector("[name=topic], #c-topic");
+        var topicVal = topicEl ? String(topicEl.value || "").trim() : "";
+        var body = (topicVal ? ("Topic: " + topicVal + "\n\n") : "") + messageVal;
         var l = store.get("marketscope_contact", []);
-        l.push({ at: new Date().toISOString(), email: emailVal, name: nameVal, message: messageVal, page: location.pathname });
+        l.push({ at: new Date().toISOString(), email: emailVal, name: nameVal, topic: topicVal, message: messageVal, page: location.pathname });
         store.set("marketscope_contact", l);
-        submitLead({ email: emailVal, source: leadSource(f, "contact"), name: nameVal, message: messageVal, page: location.pathname });
+        msg.className = "form-msg";
+        msg.textContent = "Sending…";
+        var btn = f.querySelector('[type=submit]');
+        if (btn) btn.disabled = true;
+        submitLead({ email: emailVal, source: leadSource(f, "contact"), name: nameVal, message: body, page: location.pathname }).then(function (res) {
+          if (btn) btn.disabled = false;
+          if (res && res.ok) {
+            msg.className = "form-msg ok";
+            msg.textContent = "✓ Thanks. Your message was sent. We'll get back to you at the email you provided.";
+            f.reset();
+          } else {
+            msg.className = "form-msg";
+            msg.textContent = "We couldn't reach the server. Please try again in a moment.";
+          }
+        });
+        return;
       }
       msg.className = "form-msg ok";
-      msg.textContent = { contact: "✓ Thanks! Your message was sent. We'll get back to you at the email you provided.", login: "This is a UI preview. Accounts open soon — join the waitlist on the home page.", signup: "✓ Looks good! Sign-up opens soon. This preview doesn't create accounts yet." }[kind];
+      msg.textContent = { login: "This is a UI preview. Accounts open soon — join the waitlist on the home page.", signup: "✓ Looks good! Sign-up opens soon. This preview doesn't create accounts yet." }[kind] || "✓ Thanks.";
     });
   });
 
