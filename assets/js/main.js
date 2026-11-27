@@ -45,7 +45,7 @@
         { label: "Compare", hrefs: ["compare.html"] }
       ],
       Resources: [
-        { label: "Guides", hrefs: ["blog.html", "how-to-find-winning-products.html"] },
+        { label: "Guides", hrefs: ["guides.html", "blog.html", "how-to-find-winning-products.html"] },
         { label: "Reference", hrefs: ["docs.html", "methodology.html", "status.html"] }
       ],
       Company: [
@@ -125,6 +125,53 @@
       var after = groups.length > 1 ? groups[1] : groups[0];
       if (after && after.nextSibling) links.insertBefore(g, after.nextSibling); else links.appendChild(g);
     }
+
+    /* Guides hub: add to Resources mega, mobile menu and footer if the HTML is older. */
+    (function injectGuidesHub() {
+      function addIfMissing(container, href, opts) {
+        if (!container) return;
+        var sel = 'a[href="' + href + '"]';
+        if (container.querySelector(sel)) return;
+        var a = document.createElement("a");
+        a.href = href;
+        if (opts.className) a.className = opts.className;
+        if (opts.html) a.innerHTML = opts.html;
+        else a.textContent = opts.text;
+        var after = opts.after && container.querySelector('a[href="' + opts.after + '"]');
+        if (opts.first) container.insertBefore(a, container.firstElementChild && container.firstElementChild.tagName === "A" ? container.firstElementChild : (container.querySelector("a, .mm-item") || null));
+        else if (after) after.parentNode.insertBefore(a, after.nextSibling);
+        else container.appendChild(a);
+      }
+      $$(".nav-group").forEach(function (grp) {
+        var tr = grp.querySelector(".nav-trigger");
+        if (!tr || tr.textContent.replace(/\s+/g, " ").trim().indexOf("Resources") !== 0) return;
+        addIfMissing(grp.querySelector(".mega-in"), "guides.html", {
+          className: "mm-item",
+          html: "<b>All guides</b><span>Product research playbooks</span>",
+          first: true
+        });
+      });
+      $$("#mobile-menu .mob-group, .mobile-menu .mob-group").forEach(function (grp) {
+        var lab = grp.querySelector(".mob-label");
+        if (!lab || lab.textContent.trim().toUpperCase() !== "RESOURCES") return;
+        var blog = grp.querySelector('a[href="blog.html"]');
+        if (blog) addIfMissing(grp, "guides.html", { text: "All guides", first: false });
+        var g = grp.querySelector('a[href="guides.html"]');
+        if (g && blog && g.compareDocumentPosition(blog) & Node.DOCUMENT_POSITION_PRECEDING) {
+          grp.insertBefore(g, blog);
+        } else if (g && blog) {
+          grp.insertBefore(g, blog);
+        }
+      });
+      $$(".footer .foot-grid div, footer .foot-grid div").forEach(function (col) {
+        var h = col.querySelector("h4");
+        if (!h || h.textContent.trim() !== "RESOURCES") return;
+        addIfMissing(col, "guides.html", { text: "All guides", after: null });
+        var g = col.querySelector('a[href="guides.html"]');
+        var blog = col.querySelector('a[href="blog.html"]');
+        if (g && blog) col.insertBefore(g, blog);
+      });
+    })();
 
     if (links) {
       $$(".nav-group", links).forEach(function (grp) {
