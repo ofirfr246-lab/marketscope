@@ -2,10 +2,14 @@
    A symbol's index value is the Opportunity score (0–100) of the user's newest live snapshot of that
    product. Every candle, volume bar and research field comes from the user's own stored snapshots. */
 import { $, $$, esc, num, fmt, money, pct, fdate, verdictPill, toast, errMsg, boot, loadSnapshots, groupProducts, candleChart, monthlyPoints } from "./ms-workspace.js";
+import * as XT from "./xt-pro.js";
 
-var S = { sb: null, products: [], acct: null, pos: [], orders: [], watch: [], sel: null, wl: "all", filter: "",
-  metric: "opportunity", interval: "D", range: 0, ind: { ma3: true, ma7: false, spread: false, vol: true }, side: "buy", tab: "positions", rt: "research" };
-var C = { chart: null, main: null, vol: null, ma3: null, ma7: null, spread: null, lines: [] };
+var S = { sb: null, uid: "anon", products: [], acct: null, pos: [], orders: [], watch: [], sel: null, wl: "all", filter: "",
+  metric: "opportunity", interval: "D", range: 0, fromDate: "", toDate: "",
+  ind: { ma3: true, ma7: false, spread: false, vol: true }, extras: [],
+  chartType: "candles", scale: "normal", compare: "",
+  side: "buy", tab: "positions", rt: "research" };
+var C = { chart: null, main: null, vol: null, ma3: null, ma7: null, spread: null, lines: [], overlays: [], panes: [], compare: null, draw: null };
 var START = 100000;
 var METRIC = { opportunity: "Opportunity", demand: "Demand", price_median: "Median price", searches: "Monthly searches" };
 
@@ -99,17 +103,88 @@ function ensureChart() {
   });
   $("[data-attr]").hidden = false;
   C.chart.subscribeCrosshairMove(function (p) { legend(p && p.time ? p.time : null); });
+  C.chart.timeScale().subscribeVisibleLogicalRangeChange(function () {
+    if (C.draw) C.draw.redraw();
+    syncPanes();
+  });
+  if (!C.draw) {
+    var wrap = document.querySelector(".xt-chartwrap");
+    if (wrap) {
+      C.draw = new XT.DrawingOverlay({
+        wrap: wrap,
+        getChart: function () { return C.chart; },
+        getSeries: function () { return C.main; },
+        getCandles: function () { return LEG.candles || []; },
+        onChange: persistLayout
+      });
+    }
+  }
   return true;
 }
 function clearSeries() {
-  ["main", "vol", "ma3", "ma7", "spread"].forEach(function (k) { if (C[k]) { C.chart.removeSeries(C[k]); C[k] = null; } });
-  C.lines = [];
+  ["main", "vol", "ma3", "ma7", "spread", "compare"].forEach(function (k) { if (C[k] && C.chart) { try { C.chart.removeSeries(C[k]); } catch (e) {} C[k] = null; } });
+  (C.overlays || []).forEach(function (s) { if (s && C.chart) try { C.chart.removeSeries(s); } catch (e) {} });
+  C.overlays = []; C.lines = [];
+  clearPanes();
 }
+function clearPanes() {
+  (C.panes || []).forEach(function (p) { try { if (p.chart) p.chart.remove(); } catch (e) {} });
+  C.panes = [];
+  var host = $("[data-panes]"); if (host) host.innerHTML = "";
+}
+function syncPanes() {
+  if (!C.chart || !C.panes || !C.panes.length) return;
+  var range = C.chart.timeScale().getVisibleLogicalRange();
+  if (!range) return;
+  C.panes.forEach(function (p) { try { p.chart.timeScale().setVisibleLogicalRange(range); } catch (e) {} });
+}
+function applyScale() {
+  if (!C.chart || !LC()) return;
+  var mode = { normal: 0, log: 1, percent: 2 }[S.scale];
+  if (mode == null) mode = 0;
+  try { C.chart.priceScale("right").applyOptions({ mode: mode }); } catch (e) {}
+}
+function persistLayout() {
+  if (!S.sel) return;
+  XT.saveLayout(S.uid, S.sel, {
+    chartType: S.chartType, scale: S.scale, interval: S.interval, range: S.range,
+    fromDate: S.fromDate, toDate: S.toDate, metric: S.metric, ind: S.ind,
+    extras: S.extras, compare: S.compare,
+    drawings: C.draw ? C.draw.serialize() : []
+  });
+}
+function restoreLayout(sym) {
+  var L = XT.loadLayout(S.uid, sym);
+  if (!L) return;
+  if (L.chartType) S.chartType = L.chartType;
+  if (L.scale) S.scale = L.scale;
+  if (L.interval) S.interval = L.interval;
+  if (L.range != null) S.range = L.range;
+  S.fromDate = L.fromDate || ""; S.toDate = L.toDate || "";
+  if (L.metric) S.metric = L.metric;
+  if (L.ind) S.ind = Object.assign({ ma3: true, ma7: false, spread: false, vol: true }, L.ind);
+  S.extras = Array.isArray(L.extras) ? L.extras : [];
+  S.compare = L.compare || "";
+  syncChrome();
+  S._pendingDrawings = L.drawings || [];
+}
+function syncChrome() {
+  $$("[data-ct]").forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-ct") === S.chartType); });
+  $$("[data-sc]").forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-sc") === S.scale); });
+  $$("[data-i]").forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-i") === S.interval); });
+  $$("[data-m]").forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-m") === S.metric); });
+  $$("[data-r]").forEach(function (b) { b.classList.toggle("on", S.fromDate || S.toDate ? false : +b.getAttribute("data-r") === S.range); });
+  ["ma3","ma7","spread","vol"].forEach(function (k) { var b = $('[data-ind="'+k+'"]'); if (b) b.classList.toggle("on", !!S.ind[k]); });
+  var fr = $("[data-from]"), to = $("[data-to]"); if (fr) fr.value = S.fromDate || ""; if (to) to.value = S.toDate || "";
+  var cmp = $("[data-compare]"); if (cmp) cmp.value = S.compare || "";
+}
+
 var LEG = { candles: [], line: [], ma3: [], ma7: [] };
 function legend(time) {
   var host = $("[data-legend]"); if (!host) return;
   var p = prod(S.sel); if (!p) { host.innerHTML = ""; return; }
-  var title = "<span><b>" + esc(p.product) + "</b> · " + esc(METRIC[S.metric]) + (S.metric === "searches" ? "" : " · " + S.interval) + "</span>";
+  var ctype = S.chartType && S.chartType !== "candles" ? " · " + S.chartType : "";
+  var title = "<span><b>" + esc(p.product) + "</b> · " + esc(METRIC[S.metric]) + ctype + (S.metric === "searches" ? "" : " · " + S.interval) + "</span>";
   if (S.metric === "searches") {
     var pt = time ? LEG.line.find(function (x) { return x.time === time; }) : LEG.line[LEG.line.length - 1];
     host.innerHTML = title + (pt ? "<span>" + esc(pt.time.slice(0, 7)) + " <b>" + fmt(pt.value, 0) + "</b> searches</span>" : "");
@@ -144,8 +219,17 @@ function drawChart() {
     LEG.line = monthlyPoints(p.latest.monthly_searches).map(function (m) { return { time: m.label + "-01", value: m.y }; });
     if (!LEG.line.length) { if (useLC) clearSeries(); chartEmpty("No search history in this report", "Google returned no monthly volumes for this keyword and market. Try another series."); legend(null); return; }
   } else {
-    LEG.candles = buildCandles(p.series, S.metric, S.interval, S.range);
-    if (!LEG.candles.length) { if (useLC) clearSeries(); chartEmpty("No data in this range", S.range ? "None of your snapshots fall in this range. Choose ALL, or run a new report." : "Your reports for this product don't include " + METRIC[S.metric].toLowerCase() + "."); legend(null); return; }
+    var src = p.series;
+    if (S.fromDate || S.toDate) {
+      src = p.series.filter(function (s) {
+        var d = String(s.captured_at || "").slice(0, 10);
+        if (S.fromDate && d < S.fromDate) return false;
+        if (S.toDate && d > S.toDate) return false;
+        return true;
+      });
+    }
+    LEG.candles = buildCandles(src, S.metric, S.interval, (S.fromDate || S.toDate) ? 0 : S.range);
+    if (!LEG.candles.length) { if (useLC) clearSeries(); chartEmpty("No data in this range", (S.range || S.fromDate || S.toDate) ? "None of your snapshots fall in this range. Choose ALL, or run a new report." : "Your reports for this product don't include " + METRIC[S.metric].toLowerCase() + "."); legend(null); return; }
   }
   chartEmpty(null);
   if (!useLC) {
@@ -162,11 +246,37 @@ function drawChart() {
     C.main.setData(LEG.line);
   } else {
     var price = S.metric === "price_median";
-    C.main = C.chart.addCandlestickSeries({ upColor: "#19d27c", downColor: "#ff4d5e", borderVisible: false, wickUpColor: "#19d27c", wickDownColor: "#ff4d5e",
-      priceFormat: { type: "price", precision: price ? 2 : 0, minMove: price ? 0.01 : 1 } });
-    C.main.setData(LEG.candles.map(function (c) { return { time: c.time, open: c.open, high: c.high, low: c.low, close: c.close }; }));
-    C.main.priceScale().applyOptions({ scaleMargins: { top: 0.1, bottom: S.ind.vol ? 0.28 : 0.08 } });
-    if (S.ind.vol) {
+    var fmtP = { type: "price", precision: price ? 2 : 0, minMove: price ? 0.01 : 1 };
+    var plot = S.chartType === "heikin" ? XT.heikinAshi(LEG.candles) : LEG.candles;
+    var ohlc = plot.map(function (c) { return { time: c.time, open: c.open, high: c.high, low: c.low, close: c.close }; });
+    var closes = plot.map(function (c) { return { time: c.time, value: c.close }; });
+    var ct = S.chartType;
+    if (ct === "line") {
+      C.main = C.chart.addLineSeries({ color: "#ffb000", lineWidth: 2, priceFormat: fmtP });
+      C.main.setData(closes);
+    } else if (ct === "area") {
+      C.main = C.chart.addAreaSeries({ lineColor: "#ffb000", topColor: "rgba(255,176,0,.28)", bottomColor: "rgba(255,176,0,0)", lineWidth: 2, priceFormat: fmtP });
+      C.main.setData(closes);
+    } else if (ct === "bars") {
+      C.main = C.chart.addBarSeries({ upColor: "#19d27c", downColor: "#ff4d5e", priceFormat: fmtP });
+      C.main.setData(ohlc);
+    } else {
+      var hollow = ct === "hollow";
+      C.main = C.chart.addCandlestickSeries({
+        upColor: hollow ? "transparent" : "#19d27c",
+        downColor: "#ff4d5e",
+        borderVisible: true,
+        borderUpColor: "#19d27c",
+        borderDownColor: "#ff4d5e",
+        wickUpColor: "#19d27c",
+        wickDownColor: "#ff4d5e",
+        priceFormat: fmtP
+      });
+      C.main.setData(ohlc);
+    }
+    var hasVol = S.ind.vol || S.extras.some(function (x) { return x.id === "vol"; });
+    C.main.priceScale().applyOptions({ scaleMargins: { top: 0.1, bottom: hasVol ? 0.28 : 0.08 } });
+    if (hasVol) {
       C.vol = C.chart.addHistogramSeries({ priceFormat: { type: "volume" }, priceScaleId: "vol", lastValueVisible: false, priceLineVisible: false });
       C.chart.priceScale("vol").applyOptions({ scaleMargins: { top: 0.78, bottom: 0 } });
       C.vol.setData(LEG.candles.filter(function (c) { return c.vol != null; }).map(function (c) { return { time: c.time, value: c.vol, color: c.close >= c.open ? "rgba(25,210,124,.4)" : "rgba(255,77,94,.4)" }; }));
@@ -178,17 +288,88 @@ function drawChart() {
       C.chart.priceScale("spread").applyOptions({ scaleMargins: { top: 0.1, bottom: 0.3 }, visible: false });
       C.spread.setData(LEG.candles.filter(function (c) { return c.demand != null && c.comp != null; }).map(function (c) { return { time: c.time, value: c.demand - c.comp }; }));
     }
+    applyExtras(LEG.candles, L);
+    if (S.compare && S.compare !== p.symbol) {
+      var oth = prod(S.compare);
+      if (oth) {
+        var oc = buildCandles(oth.series, S.metric, S.interval, (S.fromDate || S.toDate) ? 0 : S.range);
+        C.compare = C.chart.addLineSeries({ color: "#c8b896", lineWidth: 2, lastValueVisible: true, title: oth.product.slice(0, 18) });
+        C.compare.setData(oc.map(function (c) { return { time: c.time, value: c.close }; }));
+        if (S.scale === "normal") S.scale = "percent";
+      }
+    }
+    applyScale();
     if (S.metric === "opportunity") {
       S.orders.filter(function (o) { return o.status === "open" && o.symbol === p.symbol; }).forEach(function (o) {
+        if (num(o.limit_price) == null) return;
         C.lines.push(C.main.createPriceLine({ price: num(o.limit_price), color: o.side === "buy" ? "#19d27c" : "#ff4d5e", lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: (o.side === "buy" ? "BUY " : "SELL ") + fmt(o.qty) }));
+      });
+      localStops().filter(function (o) { return o.status === "open" && o.symbol === p.symbol; }).forEach(function (o) {
+        C.lines.push(C.main.createPriceLine({ price: num(o.stop), color: o.side === "buy" ? "#19d27c" : "#ff4d5e", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "STOP " + fmt(o.qty) }));
       });
       var pos = S.pos.find(function (x) { return x.symbol === p.symbol && num(x.qty) > 0; });
       if (pos) C.lines.push(C.main.createPriceLine({ price: num(pos.avg_cost), color: "#ffb000", lineWidth: 1, lineStyle: 1, axisLabelVisible: true, title: "AVG" }));
+      XT.alertStore(S.uid).list().filter(function (a) { return a.symbol === p.symbol && a.active !== false; }).forEach(function (a) {
+        C.lines.push(C.main.createPriceLine({ price: num(a.price), color: "#c0c5cd", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "ALERT" }));
+      });
     }
   }
   C.chart.timeScale().fitContent();
+  if (C.draw) {
+    if (S._pendingDrawings) { C.draw.restore(S._pendingDrawings); S._pendingDrawings = null; }
+    else C.draw.redraw();
+  }
+  syncPanes();
   legend(null);
 }
+function localStops() { return XT.stopStore(S.uid).list(); }
+function applyExtras(candles, L) {
+  var host = $("[data-panes]");
+  S.extras.forEach(function (ex, idx) {
+    if (ex.id === "vol") return;
+    var def = XT.INDICATORS.find(function (x) { return x.id === ex.id; });
+    var out = XT.computeIndicator(ex.id, candles, ex.params || (def && def.params) || {});
+    if (out.overlay) {
+      out.overlay.forEach(function (ov) {
+        var s = C.chart.addLineSeries({ color: ov.color, lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false, title: ov.name });
+        s.setData(ov.data);
+        C.overlays.push(s);
+      });
+    }
+    if (out.pane && host) {
+      var el = document.createElement("div");
+      el.className = "xt-pane";
+      el.innerHTML = "<div class=\"xt-pane-h\"><b>" + esc(out.pane.name) + "</b></div><button type=\"button\" class=\"xt-pane-x\" data-rm-ind=\"" + idx + "\" aria-label=\"Remove indicator\">×</button><div class=\"xt-pane-c\"></div>";
+      host.appendChild(el);
+      var ch = L.createChart(el.querySelector(".xt-pane-c"), {
+        autoSize: true,
+        layout: { background: { type: "solid", color: "transparent" }, textColor: "#a8b0bb", fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 10, attributionLogo: false },
+        grid: { vertLines: { color: "rgba(26,32,40,.45)" }, horzLines: { color: "rgba(26,32,40,.45)" } },
+        rightPriceScale: { borderColor: "#1a2028", scaleMargins: { top: 0.12, bottom: 0.12 } },
+        timeScale: { visible: false, borderVisible: false },
+        crosshair: { vertLine: { color: "rgba(255,176,0,.45)" }, horzLine: { color: "rgba(255,176,0,.45)", labelBackgroundColor: "#ffb000" } },
+        handleScroll: false, handleScale: false
+      });
+      if (out.pane.min != null) {
+        try { ch.priceScale("right").applyOptions({ autoScale: false }); } catch (e) {}
+      }
+      out.pane.series.forEach(function (sv) {
+        var series;
+        if (sv.type === "hist") {
+          series = ch.addHistogramSeries({ lastValueVisible: false, priceLineVisible: false });
+        } else {
+          series = ch.addLineSeries({ color: sv.color, lineWidth: 1, lastValueVisible: true, priceLineVisible: false });
+        }
+        series.setData(sv.data);
+        (out.pane.levels || []).forEach(function (lv) {
+          try { series.createPriceLine({ price: lv, color: "#2a323c", lineWidth: 1, lineStyle: 2, axisLabelVisible: false }); } catch (e) {}
+        });
+      });
+      C.panes.push({ chart: ch, id: ex.id });
+    }
+  });
+}
+
 
 /* ---------------- panels ---------------- */
 function spark(series, w, h) {
@@ -302,7 +483,8 @@ function paintTicket() {
   btn.textContent = p ? "Place simulated " + S.side + " · " + p.product.slice(0, 16) : "Run a report to trade";
   btn.disabled = !p;
   f.limit.disabled = f.type.value !== "limit";
-  var px = f.type.value === "limit" ? num(f.limit.value) : l, q = num(f.qty.value);
+  if (f.stop) f.stop.disabled = f.type.value !== "stop";
+  var px = f.type.value === "limit" ? num(f.limit.value) : (f.type.value === "stop" ? num(f.stop.value) : l), q = num(f.qty.value);
   var a = account(), held = (S.pos.find(function (x) { return x.symbol === S.sel; }) || {}).qty;
   var notional = px != null && q != null ? px * q : null;
   $("[data-est]").innerHTML = "<span>Price</span><b>" + (px == null ? "—" : fmt(px, 2)) + "</b><span>Est. " + (S.side === "buy" ? "cost" : "proceeds") + " (incl. 0.1% fee)</span><b>" + vc(notional == null ? null : (S.side === "buy" ? notional * 1.001 : notional * 0.999)) + "</b>" +
@@ -313,8 +495,9 @@ function none(t, x) { return '<div class="xt-none"><b>' + esc(t) + "</b>" + esc(
 function paintBottom() {
   var rs = reservedSell();
   var held = S.pos.filter(function (x) { return num(x.qty) > 0 || rs[x.symbol]; });
+  var stops = localStops().filter(function (o) { return o.status === "open"; });
   var open = S.orders.filter(function (o) { return o.status === "open"; });
-  $('[data-n="positions"]').textContent = held.length; $('[data-n="open"]').textContent = open.length;
+  $('[data-n="positions"]').textContent = held.length; $('[data-n="open"]').textContent = open.length + stops.length;
   $$("[data-tab]").forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-tab") === S.tab); });
   var host = $("[data-tabbody]"), h = "";
   function name(sym) { var p = prod(sym); return p ? esc(p.product) + ' <span class="ws-mini">' + esc(p.market) + "</span>" : esc(sym); }
@@ -324,9 +507,10 @@ function paintBottom() {
         return '<tr data-sym="' + esc(x.symbol) + '" style="cursor:pointer"><td>' + name(x.symbol) + '</td><td class="num">' + fmt(x.qty) + '</td><td class="num">' + fmt(rs[x.symbol] || 0) + '</td><td class="num">' + fmt(x.avg_cost) + '</td><td class="num">' + fmt(l) + '</td><td class="num">' + vc(l == null ? null : l * q) + '</td><td class="num ' + (pl > 0 ? "up" : pl < 0 ? "down" : "") + '">' + vc(pl) + '</td><td class="num ' + (pp > 0 ? "up" : pp < 0 ? "down" : "") + '">' + pct(pp) + "</td></tr>"; }).join("") + "</tbody></table>"
       : none("No positions", "Place a simulated buy order from the Trade tab to open a virtual position.");
   } else if (S.tab === "open") {
-    h = open.length ? '<table class="xt-t"><thead><tr><th>TIME</th><th>SYMBOL</th><th>SIDE</th><th class="num">UNITS</th><th class="num">LIMIT</th><th class="num">LAST</th><th class="num">RESERVED</th><th></th></tr></thead><tbody>' +
-      open.map(function (o) { return "<tr><td>" + fdate(o.created_at, true) + "</td><td>" + name(o.symbol) + '</td><td class="' + (o.side === "buy" ? "up" : "down") + '">' + o.side.toUpperCase() + ' LMT</td><td class="num">' + fmt(o.qty) + '</td><td class="num">' + fmt(o.limit_price) + '</td><td class="num">' + fmt(last(o.symbol)) + '</td><td class="num">' + (o.side === "buy" ? vc(o.reserved) : fmt(o.reserved) + " units") + '</td><td class="num"><button type="button" class="link-btn" data-cancel="' + esc(o.id) + '">Cancel</button></td></tr>'; }).join("") + "</tbody></table>"
-      : none("No open orders", "Limit orders wait here until a new live snapshot crosses your price.");
+    var rows = open.map(function (o) { return "<tr><td>" + fdate(o.created_at, true) + "</td><td>" + name(o.symbol) + '</td><td class="' + (o.side === "buy" ? "up" : "down") + '">' + o.side.toUpperCase() + ' LMT</td><td class="num">' + fmt(o.qty) + '</td><td class="num">' + fmt(o.limit_price) + '</td><td class="num">' + fmt(last(o.symbol)) + '</td><td class="num">' + (o.side === "buy" ? vc(o.reserved) : fmt(o.reserved) + " units") + '</td><td class="num"><button type="button" class="link-btn" data-cancel="' + esc(o.id) + '">Cancel</button></td></tr>'; }).join("") +
+      stops.map(function (o) { return "<tr><td>" + fdate(o.created, true) + "</td><td>" + name(o.symbol) + '</td><td class="' + (o.side === "buy" ? "up" : "down") + '">' + o.side.toUpperCase() + ' STP</td><td class="num">' + fmt(o.qty) + '</td><td class="num">' + fmt(o.stop) + '</td><td class="num">' + fmt(last(o.symbol)) + '</td><td class="num">local</td><td class="num"><button type="button" class="link-btn" data-cancel-stop="' + esc(o.id) + '">Cancel</button></td></tr>'; }).join("");
+    h = (open.length || stops.length) ? '<table class="xt-t"><thead><tr><th>TIME</th><th>SYMBOL</th><th>SIDE</th><th class="num">UNITS</th><th class="num">PRICE</th><th class="num">LAST</th><th class="num">RESERVED</th><th></th></tr></thead><tbody>' + rows + "</tbody></table>"
+      : none("No open orders", "Limit orders wait here until a new live snapshot crosses your price. Stop orders are stored on this device and fire only while the Exchange is open.");
   } else if (S.tab === "history") {
     var hist = S.orders.filter(function (o) { return o.status !== "open"; });
     h = hist.length ? '<table class="xt-t"><thead><tr><th>TIME</th><th>SYMBOL</th><th>SIDE</th><th>TYPE</th><th class="num">UNITS</th><th class="num">FILL</th><th class="num">FEE</th><th>STATUS</th></tr></thead><tbody>' +
@@ -342,9 +526,55 @@ function paintBottom() {
   }
   host.innerHTML = h;
 }
-function paintAll() { paintWatch(); paintCats(); paintHead(); drawChart(); paintResearch(); paintTicket(); paintBottom(); }
-function select(sym) { if (!prod(sym)) return; S.sel = sym; var f = $("[data-ticket]"); if (f.type.value === "limit") f.limit.value = last(sym); paintAll(); }
-async function refresh() { await load(); paintAll(); }
+function paintAll() { paintWatch(); paintCats(); paintHead(); fillCompare(); drawChart(); paintResearch(); paintTicket(); paintBottom(); paintAlerts(); }
+function select(sym) {
+  if (!prod(sym)) return;
+  if (S.sel) persistLayout();
+  S.sel = sym;
+  restoreLayout(sym);
+  var f = $("[data-ticket]");
+  if (f.type.value === "limit" && last(sym) != null) f.limit.value = last(sym);
+  if (f.stop && last(sym) != null && !f.stop.value) f.stop.value = last(sym);
+  paintAll();
+}
+async function refresh() { var first = !S._ready; await load(); if (first && S.sel) restoreLayout(S.sel); S._ready = true; await fireStopsAndAlerts(); paintAll(); }
+function fillCompare() {
+  var sel = $("[data-compare]"); if (!sel) return;
+  var cur = S.compare || "";
+  sel.innerHTML = '<option value="">None</option>' + tradable().filter(function (p) { return p.symbol !== S.sel; }).map(function (p) {
+    return '<option value="' + esc(p.symbol) + '">' + esc(p.product) + " · " + esc(p.market) + "</option>";
+  }).join("");
+  sel.value = cur;
+}
+function paintAlerts() {
+  var host = $("[data-alert-list]"); if (!host) return;
+  var rows = XT.alertStore(S.uid).list().slice().reverse();
+  if (!rows.length) { host.innerHTML = '<div class="xt-none"><b>No alerts</b>Add one above. They only fire in this browser while the simulation is open.</div>'; return; }
+  host.innerHTML = rows.map(function (a) {
+    var p = prod(a.symbol);
+    return '<div class="xt-alert"><div><b>' + esc(p ? p.product : a.symbol) + "</b> " + esc(a.op) + " " + fmt(a.price) +
+      (a.note ? '<div class="muted">' + esc(a.note) + "</div>" : "") +
+      (a.firedAt ? '<div class="fired">Fired ' + esc(a.firedAt.replace("T", " ").slice(0, 16)) + "</div>" : '<div class="muted">Armed</div>') +
+      '</div><button type="button" data-rm-alert="' + esc(a.id) + '">Remove</button></div>';
+  }).join("");
+}
+async function fireStopsAndAlerts() {
+  var lastMap = {};
+  tradable().forEach(function (p) { lastMap[p.symbol] = num(p.latest.opportunity); });
+  XT.checkAlerts(XT.alertStore(S.uid), lastMap).forEach(function (a) {
+    var p = prod(a.symbol);
+    toast("Alert: " + (p ? p.product : a.symbol) + " " + a.op + " " + fmt(a.price) + " (last " + fmt(a.last) + ") — simulation only");
+  });
+  var hits = XT.checkStops(XT.stopStore(S.uid), lastMap);
+  for (var i = 0; i < hits.length; i++) {
+    var s = hits[i];
+    var res = await S.sb.rpc("exchange_place_order", { p_symbol: s.symbol, p_side: s.side, p_type: "market", p_qty: s.qty, p_limit: null });
+    XT.stopStore(S.uid).mark(s.id, res.error ? "error" : "filled");
+    if (res.error) toast("Stop could not be filled: " + errMsg(res.error));
+    else toast("Simulated stop " + s.side + " filled for " + s.symbol);
+    await load();
+  }
+}
 
 async function toggleStar(sym) {
   var p = prod(sym); if (!p) return;
@@ -361,15 +591,24 @@ function bind() {
     var st = t.closest("[data-star]"); if (st) { e.stopPropagation(); return toggleStar(st.getAttribute("data-star")); }
     var c = t.closest("[data-cancel]"); if (c) { var x = await S.sb.rpc("exchange_cancel_order", { p_id: c.getAttribute("data-cancel") }); if (x.error) toast(errMsg(x.error)); else toast("Order cancelled"); return refresh(); }
     if (t.closest("[data-reset]")) { if (!confirm("Reset the simulation? This clears your simulated orders and positions and sets virtual cash back to 100,000 VC.")) return; var y = await S.sb.rpc("exchange_reset"); if (y.error) toast(errMsg(y.error)); else toast("Simulation reset"); return refresh(); }
-    var m = t.closest("[data-m]"); if (m) { S.metric = m.getAttribute("data-m"); $$("[data-m]").forEach(function (b) { b.classList.toggle("on", b === m); }); return drawChart(); }
-    var iv = t.closest("[data-i]"); if (iv && !iv.disabled) { S.interval = iv.getAttribute("data-i"); $$("[data-i]").forEach(function (b) { b.classList.toggle("on", b === iv); }); return drawChart(); }
-    var rg = t.closest("[data-r]"); if (rg) { S.range = +rg.getAttribute("data-r"); $$("[data-r]").forEach(function (b) { b.classList.toggle("on", b === rg); }); return drawChart(); }
-    var ind = t.closest("[data-ind]"); if (ind && !ind.disabled) { var k = ind.getAttribute("data-ind"); S.ind[k] = !S.ind[k]; ind.classList.toggle("on", S.ind[k]); return drawChart(); }
+    var m = t.closest("[data-m]"); if (m) { S.metric = m.getAttribute("data-m"); $$("[data-m]").forEach(function (b) { b.classList.toggle("on", b === m); }); persistLayout(); return drawChart(); }
+    var iv = t.closest("[data-i]"); if (iv && !iv.disabled) { S.interval = iv.getAttribute("data-i"); $$("[data-i]").forEach(function (b) { b.classList.toggle("on", b === iv); }); persistLayout(); return drawChart(); }
+    var rg = t.closest("[data-r]"); if (rg) { S.range = +rg.getAttribute("data-r"); S.fromDate = ""; S.toDate = ""; var fr = $("[data-from]"), to = $("[data-to]"); if (fr) fr.value = ""; if (to) to.value = ""; $$("[data-r]").forEach(function (b) { b.classList.toggle("on", b === rg); }); persistLayout(); return drawChart(); }
+    var ind = t.closest("[data-ind]"); if (ind && !ind.disabled) { var k = ind.getAttribute("data-ind"); S.ind[k] = !S.ind[k]; ind.classList.toggle("on", S.ind[k]); persistLayout(); return drawChart(); }
     var tb = t.closest("[data-tab]"); if (tb) { S.tab = tb.getAttribute("data-tab"); return paintBottom(); }
     var rt = t.closest("[data-rt]"); if (rt) { S.rt = rt.getAttribute("data-rt"); $$("[data-rt]").forEach(function (b) { b.classList.toggle("on", b === rt); }); $$("[data-rpanel]").forEach(function (p) { p.hidden = p.getAttribute("data-rpanel") !== S.rt; }); return; }
     var wl = t.closest("[data-wl]"); if (wl) { S.wl = wl.getAttribute("data-wl"); $$("[data-wl]").forEach(function (b) { b.classList.toggle("on", b === wl); }); return paintWatch(); }
     var sd = t.closest("[data-side]"); if (sd) { S.side = sd.getAttribute("data-side"); return paintTicket(); }
-    if (t.closest("a,button,input,select")) return;
+    var ct = t.closest("[data-ct]"); if (ct) { S.chartType = ct.getAttribute("data-ct"); $$("[data-ct]").forEach(function (b) { b.classList.toggle("on", b === ct); }); persistLayout(); return drawChart(); }
+    var sc = t.closest("[data-sc]"); if (sc) { S.scale = sc.getAttribute("data-sc"); $$("[data-sc]").forEach(function (b) { b.classList.toggle("on", b === sc); }); persistLayout(); applyScale(); return; }
+    var op = t.closest("[data-open]"); if (op) { var id = op.getAttribute("data-open"); $$("[data-pop]").forEach(function (p) { p.hidden = p.getAttribute("data-pop") === id ? !p.hidden : true; }); if (id === "ind") renderIndList(); return; }
+    var rmI = t.closest("[data-rm-ind]"); if (rmI) { S.extras.splice(+rmI.getAttribute("data-rm-ind"), 1); persistLayout(); return drawChart(); }
+    var rmA = t.closest("[data-rm-alert]"); if (rmA) { XT.alertStore(S.uid).remove(rmA.getAttribute("data-rm-alert")); return paintAlerts(), drawChart(); }
+    var cs = t.closest("[data-cancel-stop]"); if (cs) { XT.stopStore(S.uid).remove(cs.getAttribute("data-cancel-stop")); toast("Stop cancelled"); return paintBottom(), drawChart(); }
+    if (t.closest("[data-shot]")) { var ok = XT.downloadPng(C.chart, C.draw, (prod(S.sel) || {}).product || "chart"); return toast(ok ? "Chart image downloaded." : "Chart is not ready to export."); }
+    if (t.closest("[data-full]")) { var box = document.querySelector(".xt-center"); if (!document.fullscreenElement) (box.requestFullscreen || box.webkitRequestFullscreen).call(box); else document.exitFullscreen(); return; }
+    if (!t.closest(".xt-popwrap")) $$("[data-pop]").forEach(function (p) { p.hidden = true; });
+    if (t.closest("a,button,input,select,label")) return;
     var sy = t.closest("[data-sym]"); if (sy) select(sy.getAttribute("data-sym"));
   });
   document.addEventListener("keydown", function (e) {
@@ -379,11 +618,24 @@ function bind() {
   $("[data-filter]").addEventListener("input", function (e) { S.filter = e.target.value.trim().toLowerCase(); paintWatch(); });
   var f = $("[data-ticket]");
   f.addEventListener("input", paintTicket);
-  f.type.addEventListener("change", function () { if (f.type.value === "limit" && !f.limit.value && last(S.sel) != null) f.limit.value = last(S.sel); paintTicket(); });
+  f.type.addEventListener("change", function () {
+    if (f.type.value === "limit" && !f.limit.value && last(S.sel) != null) f.limit.value = last(S.sel);
+    if (f.type.value === "stop" && f.stop && !f.stop.value && last(S.sel) != null) f.stop.value = last(S.sel);
+    paintTicket();
+  });
   f.addEventListener("submit", async function (e) {
     e.preventDefault();
     if (!S.sel) return toast("Run a live report first to create a symbol.");
     var btn = $("[data-place]"); btn.disabled = true;
+    if (f.type.value === "stop") {
+      var sp = num(f.stop.value), q = num(f.qty.value);
+      btn.disabled = false;
+      if (sp == null || q == null || q <= 0) return toast("Enter a stop price and units.");
+      XT.stopStore(S.uid).add({ symbol: S.sel, side: S.side, qty: q, stop: sp, created: new Date().toISOString() });
+      toast("Simulated stop " + S.side + " armed at " + fmt(sp) + ". It will place a market order if the last index value crosses that level while this page is open.");
+      S.tab = "open"; paintBottom(); drawChart();
+      return;
+    }
     var res = await S.sb.rpc("exchange_place_order", { p_symbol: S.sel, p_side: S.side, p_type: f.type.value, p_qty: num(f.qty.value), p_limit: f.type.value === "limit" ? num(f.limit.value) : null });
     btn.disabled = false;
     if (res.error) return toast(errMsg(res.error));
@@ -391,7 +643,150 @@ function bind() {
     S.tab = res.data && res.data.status === "filled" ? "positions" : "open";
     refresh();
   });
+  bindPro();
 }
+
+function renderIndList() {
+  var host = $("[data-ind-list]"); if (!host) return;
+  var q = (($("[data-ind-q]") || {}).value || "").trim().toLowerCase();
+  host.innerHTML = XT.INDICATORS.filter(function (x) { return !q || (x.name + " " + x.id + " " + x.hint).toLowerCase().indexOf(q) >= 0; }).map(function (x) {
+    var on = x.id === "vol" ? S.ind.vol : S.extras.some(function (e) { return e.id === x.id; });
+    var ex = S.extras.find(function (e) { return e.id === x.id; });
+    var params = Object.assign({}, x.params, (ex && ex.params) || {});
+    var fields = Object.keys(params).map(function (k) {
+      return "<label>" + esc(k) + ' <input type="number" data-ind-param="' + esc(x.id) + '" data-pk="' + esc(k) + '" value="' + esc(String(params[k])) + '" step="1"></label>';
+    }).join("");
+    return '<div class="xt-ind-row"><div><div class="nm">' + esc(x.name) + "</div><div class=\"hn\">" + esc(x.hint) + "</div>" +
+      (fields ? '<div class="xt-ind-params">' + fields + "</div>" : "") +
+      '</div><button type="button" class="add' + (on ? " on" : "") + '" data-ind-add="' + esc(x.id) + '">' + (on ? "On" : "Add") + "</button></div>";
+  }).join("") || '<div class="xt-none">No matches.</div>';
+}
+function bindPro() {
+  var bar = $("[data-drawbar]");
+  if (bar && !bar.getAttribute("data-ready")) {
+    bar.setAttribute("data-ready", "1");
+    bar.innerHTML = XT.TOOLS.map(function (t) {
+      if (t.id === "clear") return "<span class=\"xt-dsep\"></span><button type=\"button\" data-tool=\"clear\" title=\"" + esc(t.label + " (" + t.key + ")") + "\">" + XT.toolIcon(t.id) + "</button>";
+      return "<button type=\"button\" data-tool=\"" + t.id + "\" title=\"" + esc(t.label + (t.key ? " (" + t.key + ")" : "")) + "\">" + XT.toolIcon(t.id) + "</button>";
+    }).join("") + "<span class=\"xt-dsep\"></span>" +
+      "<button type=\"button\" data-magnet title=\"Magnet to OHLC\">M</button>" +
+      "<button type=\"button\" data-stay title=\"Stay in drawing mode\">+</button>" +
+      "<button type=\"button\" data-lock title=\"Lock drawings\">L</button>" +
+      "<button type=\"button\" data-hide-d title=\"Hide drawings\">H</button>" +
+      "<button type=\"button\" data-keys title=\"Keyboard shortcuts\">?</button>";
+    bar.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-tool]");
+      if (b) {
+        var id = b.getAttribute("data-tool");
+        if (id === "clear") { if (C.draw) C.draw.clearAll(); markTool("cursor"); return; }
+        if (C.draw) C.draw.setTool(id);
+        markTool(id);
+        return;
+      }
+      if (e.target.closest("[data-magnet]")) { if (!C.draw) return; C.draw.magnet = !C.draw.magnet; e.target.closest("[data-magnet]").classList.toggle("on", C.draw.magnet); return; }
+      if (e.target.closest("[data-stay]")) { if (!C.draw) return; C.draw.stay = !C.draw.stay; e.target.closest("[data-stay]").classList.toggle("on", C.draw.stay); return; }
+      if (e.target.closest("[data-lock]")) { if (!C.draw) return; C.draw.locked = !C.draw.locked; e.target.closest("[data-lock]").classList.toggle("on", C.draw.locked); return; }
+      if (e.target.closest("[data-hide-d]")) { if (!C.draw) return; C.draw.hidden = !C.draw.hidden; C.draw.redraw(); e.target.closest("[data-hide-d]").classList.toggle("on", C.draw.hidden); return; }
+      if (e.target.closest("[data-keys]")) { var k = document.getElementById("xt-keys"); if (k) k.classList.toggle("show"); }
+    });
+  }
+  if (!document.getElementById("xt-keys")) {
+    var box = document.createElement("div");
+    box.id = "xt-keys";
+    box.innerHTML = "<b>Shortcuts</b><div style=\"margin-top:6px;display:grid;gap:4px\">" +
+      "<div><kbd>/</kbd> Symbol search</div><div><kbd>Esc</kbd> Cursor</div>" +
+      "<div><kbd>Ctrl</kbd>+<kbd>Z</kbd> Undo drawing</div><div><kbd>Ctrl</kbd>+<kbd>Y</kbd> Redo</div>" +
+      "<div><kbd>Alt</kbd>+<kbd>T</kbd> Trend · <kbd>H</kbd> Horiz · <kbd>V</kbd> Vert</div>" +
+      "<div><kbd>Alt</kbd>+<kbd>F</kbd> Fib · <kbd>M</kbd> Measure · <kbd>E</kbd> Eraser</div>" +
+      "<div><kbd>F</kbd> Fullscreen · <kbd>Alt</kbd>+<kbd>P</kbd> PNG</div>" +
+      "<div><kbd>L</kbd> Log scale · <kbd>%</kbd> Percent scale</div><div><kbd>?</kbd> This list</div></div>";
+    document.body.appendChild(box);
+  }
+  var q = $("[data-ind-q]");
+  if (q && !q.getAttribute("data-bound")) {
+    q.setAttribute("data-bound", "1");
+    q.addEventListener("input", renderIndList);
+  }
+  document.addEventListener("click", function (e) {
+    var add = e.target.closest("[data-ind-add]");
+    if (!add) return;
+    var id = add.getAttribute("data-ind-add");
+    if (id === "vol") { S.ind.vol = !S.ind.vol; persistLayout(); renderIndList(); drawChart(); return; }
+    var i = S.extras.findIndex(function (x) { return x.id === id; });
+    if (i >= 0) S.extras.splice(i, 1);
+    else {
+      var def = XT.INDICATORS.find(function (x) { return x.id === id; });
+      var params = Object.assign({}, (def && def.params) || {});
+      $$('[data-ind-param="'+id+'"]').forEach(function (inp) { params[inp.getAttribute("data-pk")] = +inp.value; });
+      S.extras.push({ id: id, params: params });
+    }
+    persistLayout(); renderIndList(); drawChart();
+  });
+  document.addEventListener("change", function (e) {
+    var inp = e.target.closest("[data-ind-param]");
+    if (!inp) return;
+    var id = inp.getAttribute("data-ind-param"), k = inp.getAttribute("data-pk");
+    var ex = S.extras.find(function (x) { return x.id === id; });
+    if (ex) { ex.params = ex.params || {}; ex.params[k] = +inp.value; persistLayout(); drawChart(); }
+  });
+  var cmp = $("[data-compare]");
+  if (cmp && !cmp.getAttribute("data-bound")) {
+    cmp.setAttribute("data-bound", "1");
+    cmp.addEventListener("change", function () {
+      S.compare = cmp.value;
+      if (S.compare && S.scale === "normal") S.scale = "percent";
+      if (!S.compare && S.scale === "percent") S.scale = "normal";
+      syncChrome(); persistLayout(); drawChart();
+    });
+  }
+  ["from","to"].forEach(function (k) {
+    var el = $("[data-"+k+"]");
+    if (el && !el.getAttribute("data-bound")) {
+      el.setAttribute("data-bound", "1");
+      el.addEventListener("change", function () {
+        S[k === "from" ? "fromDate" : "toDate"] = el.value || "";
+        $$("[data-r]").forEach(function (b) { b.classList.remove("on"); });
+        persistLayout(); drawChart();
+      });
+    }
+  });
+  var af = $("[data-alert]");
+  if (af && !af.getAttribute("data-bound")) {
+    af.setAttribute("data-bound", "1");
+    af.addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (!S.sel) return toast("Select a symbol first.");
+      var price = num(af.price.value);
+      if (price == null) return toast("Enter an index value.");
+      XT.alertStore(S.uid).add({ symbol: S.sel, op: af.op.value, price: price, note: (af.note.value || "").trim(), active: true, created: new Date().toISOString() });
+      af.reset(); paintAlerts(); drawChart();
+      toast("Alert armed for this symbol (this device, while the Exchange is open).");
+    });
+  }
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target && e.target.tagName) || "";
+    var typing = /INPUT|TEXTAREA|SELECT/.test(tag) || e.target.isContentEditable;
+    if (e.key === "/" && !typing) { e.preventDefault(); var f = $("[data-filter]"); if (f) f.focus(); return; }
+    if (typing) return;
+    var alt = e.altKey;
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") { e.preventDefault(); if (C.draw) (e.shiftKey ? C.draw.redoLast() : C.draw.undoLast()); return; }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "y") { e.preventDefault(); if (C.draw) C.draw.redoLast(); return; }
+    if (e.key === "Escape") { if (C.draw) C.draw.setTool("cursor"); markTool("cursor"); var k = document.getElementById("xt-keys"); if (k) k.classList.remove("show"); $$("[data-pop]").forEach(function (p) { p.hidden = true; }); return; }
+    if (e.key === "?" ) { var k = document.getElementById("xt-keys"); if (k) k.classList.toggle("show"); return; }
+    if (e.key === "F" || e.key === "f") { var box = document.querySelector(".xt-center"); if (!box) return; if (!document.fullscreenElement) (box.requestFullscreen || box.webkitRequestFullscreen).call(box); else document.exitFullscreen(); return; }
+    if (e.key === "l" || e.key === "L") { S.scale = S.scale === "log" ? "normal" : "log"; syncChrome(); persistLayout(); applyScale(); return; }
+    if (e.key === "%") { S.scale = S.scale === "percent" ? "normal" : "percent"; syncChrome(); persistLayout(); applyScale(); return; }
+    if (!alt) return;
+    var map = { t: "trend", h: "hline", v: "vline", r: "ray", b: "rectangle", f: "fib", n: "text", m: "measure", e: "eraser", p: "png" };
+    var id = map[e.key.toLowerCase()];
+    if (id === "png") { e.preventDefault(); XT.downloadPng(C.chart, C.draw, (prod(S.sel) || {}).product || "chart"); return; }
+    if (id) { e.preventDefault(); if (C.draw) C.draw.setTool(id); markTool(id); }
+  });
+}
+function markTool(id) {
+  $$("[data-tool]").forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-tool") === id); });
+}
+
 
 function waitLib(ms) {
   return new Promise(function (res) {
@@ -404,6 +799,7 @@ function waitLib(ms) {
   var r = await boot("exchange.html", "MarketScope Exchange (simulation)");
   if (!r.session) return;
   S.sb = r.sb;
+  S.uid = (r.session.user && (r.session.user.id || r.session.user.email)) || "anon";
   $$("[data-shell]").forEach(function (el) { el.hidden = false; });
   var g = $("[data-gate]"); if (g) g.hidden = true;
   bind();

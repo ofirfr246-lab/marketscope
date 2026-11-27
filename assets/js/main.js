@@ -33,7 +33,7 @@
     };
     var MEGA_GROUPS = {
       Product: [
-        { label: "Research", hrefs: ["product.html", "demo.html", "app.html"] },
+        { label: "Research", hrefs: ["./", "demo.html", "app.html"] },
         { label: "Platform", hrefs: ["integrations.html", "changelog.html"] }
       ],
       Terminal: [
