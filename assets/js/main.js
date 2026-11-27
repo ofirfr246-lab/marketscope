@@ -587,6 +587,7 @@
           : v === false ? '<td class="no' + hl + '" aria-label="Not included">—</td>'
           : v === "Live" ? '<td class="yes' + hl + '"><span class="chip live">Live</span></td>'
           : v === "Coming soon" ? '<td class="' + hl + '"><span class="chip soon">Coming soon</span></td>'
+          : v === "Soon" ? '<td class="' + hl + '"><span class="chip soon">Soon · DataForSEO</span></td>'
           : '<td class="' + hl + '">' + v + "</td>"; }).join("") + "</tr>";
     }).join("");
     mx.innerHTML = head + "<tbody>" + body + "</tbody>";

@@ -275,4 +275,17 @@ export async function initFinder(opts) {
   await restoreLast();
   $("[data-sf-cur]").textContent = F.currency;
   if (SIGNALS.some(function (id) { return F.res[id]; })) $("[data-sf-sig-h]").hidden = false;
+  try {
+    var pre = sessionStorage.getItem("ms-sf-preselect");
+    if (pre) {
+      var isSignal = SIGNALS.indexOf(pre) !== -1;
+      $$("[data-sf-prov]").forEach(function (c) {
+        c.checked = !isSignal && c.value === pre;
+        var lab = c.closest(".sf-prov");
+        if (lab) lab.classList.toggle("is-preselected", c.checked);
+      });
+      var actions = document.querySelector(".sf-actions");
+      if (actions) actions.classList.toggle("is-signals", isSignal);
+    }
+  } catch (e) { /* storage blocked */ }
 }

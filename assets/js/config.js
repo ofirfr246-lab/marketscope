@@ -5,11 +5,13 @@
    credit top-ups, sign-up plan picker, app preview wallet.
    Framing: Starter answers “Is there demand?”, Plus “How is it being
    sold?”, Pro “How much will I make?”.
-   Data sources: Free & Starter = Google Shopping + Google Search
-   (Live) + Amazon (Coming soon). Plus adds Meta Ad Library + TikTok
-   (Coming soon). Pro adds AliExpress and Shopify competitor stores
-   (Coming soon).
-   Only Google Shopping and Google Search are live today.
+   Data sources: research reports use Google Shopping + Google Search
+   (Live) on every plan. Amazon (via DataForSEO) is Coming soon / not live.
+   Supplier Intelligence (any signed-in account) is Live: AliExpress,
+   Alibaba, 1688, CJ Dropshipping, Temu, DHgate, Shopify competitor stores,
+   Meta Ad Library and TikTok (videos & hashtag views). Ad publishing,
+   TikTok Creative Center, connecting your own Shopify store, and the
+   Exchange as real-money trading are not live.
    ===================================================================== */
 /* Public base URL of the site (canonical/og/sitemap use the same value).
    Change it everywhere with: scripts/set-site-url.sh <new-url-with-trailing-slash>
@@ -27,10 +29,11 @@ window.MS_CONFIG = {
       sources: ["Google Shopping", "Google Search", "Amazon"],
       features: [
         "5 one-time credits",
-        "Google Shopping &amp; Search <span class=\"chip live\">Live</span> · Amazon <span class=\"chip soon\">Coming soon</span>",
+        "Google Shopping &amp; Search <span class=\"chip live\">Live</span> · Amazon <span class=\"chip soon\">Soon · DataForSEO</span>",
         "Demand, Competition, Saturation & Opportunity scores",
         "Verdict (STRONG BUY → AVOID)",
         "AI Advisor summary",
+        "Supplier Intelligence search (AliExpress, Alibaba, 1688, CJ, Temu, DHgate, Shopify stores, Meta, TikTok) <span class=\"chip live\">Live</span>",
         "Paste & Analyze from a product URL (early access)",
         "1 Watchlist slot",
         "Terminal desk (example tape, movers, 7-day charts)"
@@ -43,7 +46,7 @@ window.MS_CONFIG = {
       features: [
         "30 credits every month",
         "Everything in Free, plus:",
-        "Amazon BSR &amp; review velocity <span class=\"chip soon\">Coming soon</span>",
+        "Amazon BSR &amp; review velocity <span class=\"chip soon\">Soon · DataForSEO</span>",
         "Price-band recommendation",
         "Competitor Intelligence & 1 tracked store",
         "PDF / CSV export & saved reports",
@@ -58,9 +61,9 @@ window.MS_CONFIG = {
       features: [
         "100 credits every month",
         "Everything in Starter, plus:",
-        "Meta Ad Library &amp; TikTok ads / Creative Center <span class=\"chip soon\">Coming soon</span>",
-        "Ad longevity, advertiser count &amp; creative angles <span class=\"chip soon\">Coming soon</span>",
-        "TikTok trend velocity &amp; hashtag views <span class=\"chip soon\">Coming soon</span>",
+        "Meta Ad Library (public ads) <span class=\"chip live\">Live</span> in Supplier Intelligence",
+        "Ad longevity, advertiser count &amp; creative angles <span class=\"chip live\">Live</span> in Supplier Intelligence",
+        "TikTok videos &amp; hashtag views <span class=\"chip live\">Live</span> in Supplier Intelligence (Creative Center not connected)",
         "Screener, heatmap, backtest, sentiment & compare up to 4",
         "20 email alerts · 10 tracked stores · 12-month history",
         "AI Advisor summaries & priority email support"
@@ -73,8 +76,8 @@ window.MS_CONFIG = {
       features: [
         "200 credits every month",
         "Everything in Plus, plus:",
-        "AliExpress supplier finder with landed cost <span class=\"chip soon\">Coming soon</span>",
-        "Shopify competitor stores — store count, price bands, top stores and newest launches <span class=\"chip soon\">Coming soon</span>",
+        "AliExpress, Alibaba, 1688, CJ, Temu and DHgate supplier search with landed cost <span class=\"chip live\">Live</span> in Supplier Intelligence",
+        "Shopify competitor stores — store count, price bands, top stores and newest launches <span class=\"chip live\">Live</span> in Supplier Intelligence",
         "Margin / ROAS breakeven &amp; profit simulator <span class=\"chip soon\">Coming soon</span>",
         "Unlimited tracked stores, watch slots & 24-month history",
         "Portfolio desk & white-label PDF reports (early access)",
@@ -94,12 +97,13 @@ window.MS_CONFIG = {
     { group: "Data sources" },
     ["Google Shopping", "Live", "Live", "Live", "Live"],
     ["Google Search", "Live", "Live", "Live", "Live"],
-    ["Amazon (listings & pricing)", "Coming soon", "Coming soon", "Coming soon", "Coming soon"],
-    ["Amazon BSR & review velocity", false, "Coming soon", "Coming soon", "Coming soon"],
-    ["Meta Ad Library", false, false, "Coming soon", "Coming soon"],
-    ["TikTok ads & Creative Center", false, false, "Coming soon", "Coming soon"],
-    ["AliExpress (supplier cost, orders, margin)", false, false, false, "Coming soon"],
-    ["Shopify (competitor stores, price bands, launches)", false, false, false, "Coming soon"],
+    ["Amazon (listings & pricing, via DataForSEO)", "Soon", "Soon", "Soon", "Soon"],
+    ["Amazon BSR & review velocity (via DataForSEO)", false, "Soon", "Soon", "Soon"],
+    ["Meta Ad Library (Supplier Intelligence)", "Live", "Live", "Live", "Live"],
+    ["TikTok videos & hashtag views (Supplier Intelligence)", "Live", "Live", "Live", "Live"],
+    ["TikTok Creative Center & ad publishing", false, false, false, false],
+    ["AliExpress, Alibaba, 1688, CJ, Temu, DHgate (Supplier Intelligence)", "Live", "Live", "Live", "Live"],
+    ["Shopify competitor stores (Supplier Intelligence)", "Live", "Live", "Live", "Live"],
     { group: "Analysis & scores" },
     ["Demand / Competition / Saturation / Opportunity scores", true, true, true, true],
     ["Verdict (STRONG BUY → AVOID)", true, true, true, true],
@@ -107,9 +111,9 @@ window.MS_CONFIG = {
     ["Price-band recommendation", false, true, true, true],
     ["AI Advisor", "Summary", "Full", "Full + summaries", "Full + follow-ups"],
     ["Competitor Intelligence", "Top 3", true, true, true],
-    ["Ad longevity, advertiser count & creative angles", false, false, "Coming soon", "Coming soon"],
-    ["TikTok trend velocity & hashtag views", false, false, "Coming soon", "Coming soon"],
-    ["AliExpress supplier finder & landed cost", false, false, false, "Coming soon"],
+    ["Ad longevity, advertiser count & creative angles", "Live", "Live", "Live", "Live"],
+    ["TikTok trend velocity & hashtag views (Supplier Intelligence)", "Live", "Live", "Live", "Live"],
+    ["Supplier finder & landed-cost estimate (Supplier Intelligence)", "Live", "Live", "Live", "Live"],
     ["Margin / ROAS breakeven calculator", false, false, false, "Coming soon"],
     ["Profit simulator", false, false, false, "Coming soon"],
     { group: "Market terminal" },

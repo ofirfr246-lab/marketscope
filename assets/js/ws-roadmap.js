@@ -1,22 +1,32 @@
 /* Vision & roadmap — static, honest status per stage. No metrics, no claims beyond what ships. */
 import { $, esc } from "./ms-workspace.js";
 
-var ST = { live: ["live", "LIVE"], prog: ["prog", "IN PROGRESS"], plan: ["plan", "PLANNED"], sim: ["sim", "SIMULATION"] };
+var ST = { live: ["live", "LIVE"], prog: ["prog", "IN PROGRESS"], plan: ["plan", "PLANNED"], soon: ["plan", "SOON · DATAFORSEO"], sim: ["sim", "SIMULATION"] };
 var STEPS = [
   { t: "Reliable product research engine", s: "live", d: "Enter a product (or paste a URL) and get Demand, Competition, Saturation and Opportunity scores (0–100) with a STRONG BUY → AVOID rating, from live Google Shopping and Google Search data.",
-    li: ["Live today: Google Shopping listings and prices, Google search volume, CPC and 12-month trend", "Transparent formulas on the methodology page", "No data → no score, and no credit charged", "Next: more sources (see the table below)"], a: ["app.html", "Run a report"] },
+    li: ["Live today: Google Shopping listings and prices, Google search volume, CPC and 12-month trend", "Transparent formulas on the methodology page", "No data → no score, and no credit charged", "Next in reports: Amazon (via DataForSEO) and Google Trends — see the table below"], a: ["app.html", "Run a report"] },
   { t: "Subscriptions and paying customers", s: "live", d: "Plans, credits and secure checkout with automatic plan and credit sync.", li: ["Stripe checkout and customer portal", "Credits per plan and credit packs", "Plan and pricing details are reviewed regularly"], a: ["pricing.html", "See plans"] },
   { t: "Market Terminal with real data", s: "prog", d: "A capital-markets-style desk for products.", li: ["Live: desk built on a real Google Shopping & Search snapshot", "Live: your private Live Terminal — score history, movers, category heatmap, country comparison, alerts", "Planned: automatic scheduled refresh of tracked products"], a: ["my-terminal.html", "Open Live Terminal"] },
   { t: "Josy AI — advanced business assistant", s: "prog", d: "An AI assistant that knows your workspace and can take authorised actions.", li: ["Live: marketing plans and content calendars, live demand checks", "Live: reads your research, portfolio and suppliers; adds products to your watchlist when you ask", "Planned: pricing advice and automated reports from your stored history"], a: ["josy.html", "Meet Josy AI"] },
   { t: "Advertising & campaign management", s: "prog", d: "Plan organic posts and build complete paid-campaign drafts in one place.", li: ["Live: organic planner and paid drafts for Meta, TikTok and Google Ads structures", "Planned connections: Google Shopping, YouTube, Shopify", "Direct publishing requires each platform's approval — not available yet"], a: ["josy-campaigns.html", "Campaign manager"] },
-  { t: "Competitor & supplier intelligence", s: "prog", d: "Track competitor stores and compare supplier quotes.", li: ["Live: competitor tracking with your logged prices, launches, promotions and ads, plus price alerts", "Live: supplier comparison — landed cost, margin, shipping, MOQ, quality, reliability", "Planned: automated public-page monitoring"], a: ["competitors.html", "Competitors"] },
+  { t: "Competitor & supplier intelligence", s: "prog", d: "Track competitor stores and compare supplier quotes.", li: ["Live: competitor tracking with your logged prices, launches, promotions and ads, plus price alerts", "Live: supplier search on AliExpress, Alibaba, 1688, CJ Dropshipping, Temu and DHgate, with landed-cost and margin estimates", "Live: Shopify competitor stores, Meta Ad Library and TikTok as data sources", "Planned: automated public-page monitoring; connecting your own Shopify store"], a: ["suppliers.html", "Supplier Intelligence"] },
   { t: "Portfolio & backtesting", s: "prog", d: "Manage products like a portfolio and test rules on history before spending.", li: ["Live: product portfolio with unit economics linked to live research", "Live: backtests on your snapshots and on 12-month Google search history", "History grows as you re-run reports over time"], a: ["product-portfolio.html", "Portfolio"] },
   { t: "MarketScope Exchange", s: "sim", d: "Product and category indices, candles and an order ticket — as a virtual-credit simulation only.", li: ["Live: simulation with virtual credits, indices from your real snapshots, candlestick charts, limit orders", "No deposits, payments or cash-out", "Real-money trading is not offered and would require legal review and licensing"], a: ["exchange.html", "Open the simulation"] }
 ];
 var SOURCES = [
-  ["Google Shopping", "Listings, prices, sellers", "live"], ["Google Search (keyword data)", "Search volume, CPC, 12-month trend, related keywords", "live"],
-  ["Google Trends", "Relative interest over time", "plan"], ["Amazon", "Marketplace competition and pricing", "plan"], ["AliExpress", "Supplier cost and order volume", "plan"],
-  ["Shopify stores", "Competitor store counts and price bands", "plan"], ["Meta ad library", "Public ad presence and longevity", "plan"], ["TikTok ads", "Ad and creative trends", "plan"]
+  ["Google Shopping", "Listings, prices, sellers — used in live reports", "live"],
+  ["Google Search (keyword data)", "Search volume, CPC, 12-month trend, related keywords — used in live reports", "live"],
+  ["Google Trends", "Relative interest over time", "plan"],
+  ["Amazon", "Marketplace competition and pricing, via DataForSEO when enabled", "soon"],
+  ["AliExpress", "Supplier cost, orders, landed cost (Supplier Intelligence)", "live"],
+  ["Alibaba", "Factory prices and MOQ (Supplier Intelligence)", "live"],
+  ["1688", "China-domestic wholesale, CNY converted (Supplier Intelligence)", "live"],
+  ["CJ Dropshipping", "Catalogue prices and shipping quotes (Supplier Intelligence)", "live"],
+  ["Temu", "Retail marketplace prices (Supplier Intelligence)", "live"],
+  ["DHgate", "Wholesale listings and MOQ (Supplier Intelligence)", "live"],
+  ["Shopify stores", "Competitor store counts, price bands, launches (Supplier Intelligence)", "live"],
+  ["Meta Ad Library", "Public ads, advertisers, longevity (Supplier Intelligence). Publishing is not live.", "live"],
+  ["TikTok", "Videos and hashtag views (Supplier Intelligence). Creative Center and publishing are not live.", "live"]
 ];
 $("[data-steps]").innerHTML = STEPS.map(function (s, i) {
   var st = ST[s.s];
