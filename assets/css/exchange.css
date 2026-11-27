@@ -2,10 +2,10 @@
 body.xt-page{background:#06070a}
 body.xt-page .footer{display:none}
 .xt{--xt-line:#1a2028;--xt-panel:#0b0e12;--xt-panel2:#0f1318;--xt-head:#0d1015;display:flex;flex-direction:column;height:calc(100dvh - 66px);min-height:600px}
-.xt-strip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:6px 14px;font-size:.76rem;color:#c8bff5;background:linear-gradient(90deg,rgba(167,139,250,.14),rgba(167,139,250,.04));border-bottom:1px solid rgba(167,139,250,.28)}
+.xt-strip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:6px 14px;font-size:.76rem;color:var(--muted);background:var(--panel2);border-bottom:1px solid var(--line)}
 .xt-strip b{color:#fff}
-.xt-strip a{color:var(--violet);text-decoration:underline;text-underline-offset:2px}
-.xt-badge{font:800 .6rem var(--mono);letter-spacing:.1em;color:#111;background:var(--violet);padding:3px 7px;border-radius:5px}
+.xt-strip a{color:var(--text);text-decoration:underline;text-underline-offset:2px}
+.xt-badge{font:800 .6rem var(--mono);letter-spacing:.1em;color:#111;background:var(--amber);padding:3px 7px;border-radius:5px}
 .xt-grid{flex:1;display:grid;grid-template-columns:250px minmax(0,1fr) 340px;grid-template-rows:minmax(0,1fr);min-height:0;height:auto}
 .xt-grid>*{min-width:0;min-height:0}
 .xt-left,.xt-right{background:var(--xt-panel);display:flex;flex-direction:column;overflow:hidden}
@@ -34,7 +34,7 @@ body.xt-page .footer{display:none}
 /* symbol header */
 .xt-head{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:10px 16px;background:var(--xt-head);border-bottom:1px solid var(--xt-line)}
 .xt-title{display:flex;align-items:center;gap:10px;min-width:0}
-.xt-title .ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(255,176,0,.2),rgba(167,139,250,.12));border:1px solid rgba(255,176,0,.3);flex:none}
+.xt-title .ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:rgba(255,176,0,.12);border:1px solid var(--line2);flex:none}
 .xt-title .ic img{width:20px;height:20px}
 .xt-title h1{font-size:1.05rem;margin:0;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:38vw}
 .xt-title .sub{font:500 .68rem var(--mono);color:var(--dim)}
@@ -148,3 +148,8 @@ body.xt-page .footer{display:none}
   .xt-tools{gap:6px}
   .xt-title h1{max-width:100%}
 }
+
+/* Color refinement: amber only for active controls and the simulation badge */
+.xt-attr a:hover{color:var(--text)}
+.xt-empty{background:rgba(7,9,12,.55)}
+.xt-title .sub,.xt-tools .lbl,.xt-sec-h>span:first-child{color:var(--dim)}

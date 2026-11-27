@@ -5,10 +5,10 @@
 .set-side{position:sticky;top:86px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));border:1px solid var(--line);border-radius:var(--r);padding:14px;backdrop-filter:blur(10px)}
 .set-user{display:flex;align-items:center;gap:12px;padding:6px 6px 14px;border-bottom:1px solid var(--line);margin-bottom:10px}
 .set-user b{display:block;font-size:.95rem;line-height:1.2;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.set-user span{font-size:.78rem;color:var(--amber)}
-.set-avatar{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#3a2a00,#1a1407);border:1px solid rgba(255,176,0,.5);color:var(--amber);font-weight:700;font-size:.9rem;overflow:hidden}
+.set-user span{font-size:.78rem;color:var(--muted)}
+.set-avatar{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--panel2);border:1px solid var(--line2);color:var(--text);font-weight:700;font-size:.9rem;overflow:hidden}
 .set-avatar img{width:100%;height:100%;object-fit:cover}
-.set-avatar.lg{width:72px;height:72px;font-size:1.4rem;box-shadow:0 0 0 4px rgba(255,176,0,.08)}
+.set-avatar.lg{width:72px;height:72px;font-size:1.4rem;box-shadow:0 0 0 4px rgba(255,255,255,.04)}
 .set-tabs{display:grid;gap:2px}
 .set-tabs button{display:flex;align-items:center;gap:11px;width:100%;background:none;border:1px solid transparent;border-radius:10px;padding:9px 11px;color:var(--muted);cursor:pointer;font-size:.9rem;text-align:left;transition:.15s}
 .set-tabs button svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
@@ -37,14 +37,14 @@
 .set-copy code{font:500 .82rem var(--mono);background:var(--bg2);border:1px solid var(--line2);border-radius:8px;padding:9px 12px;word-break:break-all;color:var(--muted)}
 .set-copy .btn-ghost{margin:0}
 /* plan */
-.set-plan{border-color:rgba(255,176,0,.3);background:radial-gradient(120% 140% at 100% 0,rgba(255,176,0,.10),transparent 55%),var(--panel)}
+.set-plan{border-color:var(--line2);background:var(--panel)}
 .set-plan-head{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
-.set-plan-name{font-size:2rem;font-weight:800;color:var(--amber);letter-spacing:-.03em;line-height:1.1;margin:4px 0}
+.set-plan-name{font-size:2rem;font-weight:800;color:var(--text);letter-spacing:-.03em;line-height:1.1;margin:4px 0}
 .set-credits{text-align:right}
 .set-credit-num{font-size:2rem;font-weight:800;line-height:1.1;margin:4px 0}
 .set-plan-head .muted{font-size:.82rem}
 .set-meter{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin:16px 0 10px}
-.set-meter span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#b37a00,var(--amber),var(--amber2));transition:width .6s}
+.set-meter span{display:block;height:100%;border-radius:inherit;background:var(--muted);transition:width .6s}
 .set-cycle{display:flex;align-items:center;gap:10px;font-size:.85rem;color:var(--muted)}
 .set-cycle em{font-style:normal;font-size:.75rem}
 .set-plans{display:grid;gap:10px;margin-top:8px}
@@ -57,9 +57,9 @@
 .set-plan-opt .btn-ghost{margin:0}
 .set-topups{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
 .set-topup{display:grid;gap:2px;text-align:left;padding:16px;border-radius:12px;border:1px solid var(--line2);background:var(--bg2);cursor:pointer;transition:.18s}
-.set-topup:hover{border-color:var(--amber);transform:translateY(-2px);box-shadow:0 12px 30px -16px rgba(255,176,0,.5)}
+.set-topup:hover{border-color:var(--line2);transform:translateY(-2px)}
 .set-topup b{font-size:1rem}
-.set-topup span{color:var(--amber);font-weight:700}
+.set-topup span{color:var(--text);font-weight:700}
 .set-topup em{font-style:normal;font-size:.72rem;color:var(--green)}
 .set-pill{display:inline-block;font-size:.76rem;padding:5px 10px;border-radius:99px;border:1px solid var(--line2);color:var(--muted);white-space:nowrap}
 .set-pill.on{color:var(--amber);border-color:rgba(255,176,0,.45);background:rgba(255,176,0,.07)}

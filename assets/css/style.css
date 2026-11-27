@@ -1,8 +1,8 @@
 /* MarketScope — dark terminal design system */
 :root{
   --bg:#07080a;--bg2:#0b0d10;--panel:#0e1115;--panel2:#12161b;--line:#1d232b;--line2:#2a323c;
-  --text:#e9ecef;--muted:#8b95a3;--dim:#5d6672;
-  --amber:#ffb000;--amber2:#ffc53d;--green:#19d27c;--red:#ff4d5e;--blue:#4da3ff;--violet:#a78bfa;
+  --text:#e9ecef;--muted:#a8b0bb;--dim:#8f99a6;
+  --amber:#ffb000;--amber2:#ffc53d;--green:#19d27c;--red:#ff4d5e;--blue:#a8b0bb;--violet:#8f99a6;
   --sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   --r:14px;--r2:10px;--shadow:0 30px 80px -20px rgba(0,0,0,.7);
@@ -398,7 +398,7 @@ a.card:hover{border-color:rgba(255,176,0,.4);transform:translateY(-2px)}
 .chip{display:inline-block;font:600 .66rem var(--mono);padding:3px 8px;border-radius:5px;letter-spacing:.04em;vertical-align:middle}
 .chip.live{color:var(--green);border:1px solid rgba(25,210,124,.4);background:rgba(25,210,124,.07)}
 .chip.planned{color:var(--amber);border:1px solid rgba(255,176,0,.4);background:rgba(255,176,0,.07)}
-.chip.beta{color:var(--blue);border:1px solid rgba(77,163,255,.4);background:rgba(77,163,255,.07)}
+.chip.beta{color:var(--muted);border:1px solid var(--line2);background:var(--panel)}
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
 .tabs button{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 16px;color:var(--muted);cursor:pointer;font-size:.88rem}
 .tabs button.active,.tabs button:hover{color:var(--amber);border-color:rgba(255,176,0,.4)}
@@ -727,7 +727,7 @@ pre.code{background:#090b0e;border:1px solid var(--line);border-radius:12px;padd
 .tv-readout{margin:8px 0 0;color:var(--muted);font-size:.72rem}
 .px-hist{background:#0a0c0f;border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:16px 0}
 .px-hist-bars{display:flex;align-items:flex-end;gap:3px;height:140px}
-.px-hist-col{flex:1;background:rgba(77,163,255,.45);border-radius:3px 3px 0 0;min-width:4px}
+.px-hist-col{flex:1;background:rgba(168,176,187,.45);border-radius:3px 3px 0 0;min-width:4px}
 .px-hist-col.in-band{background:rgba(255,176,0,.75)}
 .px-hist-axis{display:flex;justify-content:space-between;margin-top:6px;color:var(--dim);font-size:.68rem}
 .banner-live{background:rgba(25,210,124,.08);border:1px solid rgba(25,210,124,.35);border-radius:10px;padding:10px 14px;font:500 .78rem var(--mono);color:#19d27c;text-align:center}
@@ -757,7 +757,7 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
   position:absolute;
   inset:auto 10% -80px;
   height:160px;
-  background:radial-gradient(ellipse at center, rgba(77,163,255,.08), transparent 70%);
+  background:radial-gradient(ellipse at center, rgba(168,176,187,.08), transparent 70%);
   pointer-events:none;
 }
 .sources-head{text-align:center;margin:0 auto 28px;position:relative}
@@ -850,8 +850,8 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
   transform:translateZ(2px);
 }
 
-.sources-card.src-search{--brand:var(--violet);--brand-rgb:167,139,250}
-.sources-card.src-marketplace{--brand:var(--blue);--brand-rgb:77,163,255}
+.sources-card.src-search{--brand:var(--muted);--brand-rgb:168,176,187}
+.sources-card.src-marketplace{--brand:var(--muted);--brand-rgb:168,176,187}
 .sources-card.src-social{--brand:var(--amber);--brand-rgb:255,176,0}
 .sources-card.src-video{--brand:var(--green);--brand-rgb:25,210,124}
 .sources-card.src-suppliers{--brand:#6ec8b8;--brand-rgb:110,200,184}
@@ -1031,7 +1031,7 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
 }
 .hero-source{
   --brand:var(--violet);
-  --brand-rgb:167,139,250;
+  --brand-rgb:168,176,187;
   --brand-2:var(--brand);
   position:relative;
   display:inline-flex;
@@ -1176,8 +1176,8 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
   }
 }
 
-.hero-source.src-search{--brand:var(--violet);--brand-rgb:167,139,250}
-.hero-source.src-marketplace{--brand:var(--blue);--brand-rgb:77,163,255}
+.hero-source.src-search{--brand:var(--muted);--brand-rgb:168,176,187}
+.hero-source.src-marketplace{--brand:var(--muted);--brand-rgb:168,176,187}
 .hero-source.src-social{--brand:var(--amber);--brand-rgb:255,176,0}
 .hero-source.src-video{--brand:var(--green);--brand-rgb:25,210,124}
 .hero-source.src-suppliers{--brand:#6ec8b8;--brand-rgb:110,200,184}
@@ -1318,8 +1318,8 @@ body.is-analyzing{overflow:hidden}
   gap:8px;
 }
 .analyze-source{
-  --brand:#4285F4;
-  --brand-rgb:66,133,244;
+  --brand:var(--muted);
+  --brand-rgb:168,176,187;
   display:flex;
   align-items:center;
   gap:10px;
@@ -1349,7 +1349,7 @@ body.is-analyzing{overflow:hidden}
   transition:color .35s ease, filter .35s ease;
 }
 .analyze-source-logo.is-wide{width:72px;height:14px}
-.analyze-source.brand-google{--brand:#4285F4;--brand-rgb:66,133,244}
+.analyze-source.brand-google{--brand:var(--muted);--brand-rgb:168,176,187}
 .analyze-source.brand-amazon{--brand:#FF9900;--brand-rgb:255,153,0}
 .analyze-source.brand-meta{--brand:#0866FF;--brand-rgb:8,102,255}
 .analyze-source.brand-tiktok{--brand:#25F4EE;--brand-rgb:37,244,238}
@@ -1922,7 +1922,7 @@ body.is-analyzing{overflow:hidden}
 }
 .source-card-face{
   --brand:var(--violet);
-  --brand-rgb:167,139,250;
+  --brand-rgb:168,176,187;
   position:relative;
   width:100%;
   height:100%;
@@ -2041,8 +2041,8 @@ body.is-analyzing{overflow:hidden}
   line-height:1.4;
   max-width:20em;
 }
-.source-card.src-search .source-card-face{--brand:var(--violet);--brand-rgb:167,139,250}
-.source-card.src-marketplace .source-card-face{--brand:var(--blue);--brand-rgb:77,163,255}
+.source-card.src-search .source-card-face{--brand:var(--muted);--brand-rgb:168,176,187}
+.source-card.src-marketplace .source-card-face{--brand:var(--muted);--brand-rgb:168,176,187}
 .source-card.src-social .source-card-face{--brand:var(--amber);--brand-rgb:255,176,0}
 .source-card.src-video .source-card-face{--brand:var(--green);--brand-rgb:25,210,124}
 .source-card.src-suppliers .source-card-face{--brand:#6ec8b8;--brand-rgb:110,200,184}
@@ -2606,3 +2606,52 @@ input,select,textarea{border-radius:var(--r-ctl)}
 .hero-copy-more .hero-link{display:inline-block;margin-top:var(--sp-4)}
 @media (max-width:900px){.term-launch{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:520px){.term-launch{grid-template-columns:1fr}}
+
+
+/* =====================================================================
+   Color refinement (Nov 2026): black + amber terminal identity.
+   Amber is reserved for primary CTAs and a few key highlights
+   (active nav, focus, key figures / verdicts). Green and red are only
+   used for up/down and positive/negative meaning. Blue, violet and
+   Google-blue accents are removed. --muted / --dim meet WCAG AA on
+   --bg, --panel and the Dim theme surfaces.
+   ===================================================================== */
+.kicker,.eyebrow,.mm-label,.mob-label,.mob-sub,.ws-sec-label,.account-sec-label,
+.step-n,.vs-head,.mod-ico,.crumbs,.hero-sources-label,.source-stack-label,
+.sources-caption,.hero-or,.fine,.tb i{
+  color:var(--muted);
+}
+.kicker{color:var(--muted)}
+.kicker::before{background:var(--dim);opacity:.9}
+.mod-ico{color:var(--muted);border-color:var(--line2);background:var(--bg)}
+.mod-ico.a-bg{background:var(--panel2);color:var(--text);border-color:var(--line2)}
+.step-n{color:var(--muted)}
+.term-launch a b{color:var(--muted)}
+.hero-link{color:var(--text);text-decoration:underline;text-underline-offset:3px}
+.hero-link:hover{color:var(--text);opacity:.85}
+a.amber{color:var(--text);text-decoration:underline;text-underline-offset:3px}
+/* keep .amber on key figures and the wordmark; demote miscellaneous .amber in running labels */
+.eyebrow{border-color:var(--line2);color:var(--muted)}
+.card:hover,.mod:hover,.step:hover,.term-launch a:hover,.quote:hover{
+  border-color:var(--line2);
+}
+/* source / integration chrome: one muted accent, live status stays on the chip */
+.sources-card,.hero-source,.source-card-face,.analyze-source,.int-logo{
+  --brand:var(--muted);
+  --brand-rgb:168,176,187;
+}
+.analyze-source.brand-amazon,
+.analyze-source.brand-meta,
+.analyze-source.brand-tiktok,
+.analyze-source.brand-aliexpress,
+.analyze-source.brand-shopify,
+.analyze-source.brand-google{
+  --brand:var(--muted);
+  --brand-rgb:168,176,187;
+}
+/* soften source-card glows that used to be rainbow */
+.source-card.is-live .source-card-face,
+.hero-source.is-live,
+.sources-card.is-live{
+  box-shadow:var(--edge),0 16px 40px -24px rgba(0,0,0,.7);
+}
