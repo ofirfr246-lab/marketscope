@@ -87,19 +87,21 @@
     <div class="kicker mono">TRUST CENTER</div>
     <h1>Security and privacy, built in from day one.</h1>
     <p class="sub">How we protect your data, what we collect, and where we're headed on compliance. We describe our practices and goals honestly; we don't claim certifications we don't hold.</p>
-    <div class="note" style="margin-top:18px;max-width:820px"><b>Early access:</b> MarketScope is pre-launch. The practices below describe how the platform is being designed and the standards we commit to at launch.</div>
-    <div class="badges" style="justify-content:flex-start"><span class="badge"><i>◆</i> Encrypted in transit (TLS)</span><span class="badge"><i>◆</i> Encryption at rest</span><span class="badge"><i>◆</i> Stripe-ready payments</span><span class="badge"><i>◆</i> GDPR-minded</span><span class="badge"><i>◆</i> Least-privilege access</span></div>
+    <div class="note" style="margin-top:18px;max-width:820px"><b>How we operate today:</b> The practices below describe the live system — GitHub Pages, Supabase and Stripe — not a future design. We do not claim certifications we do not hold.</div>
+    <div class="badges" style="justify-content:flex-start"><span class="badge"><i>◆</i> Encrypted in transit (TLS)</span><span class="badge"><i>◆</i> Encryption at rest</span><span class="badge"><i>◆</i> Stripe payments</span><span class="badge"><i>◆</i> GDPR-minded</span><span class="badge"><i>◆</i> Least-privilege access</span></div>
   </div>
 </section>
 <section class="section">
   <div class="wrap">
     <div class="grid3">
-      <div class="card"><div class="mod-ico mono">ENC</div><h3>Encryption</h3><p>All traffic is served over HTTPS/TLS. Customer data is designed to be stored with encryption at rest using our cloud provider's managed encryption.</p></div>
-      <div class="card"><div class="mod-ico mono">PAY</div><h3>Payments</h3><p>Payments are designed to run through Stripe, a PCI DSS–compliant processor. MarketScope never stores full card numbers.</p></div>
-      <div class="card"><div class="mod-ico mono">IAM</div><h3>Access control</h3><p>Our standard: least-privilege access for our team, multi-factor authentication on internal systems, and audit logging of administrative actions.</p></div>
-      <div class="card"><div class="mod-ico mono">INF</div><h3>Infrastructure</h3><p>Built to run on established cloud infrastructure with isolated environments, automated backups and dependency monitoring.</p></div>
-      <div class="card"><div class="mod-ico mono">DAT</div><h3>Data minimization</h3><p>We collect what we need to run the service: account details, billing records and the research you run. We don't sell personal data.</p></div>
-      <div class="card"><div class="mod-ico mono">AI</div><h3>AI &amp; your data</h3><p>Your research is used to generate your reports. We don't use your private research to train public models.</p></div>
+      <div class="card"><div class="mod-ico mono">TLS</div><h3>HTTPS / TLS</h3><p>The site is served only over HTTPS with TLS. Browsers connect to GitHub Pages and to our API hosts on encrypted connections. We do not offer an unencrypted HTTP site.</p></div>
+      <div class="card"><div class="mod-ico mono">AT REST</div><h3>Encryption at rest</h3><p>Application data lives in Supabase (Postgres). Supabase encrypts data at rest. We do not run our own on-disk encryption layer on top of that.</p></div>
+      <div class="card"><div class="mod-ico mono">RLS</div><h3>Row Level Security</h3><p>Supabase Row Level Security (RLS) is enabled on every table in our public schema. Signed-in users can read and change only their own rows, except where a specific policy allows a narrow public action (for example submitting the contact form).</p></div>
+      <div class="card"><div class="mod-ico mono">PAY</div><h3>Payments</h3><p>Card payments are handled by Stripe. MarketScope never stores full card numbers, CVCs or raw card data. Stripe may send us limited billing details such as the last four digits and billing country.</p></div>
+      <div class="card"><div class="mod-ico mono">KEYS</div><h3>Secrets stay server-side</h3><p>The service-role key, Stripe secret keys and other secrets live only in server-side environment variables (Supabase Edge Functions and related backend). The browser receives only the publishable/anon key, which is scoped by RLS.</p></div>
+      <div class="card"><div class="mod-ico mono">DAT</div><h3>Data minimization</h3><p>We collect what we need to run the service: account details, limited billing records and the research you run. We don't sell personal data.</p></div>
+      <div class="card"><div class="mod-ico mono">AI</div><h3>AI &amp; your data</h3><p>Your research is used to generate your reports and to power Josy for your account. We don't use your private research to train public models.</p></div>
+      <div class="card"><div class="mod-ico mono">HOST</div><h3>Infrastructure</h3><p>The marketing and app UI is hosted on GitHub Pages. Authentication, database and edge functions run on Supabase. We do not claim a third-party audit of this stack.</p></div>
     </div>
 
     <div class="grid2" style="margin-top:64px;align-items:start">
@@ -141,9 +143,9 @@
   </div>
   <div class="wrap foot-grid">
     <div class="foot-brand">
-      <a href="index.html" class="brand"><img src="favicon.svg" alt="" width="26" height="26"><span>Market<b>Scope</b></span></a>
+      <a href="index.html" class="brand"><img src="favicon.svg" loading="lazy" decoding="async" alt="" width="26" height="26"><span>Market<b>Scope</b></span></a>
       <p class="tagline">Understand the Market. Measure the Opportunity. Make Better Decisions.</p>
-      <a class="status-pill mono" href="status.html"><span class="dot live"></span> Status preview</a>
+      <a class="status-pill mono" href="status.html">Status</a>
     </div>
     <div><h4 class="mono">PRODUCT</h4><a href="./">Platform</a><a href="demo.html">Real report</a><a href="app.html">App preview</a><a href="integrations.html">Integrations</a><a href="pricing.html">Pricing</a><a href="changelog.html">Changelog</a></div>
     <div><h4 class="mono">SOLUTIONS</h4><a href="solutions.html#dropshippers">Dropshippers</a><a href="solutions.html#amazon">Amazon sellers</a><a href="solutions.html#dtc">DTC brands</a><a href="solutions.html#agencies">Agencies</a><a href="compare.html">Compare</a></div>
@@ -151,7 +153,7 @@
     <div><h4 class="mono">COMPANY</h4><a href="about.html">About</a><a href="security.html">Trust Center</a><a href="careers.html">Careers</a><a href="contact.html">Contact</a></div>
     <div><h4 class="mono">LEGAL</h4><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="cookies.html">Cookies</a><a href="refunds.html">Refunds &amp; credits</a><a href="acceptable-use.html">Acceptable use</a><button class="link-btn" data-cookie-settings>Cookie settings</button></div>
   </div>
-  <div class="wrap foot-bottom mono"><span>© <span class="year">2026</span> MarketScope. All rights reserved.</span><span>Product figures on desk pages come from a live Google Shopping &amp; Search snapshot (US, 12 Nov 2026) or a transparent computation on it. Testimonials are labelled personas. Verdicts are not guarantees.</span></div>
+  <div class="wrap foot-bottom mono"><span>© <span class="year">2026</span> MarketScope. All rights reserved.</span><span>Product figures on desk pages come from a live Google Shopping &amp; Search snapshot (US, 12 Nov 2026) or a transparent computation on it. Reviews from real users coming soon. Verdicts are not guarantees.</span></div>
 </footer>
 <div class="cookie" id="cookie" hidden role="dialog" aria-label="Cookie preferences">
   <p><b>Cookies &amp; local storage.</b> We use essential storage to run this site and remember your choices. Optional analytics are off unless you allow them. <a href="cookies.html">Cookie Policy</a></p>
