@@ -1,4 +1,5 @@
 import { $, $$, esc, num, fmt, money, empty, toast, errMsg, boot } from "./ms-workspace.js";
+import { initFinder } from "./ws-source-finder.js";
 
 var S = { sb: null, sup: [] };
 function formData(f) { var o = {}; Array.prototype.forEach.call(f.elements, function (el) { if (el.name) o[el.name] = el.value.trim() === "" ? null : el.value.trim(); }); return o; }
@@ -63,6 +64,7 @@ async function refresh() { var r = await S.sb.from("suppliers").select("*").orde
   if (!r.session) return;
   S.sb = r.sb;
   await refresh();
+  initFinder({ sb: S.sb, onSaved: refresh });
   $("[data-weights]").addEventListener("input", paint);
   $("[data-weights]").addEventListener("change", paint);
   $("[data-sup-form]").addEventListener("submit", async function (e) {
