@@ -1,6 +1,6 @@
 # MarketScope website
 
-Static multi-page marketing site for MarketScope, the Bloomberg Terminal for e-commerce.
+Static multi-page marketing site for MarketScope, a market-intelligence desk for e-commerce.
 Plain HTML/CSS/JS, so there's no build step. It can be hosted anywhere, including GitHub Pages.
 
 Live: https://ofirfr246-lab.github.io/marketscope/
@@ -44,7 +44,7 @@ Live today: **Google Shopping** and **Google Search** on every plan. Amazon, Met
 - **Store Intelligence** — directory visible on all plans (example data). Tracked stores: Starter 1, Plus 10, Pro unlimited. Plus+ for the full profile (catalog, ads, sentiment) when live collection ships.
 
 ## Front-end notes
-- Waitlist & newsletter forms save to `localStorage` (`marketscope_waitlist`).
+- Contact and newsletter forms insert into the Supabase `leads` table (and keep a local copy in `localStorage` as a fallback).
 - Contact form saves to `localStorage` (`marketscope_contact`) and isn't sent anywhere.
 - Login, sign-up, password reset, dashboard and account talk to Supabase once the two keys are set. Forms do not create accounts while keys are still placeholders.
 - Cookie banner stores the choice in `localStorage` (`ms_consent`). No analytics are loaded.
