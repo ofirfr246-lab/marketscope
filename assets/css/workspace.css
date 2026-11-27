@@ -100,6 +100,8 @@
 .sf-provs{display:flex;flex-wrap:wrap;gap:8px 14px}
 .sf-prov{flex-direction:row!important;align-items:center;gap:6px!important;font:500 .8rem var(--sans)!important;letter-spacing:0!important;color:var(--text)!important;cursor:pointer}
 .sf-prov input{width:auto!important}
+.sf-prov.is-preselected{outline:1px solid rgba(25,210,124,.7);outline-offset:4px;border-radius:8px;box-shadow:0 0 0 4px rgba(25,210,124,.12)}
+.sf-actions.is-signals button[data-sf-signals-go]{outline:1px solid rgba(25,210,124,.7);outline-offset:3px}
 .sf-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .sf-actions .btn-ghost{margin:0}
 .sf-hide{flex-direction:row!important;align-items:center;gap:6px!important;font:500 .78rem var(--sans)!important;letter-spacing:0!important;color:var(--muted)!important;margin-left:auto}

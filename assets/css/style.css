@@ -789,6 +789,8 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
   --rx:8deg;
   --ry:-8deg;
   --fy:0px;
+  --hx:0deg;
+  --hy:0deg;
   --mx:50%;
   --my:12%;
   position:relative;
@@ -812,7 +814,7 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
   backdrop-filter:blur(16px) saturate(1.2);
   -webkit-backdrop-filter:blur(16px) saturate(1.2);
   transform-style:preserve-3d;
-  transform:rotateX(var(--rx)) rotateY(var(--ry)) translateY(var(--fy)) translateZ(0);
+  transform:rotateX(calc(var(--rx) + var(--hx))) rotateY(calc(var(--ry) + var(--hy))) translateY(var(--fy)) translateZ(0);
   transform-origin:center center;
   animation:sources-float 6.4s ease-in-out infinite;
   will-change:transform;
@@ -823,9 +825,12 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
 .sources-cell:nth-child(4) .sources-card{--ry:5deg;animation-delay:1.05s}
 .sources-cell:nth-child(5) .sources-card{--ry:8deg;animation-delay:1.4s}
 .sources-cell:nth-child(6) .sources-card{--ry:12deg;animation-delay:1.75s}
+.sources-cell:nth-child(7) .sources-card{--ry:-8deg;animation-delay:2.1s}
+.sources-cell:nth-child(8) .sources-card{--rx:9deg;--ry:0deg;animation-delay:2.45s}
+.sources-cell:nth-child(9) .sources-card{--ry:10deg;animation-delay:2.8s}
 @keyframes sources-float{
-  0%,100%{transform:rotateX(var(--rx)) rotateY(var(--ry)) translateY(0) translateZ(0)}
-  50%{transform:rotateX(var(--rx)) rotateY(var(--ry)) translateY(-8px) translateZ(10px)}
+  0%,100%{transform:rotateX(calc(var(--rx) + var(--hx))) rotateY(calc(var(--ry) + var(--hy))) translateY(0) translateZ(0)}
+  50%{transform:rotateX(calc(var(--rx) + var(--hx))) rotateY(calc(var(--ry) + var(--hy))) translateY(-8px) translateZ(10px)}
 }
 .sources-card::before{
   content:"";
@@ -864,7 +869,8 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
     0 1px 0 rgba(255,255,255,.14) inset;
 }
 .sources-card:hover,
-.sources-card:focus-visible{
+.sources-card:focus-visible,
+.sources-card.is-tilting{
   border-color:rgba(var(--brand-rgb), .55);
   box-shadow:
     0 28px 48px -18px rgba(0,0,0,.8),
@@ -872,6 +878,9 @@ button.btn[data-busy="1"],a.btn[data-busy="1"]{opacity:.6;pointer-events:none}
     0 0 0 1px rgba(var(--brand-rgb), .28),
     0 1px 0 rgba(255,255,255,.2) inset;
   z-index:2;
+  animation-play-state:paused;
+  --fy:-14px;
+  transform:rotateX(calc(var(--rx) + var(--hx))) rotateY(calc(var(--ry) + var(--hy))) translateY(-14px) translateZ(18px);
 }
 .sources-card:hover .sources-logo,
 .sources-card:focus-visible .sources-logo{
@@ -2654,4 +2663,70 @@ a.amber{color:var(--text);text-decoration:underline;text-underline-offset:3px}
 .hero-source.is-live,
 .sources-card.is-live{
   box-shadow:var(--edge),0 16px 40px -24px rgba(0,0,0,.7);
+}
+
+/* Supplier Intelligence floating cards (also used on the homepage sources grid) */
+.sf-float-wrap{
+  margin:28px 0 4px;
+  position:relative;
+  z-index:1;
+  max-width:1040px;
+}
+.sf-float-kicker{
+  margin:0 0 12px;
+  color:var(--muted);
+  letter-spacing:.12em;
+}
+.sf-float-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+}
+.sf-float-grid .sources-card{
+  width:100%;
+  min-height:214px;
+  cursor:pointer;
+  font:inherit;
+  color:inherit;
+  text-align:center;
+  appearance:none;
+  -webkit-appearance:none;
+}
+.sf-float-grid .sources-sub{
+  max-width:28ch;
+  margin-inline:auto;
+  line-height:1.4;
+}
+.sf-float-note{
+  text-align:left;
+  margin:14px 0 0;
+  max-width:720px;
+}
+@media (max-width:980px){
+  .sf-float-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:720px){
+  .sf-float-grid{
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+    overflow-y:visible;
+    scroll-snap-type:x mandatory;
+    padding:8px 2px 16px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;
+    grid-template-columns:none;
+  }
+  .sf-float-grid .sources-cell{
+    flex:0 0 min(220px,78vw);
+    scroll-snap-align:start;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .sources-card:hover,
+  .sources-card:focus-visible,
+  .sources-card.is-tilting{
+    animation:none !important;
+    transform:none !important;
+    --fy:0px;
+  }
 }
