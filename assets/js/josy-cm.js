@@ -120,9 +120,9 @@ export function money(n, cur) {
 
 export var ORG = {
   instagram: { label: "Instagram", max: 2200, tags: 30, tagsHard: true, color: "#ff8fa3" },
-  facebook: { label: "Facebook", max: 63206, tags: 0, color: "#4da3ff" },
-  tiktok: { label: "TikTok", max: 2200, tags: 0, color: "#a78bfa" },
-  linkedin: { label: "LinkedIn", max: 3000, tags: 5, color: "#19d27c" },
+  facebook: { label: "Facebook", max: 63206, tags: 0, color: "#a8b0bb" },
+  tiktok: { label: "TikTok", max: 2200, tags: 0, color: "#8f99a6" },
+  linkedin: { label: "LinkedIn", max: 3000, tags: 5, color: "#e9ecef" },
   x: { label: "X", max: 280, tags: 2, color: "#e8ecf1" }
 };
 export var ORG_KEYS = ["instagram", "facebook", "tiktok", "linkedin", "x"];

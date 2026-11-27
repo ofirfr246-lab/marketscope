@@ -7,13 +7,13 @@
   var STORE_KEY = "ms_import_url";
 
   var SOURCES = [
-    { id: "amazon", name: "Amazon", color: "#ffb000", hosts: /(^|\.)amazon\.[a-z.]+$/i, extra: /(^|\.)(amzn\.to|amzn\.com|a\.co)$/i },
-    { id: "aliexpress", name: "AliExpress", color: "#ff8a3d", hosts: /(^|\.)aliexpress\.[a-z.]+$/i, extra: /(^|\.)(ali\.pub|s\.click\.aliexpress\.com)$/i },
-    { id: "tiktok", name: "TikTok", color: "#ff4d5e", hosts: /(^|\.)tiktok\.com$/i, extra: /(^|\.)(vm|vt)\.tiktok\.com$/i },
-    { id: "ebay", name: "eBay", color: "#4da3ff", hosts: /(^|\.)ebay\.[a-z.]+$/i, extra: /(^|\.)ebayto\.[a-z.]+$/i },
-    { id: "etsy", name: "Etsy", color: "#ff8a3d", hosts: /(^|\.)etsy\.com$/i, extra: /(^|\.)etsy\.me$/i },
-    { id: "walmart", name: "Walmart", color: "#4da3ff", hosts: /(^|\.)walmart\.[a-z.]+$/i },
-    { id: "shopify", name: "Shopify store", color: "#19d27c", hosts: /(^|\.)myshopify\.com$/i }
+    { id: "amazon", name: "Amazon", color: "#a8b0bb", hosts: /(^|\.)amazon\.[a-z.]+$/i, extra: /(^|\.)(amzn\.to|amzn\.com|a\.co)$/i },
+    { id: "aliexpress", name: "AliExpress", color: "#a8b0bb", hosts: /(^|\.)aliexpress\.[a-z.]+$/i, extra: /(^|\.)(ali\.pub|s\.click\.aliexpress\.com)$/i },
+    { id: "tiktok", name: "TikTok", color: "#a8b0bb", hosts: /(^|\.)tiktok\.com$/i, extra: /(^|\.)(vm|vt)\.tiktok\.com$/i },
+    { id: "ebay", name: "eBay", color: "#a8b0bb", hosts: /(^|\.)ebay\.[a-z.]+$/i, extra: /(^|\.)ebayto\.[a-z.]+$/i },
+    { id: "etsy", name: "Etsy", color: "#a8b0bb", hosts: /(^|\.)etsy\.com$/i, extra: /(^|\.)etsy\.me$/i },
+    { id: "walmart", name: "Walmart", color: "#a8b0bb", hosts: /(^|\.)walmart\.[a-z.]+$/i },
+    { id: "shopify", name: "Shopify store", color: "#a8b0bb", hosts: /(^|\.)myshopify\.com$/i }
   ];
 
   var MARKET_FROM_HOST = [
@@ -68,12 +68,12 @@
     }
     /* Shopify-style stores often use /products/<handle> on a custom domain. */
     if (/\/products\/[^/]+/i.test(u.pathname || "")) {
-      return { id: "shopify", name: "Shopify store", color: "#19d27c", guessed: true };
+      return { id: "shopify", name: "Shopify store", color: "#a8b0bb", guessed: true };
     }
     if (/shop\.tiktok\.com|\/view\/product|\/shop\//i.test(u.href)) {
       return SOURCES.filter(function (x) { return x.id === "tiktok"; })[0];
     }
-    return { id: "other", name: "Other site", color: "#8b95a3", guessed: true };
+    return { id: "other", name: "Other site", color: "#a8b0bb", guessed: true };
   }
 
   function humanize(slug) {
@@ -193,7 +193,7 @@
   function chipHtml(info) {
     if (!info || !info.ok) return "";
     var label = info.sourceName || "Unknown";
-    return '<span class="source-chip-in" style="--chip:' + (info.sourceColor || "#ffb000") + '">' +
+    return '<span class="source-chip-in" style="--chip:' + (info.sourceColor || "#a8b0bb") + '">' +
       '<i aria-hidden="true"></i>' + label + "</span>";
   }
 

@@ -227,7 +227,7 @@ function renderCal(el) {
       }).join("") + "</div>");
   }
   el.innerHTML = '<div class="sec-t" style="margin-top:16px"><div class="cal-nav"><button type="button" class="icon-btn" data-m="-1" aria-label="Previous month">' + icon("arrow") + "</button><b>" + m.toLocaleDateString(undefined, { month: "long", year: "numeric" }) + '</b><button type="button" class="icon-btn" data-m="1" aria-label="Next month" style="transform:scaleX(-1)">' + icon("arrow") + '</button><button type="button" class="btn btn-sm btn-ghost" data-m="0" style="margin:0">Today</button></div>' +
-    '<div class="legend"><span><i style="background:rgba(25,210,124,.5)"></i>Scheduled / published</span><span><i style="background:rgba(255,255,255,.2)"></i>Draft</span><span><i style="background:rgba(167,139,250,.5)"></i>Idea from My plans (not imported)</span></div></div>' +
+    '<div class="legend"><span><i style="background:rgba(25,210,124,.5)"></i>Scheduled / published</span><span><i style="background:rgba(255,255,255,.2)"></i>Draft</span><span><i style="background:rgba(168,176,187,.7)"></i>Idea from My plans (not imported)</span></div></div>' +
     '<div class="cal cal-big">' + ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(function (x) { return '<div class="cal-h">' + x + "</div>"; }).join("") + cells.join("") + "</div>" +
     (S.posts.length || S.items.length ? "" : '<p class="fine" style="margin-top:12px">Nothing on the calendar yet. Posts with a date appear here.</p>');
   $$("[data-m]", el).forEach(function (b) { b.onclick = function () { var v = Number(b.getAttribute("data-m")); var now = new Date(); S.month = v === 0 ? new Date(now.getFullYear(), now.getMonth(), 1) : new Date(S.month.getFullYear(), S.month.getMonth() + v, 1); renderPosts(); }; });

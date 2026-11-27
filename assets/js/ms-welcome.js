@@ -44,7 +44,7 @@ function shell() {
 
 function confetti(el) {
   if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  var cols = ["#ffb000", "#19d27c", "#4da3ff", "#a78bfa", "#ff8fa3"], h = "";
+  var cols = ["#ffb000", "#e9ecef", "#a8b0bb", "#8f99a6", "#c8b896"], h = "";
   for (var i = 0; i < 36; i++) h += '<i style="left:' + (Math.random() * 100).toFixed(1) + "%;background:" + cols[i % cols.length] + ";animation-delay:" + (Math.random() * .6).toFixed(2) + "s;--r:" + Math.round(Math.random() * 720 - 360) + "deg;--x:" + Math.round(Math.random() * 80 - 40) + 'px"></i>';
   el.innerHTML = h;
 }

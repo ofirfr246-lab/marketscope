@@ -7,11 +7,11 @@
   var SNAP_URL = "assets/data/live-snapshot.json";
   var CATEGORY_META = [
     { id: "kitchen", name: "Kitchen", color: "#ffb000" },
-    { id: "pet", name: "Pet", color: "#19d27c" },
-    { id: "beauty", name: "Beauty", color: "#a78bfa" },
-    { id: "fitness", name: "Fitness", color: "#4da3ff" },
-    { id: "home", name: "Home", color: "#ff8a3d" },
-    { id: "tech", name: "Tech Accessories", color: "#ff4d5e" }
+    { id: "pet", name: "Pet", color: "#e9ecef" },
+    { id: "beauty", name: "Beauty", color: "#a8b0bb" },
+    { id: "fitness", name: "Fitness", color: "#8f99a6" },
+    { id: "home", name: "Home", color: "#c0c5cd" },
+    { id: "tech", name: "Tech Accessories", color: "#c8b896" }
   ];
   var CAT_BY_ID = {};
   CATEGORY_META.forEach(function (c) { CAT_BY_ID[c.id] = c; });

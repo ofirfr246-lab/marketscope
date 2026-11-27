@@ -167,7 +167,7 @@
     arc(start, start + v * Math.PI, col, 10);
     var lab = svgEl("text", { x: cx, y: 58, "text-anchor": "middle", fill: col, "font-size": 22, "font-family": "JetBrains Mono, monospace", "font-weight": 700 }, svg);
     lab.textContent = String(Math.round(opts.value || 0));
-    var sub = svgEl("text", { x: cx, y: 74, "text-anchor": "middle", fill: "#8b95a3", "font-size": 8, "font-family": "JetBrains Mono, monospace" }, svg);
+    var sub = svgEl("text", { x: cx, y: 74, "text-anchor": "middle", fill: "#a8b0bb", "font-size": 8, "font-family": "JetBrains Mono, monospace" }, svg);
     sub.textContent = opts.label || "SENTIMENT";
   }
 

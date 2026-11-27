@@ -575,7 +575,7 @@ async function initPortfolio() {
       return;
     }
     var total = list.reduce(function (s, r) { return s + Number(r.allocation || 0); }, 0) || 1;
-    var colors = ["#ffb000", "#19d27c", "#4da3ff", "#a78bfa", "#ff8a3d", "#ff4d5e", "#8b95a3"];
+    var colors = ["#ffb000", "#e9ecef", "#a8b0bb", "#8f99a6", "#c8b896", "#c0c5cd", "#d9dce2"];
     var slices = list.map(function (r, i) { return { label: r.ticker, value: Number(r.allocation || 0), color: colors[i % colors.length] }; });
     if (donut && C()) C().donut(donut, slices, { center: "ALLOC" });
     var cats = {};

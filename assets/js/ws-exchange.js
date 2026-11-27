@@ -90,7 +90,7 @@ function ensureChart() {
   var L = LC();
   C.chart = L.createChart(el, {
     autoSize: true,
-    layout: { background: { type: "solid", color: "transparent" }, textColor: "#8b95a3", fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 11, attributionLogo: false },
+    layout: { background: { type: "solid", color: "transparent" }, textColor: "#a8b0bb", fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 11, attributionLogo: false },
     grid: { vertLines: { color: "rgba(26,32,40,.55)" }, horzLines: { color: "rgba(26,32,40,.55)" } },
     crosshair: { mode: L.CrosshairMode ? L.CrosshairMode.Normal : 0, vertLine: { color: "rgba(255,176,0,.45)", labelBackgroundColor: "#ffb000" }, horzLine: { color: "rgba(255,176,0,.45)", labelBackgroundColor: "#ffb000" } },
     rightPriceScale: { borderColor: "#1a2028" },
@@ -158,7 +158,7 @@ function drawChart() {
   clearSeries();
   var L = LC();
   if (isLine) {
-    C.main = C.chart.addAreaSeries({ lineColor: "#4da3ff", topColor: "rgba(77,163,255,.28)", bottomColor: "rgba(77,163,255,0)", lineWidth: 2, priceFormat: { type: "volume" } });
+    C.main = C.chart.addAreaSeries({ lineColor: "#ffb000", topColor: "rgba(255,176,0,.28)", bottomColor: "rgba(255,176,0,0)", lineWidth: 2, priceFormat: { type: "volume" } });
     C.main.setData(LEG.line);
   } else {
     var price = S.metric === "price_median";
@@ -172,9 +172,9 @@ function drawChart() {
       C.vol.setData(LEG.candles.filter(function (c) { return c.vol != null; }).map(function (c) { return { time: c.time, value: c.vol, color: c.close >= c.open ? "rgba(25,210,124,.4)" : "rgba(255,77,94,.4)" }; }));
     }
     if (S.ind.ma3 && LEG.candles.length >= 3) { C.ma3 = C.chart.addLineSeries({ color: "#ffb000", lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false }); C.ma3.setData(sma(LEG.candles, 3)); }
-    if (S.ind.ma7 && LEG.candles.length >= 7) { C.ma7 = C.chart.addLineSeries({ color: "#a78bfa", lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false }); C.ma7.setData(sma(LEG.candles, 7)); }
+    if (S.ind.ma7 && LEG.candles.length >= 7) { C.ma7 = C.chart.addLineSeries({ color: "#c0c5cd", lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false }); C.ma7.setData(sma(LEG.candles, 7)); }
     if (S.ind.spread) {
-      C.spread = C.chart.addLineSeries({ color: "#4da3ff", lineWidth: 1, lineStyle: 2, priceScaleId: "spread", priceLineVisible: false, lastValueVisible: true, title: "D−C" });
+      C.spread = C.chart.addLineSeries({ color: "#a8b0bb", lineWidth: 1, lineStyle: 2, priceScaleId: "spread", priceLineVisible: false, lastValueVisible: true, title: "D−C" });
       C.chart.priceScale("spread").applyOptions({ scaleMargins: { top: 0.1, bottom: 0.3 }, visible: false });
       C.spread.setData(LEG.candles.filter(function (c) { return c.demand != null && c.comp != null; }).map(function (c) { return { time: c.time, value: c.demand - c.comp }; }));
     }
@@ -256,8 +256,8 @@ function srcChips(src) {
 function miniSearch(ms) {
   var pts = monthlyPoints(ms); if (pts.length < 2) return '<p class="ws-mini" style="margin:0">No monthly history in this report.</p>';
   var v = pts.map(function (p) { return p.y; }), mx = Math.max.apply(null, v) || 1, w = 300, h = 54, bw = w / v.length;
-  return '<svg viewBox="0 0 ' + w + " " + (h + 12) + '" style="width:100%;height:66px" aria-label="12-month search history">' + v.map(function (x, i) { var bh = Math.max(2, x / mx * h); return '<rect x="' + (i * bw + 1) + '" y="' + (h - bh) + '" width="' + (bw - 2) + '" height="' + bh + '" rx="2" fill="rgba(77,163,255,.55)"><title>' + esc(pts[i].label + ": " + fmt(x, 0)) + "</title></rect>"; }).join("") +
-    '<text x="0" y="' + (h + 11) + '" fill="#5d6672" font-size="9" font-family="monospace">' + esc(pts[0].label) + '</text><text x="' + w + '" y="' + (h + 11) + '" fill="#5d6672" font-size="9" font-family="monospace" text-anchor="end">' + esc(pts[pts.length - 1].label) + "</text></svg>";
+  return '<svg viewBox="0 0 ' + w + " " + (h + 12) + '" style="width:100%;height:66px" aria-label="12-month search history">' + v.map(function (x, i) { var bh = Math.max(2, x / mx * h); return '<rect x="' + (i * bw + 1) + '" y="' + (h - bh) + '" width="' + (bw - 2) + '" height="' + bh + '" rx="2" fill="rgba(255,176,0,.45)"><title>' + esc(pts[i].label + ": " + fmt(x, 0)) + "</title></rect>"; }).join("") +
+    '<text x="0" y="' + (h + 11) + '" fill="#8f99a6" font-size="9" font-family="monospace">' + esc(pts[0].label) + '</text><text x="' + w + '" y="' + (h + 11) + '" fill="#8f99a6" font-size="9" font-family="monospace" text-anchor="end">' + esc(pts[pts.length - 1].label) + "</text></svg>";
 }
 function paintResearch() {
   var host = $('[data-rpanel="research"]'), p = prod(S.sel);

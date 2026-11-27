@@ -193,7 +193,7 @@
         return new Date(Date.UTC(m.year, m.month - 1, 1)).toLocaleDateString("en-GB", { month: "short", timeZone: "UTC" });
       });
       var c2 = $("#chart-demand");
-      if (c2) g.MS.lineChart(c2, { labels: labels, min: 0, series: [{ data: demandVals, color: "#19d27c", area: true }] });
+      if (c2) g.MS.lineChart(c2, { labels: labels, min: 0, series: [{ data: demandVals, color: "#a8b0bb", area: true }] });
       var c4 = $("#chart-terminal");
       if (c4) g.MS.lineChart(c4, { labels: labels, min: 0, series: [{ data: demandVals, color: "#ffb000", area: true }] });
     }

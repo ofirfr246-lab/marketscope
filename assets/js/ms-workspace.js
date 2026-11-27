@@ -24,7 +24,7 @@ export function fdate(iso, time) {
 }
 export function productKey(p) { return String(p || "").trim().replace(/\s+/g, " ").toLowerCase().slice(0, 200); }
 export function verdictPill(v) {
-  if (!v) return '<span class="pill" style="--vc:#8b95a3">NO SCORE</span>';
+  if (!v) return '<span class="pill" style="--vc:#8f99a6">NO SCORE</span>';
   var x = String(v).toUpperCase().replace(/\s+/g, "");
   var c = ({ STRONGBUY: "v-sbuy", BUY: "v-buy", HOLD: "v-hold", UNDERPERFORM: "v-under", AVOID: "v-avoid" })[x] || "v-hold";
   return '<span class="pill ' + c + '">' + esc(String(v).toUpperCase()) + "</span>";
