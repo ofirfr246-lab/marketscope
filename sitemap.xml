@@ -133,12 +133,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://ofirfr246-lab.github.io/marketscope/product.html</loc>
-    <lastmod>2026-11-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://ofirfr246-lab.github.io/marketscope/refunds.html</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
