@@ -673,7 +673,7 @@
         return;
       }
       msg.className = "form-msg ok";
-      msg.textContent = { login: "This is a UI preview. Accounts open soon — join the waitlist on the home page.", signup: "✓ Looks good! Sign-up opens soon. This preview doesn't create accounts yet." }[kind] || "✓ Thanks.";
+      msg.textContent = "✓ Thanks.";
     });
   });
 
