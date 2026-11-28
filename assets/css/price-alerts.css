@@ -1,0 +1,39 @@
+/* MarketScope — price alerts (bell, badge, toasts) and Exchange tutorial extras. Uses the site tokens. */
+.pa-bell{position:relative;display:inline-flex;align-items:center;gap:7px}
+.pa-bell svg{width:16px;height:16px;flex:none}
+.pa-bell.has svg{color:var(--amber)}
+.pa-badge{min-width:17px;height:17px;padding:0 5px;border-radius:99px;background:var(--amber);color:#111;font:800 .64rem/17px var(--mono);text-align:center;box-sizing:border-box}
+.pa-badge[hidden]{display:none}
+.xt-strip .pa-bell{margin-left:auto;background:none;border:1px solid var(--line2);color:var(--text);border-radius:8px;padding:3px 9px;font:600 .72rem var(--sans);cursor:pointer}
+.xt-strip .pa-bell:hover{border-color:rgba(255,176,0,.5)}
+.xt-strip .xt-replay{background:none;border:1px solid var(--line2);color:var(--text);border-radius:8px;padding:3px 9px;font:600 .72rem var(--sans);cursor:pointer}
+.xt-strip .xt-replay:hover{border-color:rgba(255,176,0,.5);color:var(--amber)}
+.pa-toasts{position:fixed;right:16px;bottom:18px;z-index:520;display:flex;flex-direction:column;gap:10px;width:min(360px,calc(100vw - 24px))}
+.pa-toast{display:flex;gap:11px;align-items:flex-start;background:linear-gradient(170deg,#181c22,#0f1216);border:1px solid rgba(255,176,0,.35);border-radius:14px;padding:12px 12px 12px 12px;box-shadow:0 20px 50px -18px rgba(0,0,0,.9);animation:paIn .3s cubic-bezier(.2,.9,.3,1);transition:opacity .2s,transform .2s}
+.pa-toast.out{opacity:0;transform:translateY(8px)}
+.pa-toast-ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:var(--amber);background:rgba(255,176,0,.12);border:1px solid rgba(255,176,0,.3);flex:none}
+.pa-toast-ic svg{width:17px;height:17px}
+.pa-toast-b{display:flex;flex-direction:column;gap:3px;min-width:0;font-size:.84rem;color:var(--muted);line-height:1.45}
+.pa-toast-b b{color:var(--text);font-size:.9rem}
+.pa-toast-b a{color:var(--amber);font-weight:600;font-size:.82rem}
+.pa-toast-x{margin-left:auto;background:none;border:0;color:var(--dim);font-size:1.2rem;line-height:1;cursor:pointer;padding:2px 4px}
+.pa-toast-x:hover{color:var(--text)}
+@keyframes paIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.pa-toast{animation:none}}
+/* alerts panel */
+.pa-count{font:600 .66rem var(--mono);color:var(--dim)}
+.pa-hint{font:500 .7rem var(--mono);color:var(--dim);margin:-2px 0 8px;min-height:1em}
+.pa-err{color:#ff8a94;font-size:.76rem;margin:0 0 8px}
+.pa-row{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;padding:9px 0;border-bottom:1px solid rgba(26,32,40,.7);font-size:.78rem}
+.pa-row b{color:var(--text)}
+.pa-row .pa-sub{color:var(--dim);font-size:.72rem;margin-top:2px}
+.pa-row .pa-hit{color:var(--amber)}
+.pa-row .pa-new{display:inline-block;margin-left:6px;font:800 .56rem var(--mono);letter-spacing:.08em;background:var(--amber);color:#111;border-radius:4px;padding:1px 5px;vertical-align:1px}
+.pa-del{background:none;border:1px solid var(--line2);color:var(--muted);cursor:pointer;font:600 .68rem var(--mono);border-radius:6px;padding:4px 8px;flex:none}
+.pa-del:hover{color:#ff8a94;border-color:rgba(255,77,94,.5)}
+.pa-h{font:700 .62rem var(--mono);letter-spacing:.1em;color:var(--dim);margin:14px 0 2px}
+@media (max-width:900px){
+  .pa-toasts{right:12px;left:12px;width:auto;top:76px;bottom:auto}
+  .xt-strip .pa-bell{margin-left:0}
+  .pa-del{padding:7px 10px}
+}
