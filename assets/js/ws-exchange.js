@@ -3,12 +3,14 @@
    product. Every candle, volume bar and research field comes from the user's own stored snapshots. */
 import { $, $$, esc, num, fmt, money, pct, fdate, verdictPill, toast, errMsg, boot, loadSnapshots, groupProducts, candleChart, monthlyPoints } from "./ms-workspace.js";
 import * as XT from "./xt-pro.js";
+import * as PA from "./price-alerts.js";
+import { maybeStartTour, bindReplay } from "./exchange-tour.js";
 
 var S = { sb: null, uid: "anon", products: [], acct: null, pos: [], orders: [], watch: [], sel: null, wl: "all", filter: "",
   metric: "opportunity", interval: "D", range: 0, fromDate: "", toDate: "",
   ind: { ma3: true, ma7: false, spread: false, vol: true }, extras: [],
   chartType: "candles", scale: "normal", compare: "",
-  side: "buy", tab: "positions", rt: "research" };
+  side: "buy", tab: "positions", rt: "research", alerts: [], alertsOk: true };
 var C = { chart: null, main: null, vol: null, ma3: null, ma7: null, spread: null, lines: [], overlays: [], panes: [], compare: null, draw: null };
 var START = 100000;
 var METRIC = { opportunity: "Opportunity", demand: "Demand", price_median: "Median price", searches: "Monthly searches" };
@@ -309,8 +311,8 @@ function drawChart() {
       });
       var pos = S.pos.find(function (x) { return x.symbol === p.symbol && num(x.qty) > 0; });
       if (pos) C.lines.push(C.main.createPriceLine({ price: num(pos.avg_cost), color: "#ffb000", lineWidth: 1, lineStyle: 1, axisLabelVisible: true, title: "AVG" }));
-      XT.alertStore(S.uid).list().filter(function (a) { return a.symbol === p.symbol && a.active !== false; }).forEach(function (a) {
-        C.lines.push(C.main.createPriceLine({ price: num(a.price), color: "#c0c5cd", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "ALERT" }));
+      S.alerts.filter(function (a) { return PA.symbolOf(a) === p.symbol && PA.isArmed(a); }).forEach(function (a) {
+        C.lines.push(C.main.createPriceLine({ price: num(a.target), color: "#c0c5cd", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "ALERT" }));
       });
     }
   }
@@ -537,7 +539,7 @@ function select(sym) {
   if (f.stop && last(sym) != null && !f.stop.value) f.stop.value = last(sym);
   paintAll();
 }
-async function refresh() { var first = !S._ready; await load(); if (first && S.sel) restoreLayout(S.sel); S._ready = true; await fireStopsAndAlerts(); paintAll(); }
+async function refresh() { var first = !S._ready; await load(); if (first && S.sel) restoreLayout(S.sel); S._ready = true; await loadAlerts(first); await fireStopsAndAlerts(); paintAll(); }
 function fillCompare() {
   var sel = $("[data-compare]"); if (!sel) return;
   var cur = S.compare || "";
@@ -546,26 +548,85 @@ function fillCompare() {
   }).join("");
   sel.value = cur;
 }
+/* ---------------- price alerts (public.price_alerts) ---------------- */
+function lastMap() { var m = {}; tradable().forEach(function (p) { m[p.symbol] = num(p.latest.opportunity); }); return m; }
+async function loadAlerts(first) {
+  if (first) {
+    var n = await PA.importLocal(S.sb, S.uid);
+    if (n) toast("Moved " + n + " alert" + (n === 1 ? "" : "s") + " from this device to your account.");
+  }
+  var r = await PA.listAlerts(S.sb);
+  S.alertsOk = !r.error; S.alertsErr = r.error ? errMsg(r.error) : "";
+  if (!r.error) S.alerts = r.rows;
+  if (first && !r.error) {
+    var fired = await PA.clientCheck(S.sb, S.alerts, lastMap());
+    if (fired.length) { var r2 = await PA.listAlerts(S.sb); if (!r2.error) S.alerts = r2.rows; }
+  }
+  notifyAlerts();
+}
+function notifyAlerts() {
+  PA.paintBadge(S.alerts);
+  PA.toastNew(S.uid, S.alerts, function () { openAlertsTab(); });
+}
+function openAlertsTab() { var b = $('[data-rt="alerts"]'); if (b && !b.classList.contains("on")) b.click(); else if (b) { markAlertsSeen(); } var p = $('[data-rpanel="alerts"]'); if (p && p.scrollIntoView && innerWidth <= 900) p.scrollIntoView({ block: "start" }); }
+async function markAlertsSeen() {
+  var ids = S.alerts.filter(PA.isUnseen).map(function (a) { return a.id; });
+  if (!ids.length) return;
+  var now = new Date().toISOString();
+  S.alerts.forEach(function (a) { if (ids.indexOf(a.id) >= 0) a._new = true; a.seen_at = now; });
+  PA.paintBadge(S.alerts); paintAlerts();
+  await PA.markSeen(S.sb, ids);
+}
+function fillAlertSyms() {
+  var sel = $("[data-alert-sym]"); if (!sel) return;
+  var cur = (S._alertSelFor !== S.sel) ? S.sel : (sel.value || S.sel || ""); S._alertSelFor = S.sel;
+  sel.innerHTML = tradable().map(function (p) { return '<option value="' + esc(p.symbol) + '">' + esc(p.product) + " · " + esc(p.market) + "</option>"; }).join("");
+  if (!sel.options.length) sel.innerHTML = '<option value="">No instruments yet</option>';
+  if (cur && prod(cur)) sel.value = cur;
+  alertHint();
+}
+function alertHint() {
+  var sel = $("[data-alert-sym]"), h = $("[data-alert-hint]"); if (!sel || !h) return;
+  var l = last(sel.value);
+  h.textContent = l == null ? "Run a live report on a product to create an instrument." : "Current price: " + fmt(l) + " (newest report " + rel((prod(sel.value).latest || {}).captured_at) + ")";
+}
 function paintAlerts() {
   var host = $("[data-alert-list]"); if (!host) return;
-  var rows = XT.alertStore(S.uid).list().slice().reverse();
-  if (!rows.length) { host.innerHTML = '<div class="xt-none"><b>No alerts</b>Add one above. They only fire in this browser while the simulation is open.</div>'; return; }
-  host.innerHTML = rows.map(function (a) {
-    var p = prod(a.symbol);
-    return '<div class="xt-alert"><div><b>' + esc(p ? p.product : a.symbol) + "</b> " + esc(a.op) + " " + fmt(a.price) +
-      (a.note ? '<div class="muted">' + esc(a.note) + "</div>" : "") +
-      (a.firedAt ? '<div class="fired">Fired ' + esc(a.firedAt.replace("T", " ").slice(0, 16)) + "</div>" : '<div class="muted">Armed</div>') +
-      '</div><button type="button" data-rm-alert="' + esc(a.id) + '">Remove</button></div>';
-  }).join("");
+  fillAlertSyms();
+  var armed = S.alerts.filter(PA.isArmed), done = S.alerts.filter(function (a) { return !PA.isArmed(a); });
+  var cnt = $("[data-alert-count]"); if (cnt) cnt.textContent = armed.length + " / " + PA.LIMIT + " active";
+  var add = $("[data-alert-add]"); if (add) add.disabled = !S.alertsOk || armed.length >= PA.LIMIT || !tradable().length;
+  var errEl = $("[data-alert-err]");
+  if (errEl && !S._alertFormErr) { errEl.hidden = S.alertsOk; if (!S.alertsOk) errEl.textContent = "Alerts are unavailable right now: " + S.alertsErr; }
+  function row(a) {
+    var fired = !PA.isArmed(a), p = prod(PA.symbolOf(a));
+    return '<div class="pa-row"><div><b>' + esc((p && p.product) || a.product || a.product_key) + "</b> · " + esc(a.market) + (a._new ? '<span class="pa-new">NEW</span>' : "") +
+      '<div class="pa-sub">' + (a.direction === "above" ? "At or above " : "At or below ") + fmt(a.target) + (a.note ? " · " + esc(a.note) : "") + "</div>" +
+      (fired ? '<div class="pa-sub pa-hit">Triggered ' + esc(fdate(a.triggered_at, true)) + " at " + fmt(a.triggered_value) + "</div>" : '<div class="pa-sub">Armed · created ' + esc(fdate(a.created_at)) + "</div>") +
+      '</div><button type="button" class="pa-del" data-rm-alert="' + esc(a.id) + '" aria-label="Delete alert">Delete</button></div>';
+  }
+  if (!S.alerts.length) { host.innerHTML = '<div class="xt-none"><b>No alerts yet</b>Pick an instrument, a condition and a target above. Nothing is pre-filled.</div>'; return; }
+  host.innerHTML = (armed.length ? '<div class="pa-h">ACTIVE</div>' + armed.map(row).join("") : "") + (done.length ? '<div class="pa-h">TRIGGERED</div>' + done.map(row).join("") : "");
+}
+async function submitAlert(af) {
+  var errEl = $("[data-alert-err]"), sym = af.sym.value, p = prod(sym), price = num(af.price.value), l = last(sym);
+  function fail(m) { S._alertFormErr = true; errEl.hidden = false; errEl.textContent = m; }
+  S._alertFormErr = false; errEl.hidden = true;
+  if (!p) return fail("Choose an instrument. Run a live report first if the list is empty.");
+  if (price == null || price < 0.01 || price > 1000) return fail("Enter a target price between 0.01 and 1000.");
+  if (S.alerts.filter(PA.isArmed).length >= PA.LIMIT) return fail("You can have up to " + PA.LIMIT + " active alerts. Delete one to add another.");
+  if (l != null && af.op.value === "above" && price <= l) return fail("The price is already " + fmt(l) + ". Set a target above it for an “at or above” alert.");
+  if (l != null && af.op.value === "below" && price >= l) return fail("The price is already " + fmt(l) + ". Set a target below it for an “at or below” alert.");
+  var btn = $("[data-alert-add]"); btn.disabled = true;
+  var r = await PA.addAlert(S.sb, { product_key: p.key, market: p.market, product: p.product, direction: af.op.value, target: price, note: (af.note.value || "").trim() });
+  if (r.error) { btn.disabled = false; return fail(errMsg(r.error)); }
+  S.alerts.unshift(r.row); af.price.value = ""; af.note.value = "";
+  paintAlerts(); drawChart();
+  toast("Alert created. You’ll be notified when " + p.product + " reaches " + fmt(price) + ".");
 }
 async function fireStopsAndAlerts() {
-  var lastMap = {};
-  tradable().forEach(function (p) { lastMap[p.symbol] = num(p.latest.opportunity); });
-  XT.checkAlerts(XT.alertStore(S.uid), lastMap).forEach(function (a) {
-    var p = prod(a.symbol);
-    toast("Alert: " + (p ? p.product : a.symbol) + " " + a.op + " " + fmt(a.price) + " (last " + fmt(a.last) + ") — simulation only");
-  });
-  var hits = XT.checkStops(XT.stopStore(S.uid), lastMap);
+  var lm = lastMap();
+  var hits = XT.checkStops(XT.stopStore(S.uid), lm);
   for (var i = 0; i < hits.length; i++) {
     var s = hits[i];
     var res = await S.sb.rpc("exchange_place_order", { p_symbol: s.symbol, p_side: s.side, p_type: "market", p_qty: s.qty, p_limit: null });
@@ -574,6 +635,17 @@ async function fireStopsAndAlerts() {
     else toast("Simulated stop " + s.side + " filled for " + s.symbol);
     await load();
   }
+}
+function pollAlerts() {
+  setInterval(async function () {
+    if (document.hidden || !S.sb) return;
+    var r = await PA.listAlerts(S.sb); if (r.error) return;
+    var had = {}; S.alerts.forEach(function (a) { had[a.id] = a; });
+    r.rows.forEach(function (a) { if (had[a.id] && had[a.id]._new) a._new = true; });
+    var changed = JSON.stringify(r.rows.map(function (a) { return [a.id, a.triggered_at, a.seen_at]; })) !== JSON.stringify(S.alerts.map(function (a) { return [a.id, a.triggered_at, a.seen_at]; }));
+    S.alerts = r.rows;
+    if (changed) { notifyAlerts(); paintAlerts(); drawChart(); if (S.rt === "alerts") markAlertsSeen(); }
+  }, PA.POLL);
 }
 
 async function toggleStar(sym) {
@@ -596,14 +668,15 @@ function bind() {
     var rg = t.closest("[data-r]"); if (rg) { S.range = +rg.getAttribute("data-r"); S.fromDate = ""; S.toDate = ""; var fr = $("[data-from]"), to = $("[data-to]"); if (fr) fr.value = ""; if (to) to.value = ""; $$("[data-r]").forEach(function (b) { b.classList.toggle("on", b === rg); }); persistLayout(); return drawChart(); }
     var ind = t.closest("[data-ind]"); if (ind && !ind.disabled) { var k = ind.getAttribute("data-ind"); S.ind[k] = !S.ind[k]; ind.classList.toggle("on", S.ind[k]); persistLayout(); return drawChart(); }
     var tb = t.closest("[data-tab]"); if (tb) { S.tab = tb.getAttribute("data-tab"); return paintBottom(); }
-    var rt = t.closest("[data-rt]"); if (rt) { S.rt = rt.getAttribute("data-rt"); $$("[data-rt]").forEach(function (b) { b.classList.toggle("on", b === rt); }); $$("[data-rpanel]").forEach(function (p) { p.hidden = p.getAttribute("data-rpanel") !== S.rt; }); return; }
+    var rt = t.closest("[data-rt]"); if (rt) { S.rt = rt.getAttribute("data-rt"); $$("[data-rt]").forEach(function (b) { b.classList.toggle("on", b === rt); }); $$("[data-rpanel]").forEach(function (p) { p.hidden = p.getAttribute("data-rpanel") !== S.rt; }); if (S.rt === "alerts") markAlertsSeen(); return; }
     var wl = t.closest("[data-wl]"); if (wl) { S.wl = wl.getAttribute("data-wl"); $$("[data-wl]").forEach(function (b) { b.classList.toggle("on", b === wl); }); return paintWatch(); }
     var sd = t.closest("[data-side]"); if (sd) { S.side = sd.getAttribute("data-side"); return paintTicket(); }
     var ct = t.closest("[data-ct]"); if (ct) { S.chartType = ct.getAttribute("data-ct"); $$("[data-ct]").forEach(function (b) { b.classList.toggle("on", b === ct); }); persistLayout(); return drawChart(); }
     var sc = t.closest("[data-sc]"); if (sc) { S.scale = sc.getAttribute("data-sc"); $$("[data-sc]").forEach(function (b) { b.classList.toggle("on", b === sc); }); persistLayout(); applyScale(); return; }
     var op = t.closest("[data-open]"); if (op) { var id = op.getAttribute("data-open"); $$("[data-pop]").forEach(function (p) { p.hidden = p.getAttribute("data-pop") === id ? !p.hidden : true; }); if (id === "ind") renderIndList(); return; }
     var rmI = t.closest("[data-rm-ind]"); if (rmI) { S.extras.splice(+rmI.getAttribute("data-rm-ind"), 1); persistLayout(); return drawChart(); }
-    var rmA = t.closest("[data-rm-alert]"); if (rmA) { XT.alertStore(S.uid).remove(rmA.getAttribute("data-rm-alert")); return paintAlerts(), drawChart(); }
+    var rmA = t.closest("[data-rm-alert]"); if (rmA) { var aid = rmA.getAttribute("data-rm-alert"); rmA.disabled = true; var dr = await PA.deleteAlert(S.sb, aid); if (dr.error) { rmA.disabled = false; return toast(errMsg(dr.error)); } S.alerts = S.alerts.filter(function (a) { return a.id !== aid; }); PA.paintBadge(S.alerts); toast("Alert deleted"); return paintAlerts(), drawChart(); }
+    var bellB = t.closest("[data-pa-open]"); if (bellB) { return openAlertsTab(); }
     var cs = t.closest("[data-cancel-stop]"); if (cs) { XT.stopStore(S.uid).remove(cs.getAttribute("data-cancel-stop")); toast("Stop cancelled"); return paintBottom(), drawChart(); }
     if (t.closest("[data-shot]")) { var ok = XT.downloadPng(C.chart, C.draw, (prod(S.sel) || {}).product || "chart"); return toast(ok ? "Chart image downloaded." : "Chart is not ready to export."); }
     if (t.closest("[data-full]")) { var box = document.querySelector(".xt-center"); if (!document.fullscreenElement) (box.requestFullscreen || box.webkitRequestFullscreen).call(box); else document.exitFullscreen(); return; }
@@ -753,15 +826,9 @@ function bindPro() {
   var af = $("[data-alert]");
   if (af && !af.getAttribute("data-bound")) {
     af.setAttribute("data-bound", "1");
-    af.addEventListener("submit", function (e) {
-      e.preventDefault();
-      if (!S.sel) return toast("Select a symbol first.");
-      var price = num(af.price.value);
-      if (price == null) return toast("Enter an index value.");
-      XT.alertStore(S.uid).add({ symbol: S.sel, op: af.op.value, price: price, note: (af.note.value || "").trim(), active: true, created: new Date().toISOString() });
-      af.reset(); paintAlerts(); drawChart();
-      toast("Alert armed for this symbol (this device, while the Exchange is open).");
-    });
+    af.addEventListener("submit", function (e) { e.preventDefault(); submitAlert(af); });
+    af.sym.addEventListener("change", alertHint);
+    af.addEventListener("input", function () { S._alertFormErr = false; var er = $("[data-alert-err]"); if (er && S.alertsOk) er.hidden = true; });
   }
   document.addEventListener("keydown", function (e) {
     var tag = (e.target && e.target.tagName) || "";
@@ -805,4 +872,10 @@ function waitLib(ms) {
   bind();
   await waitLib(4000);
   try { await refresh(); } catch (e) { toast(errMsg(e)); chartEmpty("Could not load the simulation", errMsg(e)); }
+  pollAlerts();
+  addEventListener("hashchange", function () { if (location.hash === "#alerts") openAlertsTab(); });
+  if (location.hash === "#alerts") openAlertsTab();
+  bindReplay(S.sb, S.uid);
+  /* First visit: show the tutorial once (not when the visitor came straight to the alerts). */
+  try { if (location.hash !== "#alerts") await maybeStartTour(S.sb, S.uid); } catch (e) { /* the tutorial is optional */ }
 })();
