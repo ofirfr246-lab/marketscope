@@ -29,6 +29,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/price-alerts.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -90,6 +91,7 @@
       </div>
       <div class="hist-top-actions">
         <a class="btn btn-sm btn-amber" href="wallet.html">Credit Wallet</a>
+        <a class="btn btn-sm btn-ghost pa-bell" href="exchange.html#alerts" data-pa-bell data-pa-auto aria-label="Price alerts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9a6 6 0 0 1 12 0c0 6 2 7.5 2 7.5H4S6 15 6 9z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>Price alerts<span class="pa-badge" data-pa-count hidden>0</span></a>
         <a class="btn btn-sm btn-ghost" href="reports.html">Reports</a>
         <a class="btn btn-sm btn-ghost" href="account.html">Account settings</a>
       </div>
@@ -260,6 +262,7 @@
 <script src="assets/js/report-desk.js"></script>
 <script type="module" src="assets/js/auth.js"></script>
 <script type="module" src="assets/js/ms-welcome.js"></script>
+<script type="module" src="assets/js/price-alerts.js"></script>
 <script src="assets/js/ms-tour.js" defer></script>
 </body>
 </html>

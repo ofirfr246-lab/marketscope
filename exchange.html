@@ -29,6 +29,7 @@
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="stylesheet" href="assets/css/workspace.css">
 <link rel="stylesheet" href="assets/css/exchange.css">
+<link rel="stylesheet" href="assets/css/price-alerts.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -79,7 +80,7 @@
   <div class="mobile-menu" id="mobile-menu" hidden><div class="mob-group"><div class="mob-label mono">PRODUCT</div><a href="./">Platform overview</a><a href="demo.html">Real report</a><a href="app.html">App preview</a><a href="integrations.html">Integrations</a><a href="changelog.html">Changelog</a></div><div class="mob-group"><div class="mob-label mono">TERMINAL</div><a href="terminal.html">Market Terminal</a><a href="screener.html">Screener</a><a href="heatmap.html">Heatmap</a><a href="indices.html">Category indices</a><a href="watchlist.html">Watchlist</a><a href="portfolio.html">Portfolio</a><a href="backtest.html">Backtest</a><a href="calendar.html">Events calendar</a><a href="stores.html">Store Intelligence</a></div><div class="mob-group"><div class="mob-label mono">SOLUTIONS</div><a href="solutions.html#dropshippers">Dropshippers</a><a href="solutions.html#amazon">Amazon sellers</a><a href="solutions.html#dtc">DTC brands</a><a href="solutions.html#agencies">Agencies</a><a href="compare.html">MarketScope vs typical tools</a></div><div class="mob-group"><div class="mob-label mono">RESOURCES</div><a href="blog.html">Blog & guides</a><a href="how-to-find-winning-products.html">How to find winning products</a><a href="docs.html">API & docs</a><a href="methodology.html">Data & methodology</a><a href="status.html">System status</a></div><div class="mob-group"><div class="mob-label mono">COMPANY</div><a href="about.html">About</a><a href="security.html">Trust Center</a><a href="careers.html">Careers</a><a href="contact.html">Contact</a></div><div class="mob-group"><a href="josy.html">Josy · AI marketing assistant</a><a href="josy-chat.html">Josy chat</a><a href="josy-plans.html">My plans</a><a href="josy-campaigns.html">Campaign manager</a><a href="pricing.html">Pricing</a><a href="login.html">Log in</a></div><a href="signup.html" class="btn btn-amber">Start free — 5 credits</a></div>
 </header>
 <main id="main" class="xt">
-<div class="xt-strip" role="note"><span class="xt-badge">SIMULATION</span><span><b>Virtual credits only, no real money.</b> No deposits, payments or cash-out. Index values are Opportunity scores from your own live reports.</span><a href="#xt-legal">Details</a></div>
+<div class="xt-strip" role="note"><span class="xt-badge">SIMULATION</span><span><b>Virtual credits only, no real money.</b> No deposits, payments or cash-out. Index values are Opportunity scores from your own live reports.</span><a href="#xt-legal">Details</a><button type="button" class="xt-replay" data-tour-replay data-shell hidden>Replay tutorial</button><button type="button" class="pa-bell" data-pa-bell data-pa-open data-shell hidden aria-label="Price alerts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9a6 6 0 0 1 12 0c0 6 2 7.5 2 7.5H4S6 15 6 9z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><span>Alerts</span><span class="pa-badge" data-pa-count hidden>0</span></button></div>
 <div class="xt-grid">
   <div class="xt-gate" data-gate><p class="mono muted">Loading the terminal…</p></div>
 
@@ -178,18 +179,23 @@
     <div class="xt-scroll" data-rpanel="research"></div>
     <div class="xt-scroll" data-rpanel="alerts" hidden>
       <div class="xt-sec">
-        <div class="xt-sec-h"><span>PRICE ALERTS</span></div>
-        <p class="ws-mini" style="margin:0 0 8px">Alerts are stored on this device for your account and only fire while the Exchange is open. This is a simulation — nothing is sent to a broker.</p>
+        <div class="xt-sec-h"><span>PRICE ALERTS</span><span class="pa-count" data-alert-count></span></div>
+        <p class="ws-mini" style="margin:0 0 8px">Get notified when an instrument’s price crosses your target. A price changes when a new live report is saved for that product, and your alerts are checked at that moment, even if this page is closed. You’ll see a toast and the bell badge here and on the dashboard. There is no email or push notification. Simulation only.</p>
         <form data-alert>
-          <label class="xt-field">CONDITION
+          <label class="xt-field">INSTRUMENT
+            <select name="sym" data-alert-sym aria-label="Alert instrument"></select>
+          </label>
+          <div class="pa-hint" data-alert-hint></div>
+          <label class="xt-field">NOTIFY WHEN THE PRICE IS
             <select name="op" aria-label="Alert condition">
-              <option value=">=">Crossing up (≥)</option>
-              <option value="<=">Crossing down (≤)</option>
+              <option value="above">At or above the target</option>
+              <option value="below">At or below the target</option>
             </select>
           </label>
-          <label class="xt-field">INDEX VALUE<input name="price" type="number" step="0.01" required></label>
+          <label class="xt-field">TARGET PRICE<input name="price" type="number" min="0.01" max="1000" step="0.01" inputmode="decimal" required></label>
           <label class="xt-field">NOTE (optional)<input name="note" type="text" maxlength="80" placeholder="Optional note"></label>
-          <button class="xt-place" type="submit" data-alert-add style="margin-bottom:10px">Add alert for this symbol</button>
+          <p class="pa-err" data-alert-err role="alert" hidden></p>
+          <button class="xt-place" type="submit" data-alert-add style="margin-bottom:10px">Create alert</button>
         </form>
         <div data-alert-list></div>
       </div>
