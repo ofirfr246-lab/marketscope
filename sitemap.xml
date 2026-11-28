@@ -127,8 +127,14 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ofirfr246-lab.github.io/marketscope/data-deletion.html</loc>
+    <lastmod>2026-11-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
     <loc>https://ofirfr246-lab.github.io/marketscope/privacy.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <lastmod>2026-11-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

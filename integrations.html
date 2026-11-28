@@ -27,6 +27,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/meta.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -89,13 +90,29 @@
     <p class="sub">MarketScope combines search, shopping, social and marketplace signals into one analysis, then sends results wherever your team works.</p>
   </div>
 </section>
+<section class="section meta-section" id="meta-ads">
+  <div class="wrap">
+    <div class="card meta-card" data-meta-card data-min-plan="plus" data-min-plan-key="meta-ads">
+      <div class="int-head">
+        <div class="left"><div class="int-logo mono" style="color:var(--muted)" aria-hidden="true">ADS</div><h2>Your Meta ad account</h2></div>
+        <span class="chip beta">BETA · TESTING</span>
+      </div>
+      <p class="meta-lead">Connect your own Meta ad account to see read-only performance (impressions, reach, clicks, spend) next to your MarketScope research. MarketScope asks only for the <span class="mono">ads_read</span> permission. It can&rsquo;t create, edit, pause or publish ads. This is separate from the public Meta Ad Library data used in Supplier Intelligence.</p>
+      <div class="note"><b>Beta, private testing:</b> this connection runs in Meta&rsquo;s development mode, so only approved test accounts can use it right now. It is not available to everyone yet, and publishing campaigns to Meta is not connected.</div>
+      <div class="meta-msg" data-meta-msg role="status" aria-live="polite" hidden></div>
+      <div class="meta-body" data-meta-body><p class="meta-fine">Checking your connection&hellip;</p><noscript><p class="meta-fine">Turn on JavaScript to connect your Meta ad account.</p></noscript></div>
+      <p class="meta-links">What we read and how to delete it: <a href="privacy.html#meta-ad-accounts">Privacy Policy</a> &middot; <a href="data-deletion.html">Data deletion</a></p>
+    </div>
+  </div>
+</section>
 <section class="section">
   <div class="wrap">
+    <div class="note plan-strip" data-plan-strip hidden></div>
     <div class="tabs" data-filter-tabs="#ints"><button class="active" data-f="all">All</button><button data-f="data">Data sources</button><button data-f="workflow">Workflow</button><button data-f="export">Export &amp; API</button><button data-f="planned">Planned</button></div>
     <div class="grid3" id="ints">
 <div class="card" data-cat="data live"><div class="int-head"><div class="int-logo" style="color:var(--muted)">GS</div><span class="chip live">LIVE</span></div><h3>Google Shopping</h3><p>Product listings, prices and stores competing for your product. Live on every plan.</p><p class="mono" style="margin-top:14px;font-size:.72rem;color:var(--dim)">DATA SOURCE · FREE AND UP · LIVE</p></div>
 <div class="card" data-cat="data live"><div class="int-head"><div class="int-logo" style="color:var(--muted)">G</div><span class="chip live">LIVE</span></div><h3>Google Search</h3><p>Search demand, volume, CPC and trend for your product keywords. Live on every plan.</p><p class="mono" style="margin-top:14px;font-size:.72rem;color:var(--dim)">DATA SOURCE · FREE AND UP · LIVE</p></div>
-<div class="card" data-cat="data live"><div class="int-head"><div class="int-logo" style="color:var(--muted)">META</div><span class="chip live">LIVE</span></div><h3>Meta Ad Library</h3><p>Public ads for a keyword: advertiser, text, start date, platforms and how long an ad has been running. Available in Supplier Intelligence. Publishing campaigns to Meta is not connected.</p><p class="mono" style="margin-top:14px;font-size:.72rem;color:var(--dim)">DATA SOURCE · SUPPLIER INTELLIGENCE · LIVE</p></div>
+<div class="card" data-cat="data live"><div class="int-head"><div class="int-logo" style="color:var(--muted)">META</div><span class="chip live">LIVE</span></div><h3>Meta Ad Library (public ads)</h3><p>Public ads for a keyword: advertiser, text, start date, platforms and how long an ad has been running. Available in Supplier Intelligence. Publishing campaigns to Meta is not connected.</p><p class="mono" style="margin-top:14px;font-size:.72rem;color:var(--dim)">DATA SOURCE · SUPPLIER INTELLIGENCE · LIVE</p></div>
 <div class="card" data-cat="data live"><div class="int-head"><div class="int-logo" style="color:var(--muted)">TT</div><span class="chip live">LIVE</span></div><h3>TikTok</h3><p>Videos and hashtag view counts for a keyword (views, likes, shares, comments, creator). Available in Supplier Intelligence. TikTok Creative Center and ad publishing are not connected.</p><p class="mono" style="margin-top:14px;font-size:.72rem;color:var(--dim)">DATA SOURCE · SUPPLIER INTELLIGENCE · LIVE</p></div>
 <div class="card" data-cat="data planned"><div class="int-head"><div class="int-logo" style="color:var(--muted)">AMZ</div><span class="chip soon">SOON · DATAFORSEO</span></div><h3>Amazon</h3><p>Marketplace competition, pricing, BSR and review velocity, via DataForSEO when the collector is enabled. This source is not live in reports today.</p><p class="mono" style="margin-top:14px;font-size:.72rem;color:var(--dim)">DATA SOURCE · VIA DATAFORSEO · SOON</p></div>
 <div class="card" data-cat="data live"><div class="int-head"><div class="int-logo" style="color:var(--muted)">ALI</div><span class="chip live">LIVE</span></div><h3>AliExpress</h3><p>Supplier pricing, orders, shipping quotes when returned, landed cost and margin against your target or storefront price. Available in Supplier Intelligence.</p><p class="mono" style="margin-top:14px;font-size:.72rem;color:var(--dim)">DATA SOURCE · SUPPLIER INTELLIGENCE · LIVE</p></div>
@@ -107,8 +124,8 @@
 <div class="card" data-cat="data live"><div class="int-head"><div class="int-logo" style="color:var(--muted)">SHP</div><span class="chip live">LIVE</span></div><h3>Shopify</h3><p>Competitor Shopify stores: store count, price bands, product titles, compare-at prices, variants and published dates. Available in Supplier Intelligence. Connecting your own store is separate and still planned.</p><p class="mono" style="margin-top:14px;font-size:.72rem;color:var(--dim)">DATA SOURCE · SUPPLIER INTELLIGENCE · LIVE</p></div>
 <div class="card" data-cat="workflow planned"><div class="int-head"><div class="int-logo" style="color:var(--muted)">YOU</div><span class="chip planned">PLANNED</span></div><h3>Your Shopify store</h3><p>Connect your own store later to benchmark your products against the market. This is separate from Shopify competitor-store data, which is already live in Supplier Intelligence.</p><p class="mono" style="margin-top:14px;font-size:.72rem;color:var(--dim)">STORE CONNECTION · ALL PAID PLANS · PLANNED</p></div>
 <div class="card" data-cat="workflow planned"><div class="int-head"><div class="int-logo" style="color:var(--muted)">SLK</div><span class="chip planned">PLANNED</span></div><h3>Slack</h3><p>Get Market Watch alerts in your team's channel.</p><p class="mono" style="margin-top:14px;font-size:.72rem;color:var(--dim)">NOTIFICATIONS · ALL PAID PLANS</p></div>
-<div class="card" data-cat="export live"><div class="int-head"><div class="int-logo" style="color:var(--muted)">CSV</div><span class="chip live">AVAILABLE AT LAUNCH</span></div><h3>CSV / PDF export</h3><p>Export reports and competitor tables for your team or clients.</p><p class="mono" style="margin-top:14px;font-size:.72rem;color:var(--dim)">EXPORT · STARTER AND UP</p></div>
-<div class="card" data-cat="export planned"><div class="int-head"><div class="int-logo" style="color:var(--muted)">API</div><span class="chip early">EARLY ACCESS</span></div><h3>REST API</h3><p>Run analyses and pull scores into your own tools.</p><p class="mono" style="margin-top:14px;font-size:.72rem;color:var(--dim)">DEVELOPER · PRO · EARLY ACCESS</p></div>
+<div class="card" data-cat="export live" data-min-plan="starter" data-min-plan-key="export"><div class="int-head"><div class="int-logo" style="color:var(--muted)">CSV</div><span class="chip live">AVAILABLE AT LAUNCH</span></div><h3>CSV / PDF export</h3><p>Export reports and competitor tables for your team or clients.</p><p class="mono" style="margin-top:14px;font-size:.72rem;color:var(--dim)">EXPORT · STARTER AND UP</p><div data-plan-slot></div></div>
+<div class="card" data-cat="export planned" data-min-plan="pro" data-min-plan-key="api"><div class="int-head"><div class="int-logo" style="color:var(--muted)">API</div><span class="chip early">EARLY ACCESS</span></div><h3>REST API</h3><p>Run analyses and pull scores into your own tools.</p><p class="mono" style="margin-top:14px;font-size:.72rem;color:var(--dim)">DEVELOPER · PRO · EARLY ACCESS</p><div data-plan-slot></div></div>
 <div class="card" data-cat="export planned"><div class="int-head"><div class="int-logo" style="color:var(--muted)">WH</div><span class="chip planned">PLANNED</span></div><h3>Webhooks</h3><p>Push score and verdict changes to your systems.</p><p class="mono" style="margin-top:14px;font-size:.72rem;color:var(--dim)">DEVELOPER · PRO</p></div>
 <div class="card" data-cat="workflow planned"><div class="int-head"><div class="int-logo" style="color:var(--muted)">EX</div><span class="chip planned">PLANNED</span></div><h3>Chrome extension</h3><p>Analyze a product page in one click from your browser. On the roadmap — not available yet.</p><p class="mono" style="margin-top:14px;font-size:.72rem;color:var(--dim)">BROWSER · PLANNED</p></div>
 <div class="card" data-cat="workflow planned"><div class="int-head"><div class="int-logo" style="color:var(--muted)">ZAP</div><span class="chip planned">PLANNED</span></div><h3>Zapier</h3><p>Connect MarketScope to thousands of apps without code.</p><p class="mono" style="margin-top:14px;font-size:.72rem;color:var(--dim)">AUTOMATION · ALL PAID PLANS</p></div>
@@ -145,5 +162,7 @@
 <script type="module" src="assets/js/leads.js"></script>
 <script src="assets/js/main.js" defer></script>
 <script type="module" src="assets/js/auth.js"></script>
+<script type="module" src="assets/js/integrations-plan.js"></script>
+<script type="module" src="assets/js/meta-connect.js"></script>
 </body>
 </html>
