@@ -16,7 +16,54 @@ var PLATFORM = { alibaba: "Wholesale marketplace", "1688": "Wholesale marketplac
 var MARKETS = [["US", "United States"], ["UK", "United Kingdom"], ["CA", "Canada"], ["AU", "Australia"], ["DE", "Germany"], ["FR", "France"], ["ES", "Spain"], ["IT", "Italy"], ["NL", "Netherlands"], ["IL", "Israel"]];
 var CUR = { US: "USD", UK: "GBP", CA: "CAD", AU: "AUD", DE: "EUR", FR: "EUR", ES: "EUR", IT: "EUR", NL: "EUR", IL: "USD" };
 
-var F = { sb: null, onSaved: null, res: {}, keyword: "", market: "US", currency: "USD", busy: false, ref: "target", amazon: null, hideNoShip: false };
+/* Plan gating. Keep in sync with assets/js/integrations-plan.js (MIN_PLAN) and the server:
+   supabase/functions/supplier-apify/plans.ts. The server is what enforces it (HTTP 403 plan_required);
+   this only decides what to lock and what to hint at.
+   Free/Starter = Meta Ad Library · Plus = + TikTok and the six supplier marketplaces · Pro = + Shopify stores. */
+var ORDER = ["free", "starter", "plus", "pro"];
+var MIN_PLAN = { meta: "free", tiktok: "plus", aliexpress: "plus", alibaba: "plus", "1688": "plus", cj: "plus", temu: "plus", dhgate: "plus", shopify: "pro" };
+var PLAN_NAME = { free: "Free", starter: "Starter", plus: "Plus", pro: "Pro" };
+function rank(p) { var i = ORDER.indexOf(p); return i < 0 ? 0 : i; }
+function minPlan(id) { return MIN_PLAN[id] || "pro"; }
+/* Unknown plan (profile unreadable) = do not lock anything; the server decides. */
+function allowed(id) { return F.full || !F.plan || rank(F.plan) >= rank(minPlan(id)); }
+function lockedResult(id) { return { provider: id, label: LABEL[id], status: "locked", required_plan: minPlan(id), items: [], summary: {}, item_count: 0, cost_usd: 0, reason: "Included from " + PLAN_NAME[minPlan(id)] + "." }; }
+async function loadPlan() {
+  F.plan = null; F.full = false;
+  try {
+    var s = await F.sb.auth.getSession(), u = s.data && s.data.session && s.data.session.user;
+    if (!u) return;
+    var r = await F.sb.from("profiles").select("plan,preferences").eq("id", u.id).maybeSingle();
+    var row = r.data; if (!row) return;
+    var p = String(row.plan || "free").toLowerCase();
+    F.plan = ORDER.indexOf(p) > -1 ? p : "free";
+    /* Display only: the owner/tester override on the server is a hardcoded user id, not this preference. */
+    var b = row.preferences && row.preferences.betaIntegrations;
+    F.full = Array.isArray(b) && b.indexOf("sources-all") > -1;
+  } catch (e) { /* unknown plan: show everything, server enforces */ }
+}
+function upgradeHint() {
+  if (!F.plan || F.full) return "";
+  var lockedSup = SUPPLIERS.some(function (p) { return !allowed(p.id); }), lockedSig = SIGNALS.filter(function (id) { return !allowed(id); });
+  if (!lockedSup && !lockedSig.length) return "";
+  var need = lockedSup || !allowed("tiktok") ? "plus" : "pro";
+  var inc = rank(F.plan) < rank("plus")
+    ? "Your " + PLAN_NAME[F.plan] + " plan includes the Meta Ad Library. Supplier marketplaces and TikTok start at Plus; Shopify competitor stores at Pro."
+    : "Your " + PLAN_NAME[F.plan] + " plan includes every supplier marketplace, TikTok and the Meta Ad Library. Shopify competitor stores start at Pro.";
+  return '<div class="sf-upgrade"><span class="sf-lock-ico" aria-hidden="true">' + LOCK + "</span><span>" + esc(inc) + '</span><a class="btn btn-sm btn-amber" href="pricing.html">Upgrade to ' + PLAN_NAME[need] + "</a></div>";
+}
+var LOCK = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+function injectCss() {
+  if (document.getElementById("sf-plan-css")) return;
+  var st = document.createElement("style"); st.id = "sf-plan-css";
+  st.textContent = ".sf-prov.is-locked{opacity:.62;cursor:not-allowed}.sf-prov.is-locked input{cursor:not-allowed}.sf-tag{display:inline-flex;align-items:center;gap:4px;font:600 .62rem var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--amber);border:1px solid rgba(255,176,0,.4);border-radius:999px;padding:1px 7px}" +
+    ".sf-chip.lock{border-color:rgba(255,176,0,.4);border-style:dashed}.sf-chip.lock a{color:var(--amber);text-decoration:none;margin-left:4px}" +
+    ".sf-upgrade{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:2px;padding:10px 12px;border:1px solid rgba(255,176,0,.35);background:rgba(255,176,0,.05);border-radius:12px;font-size:.84rem;color:#e9d9ab}.sf-upgrade .btn{margin:0 0 0 auto}.sf-lock-ico{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;border:1px solid rgba(255,176,0,.4);color:var(--amber);flex:none}" +
+    ".sf-card.is-locked{border-style:dashed;border-color:rgba(255,176,0,.35)}.sf-card.is-locked .btn{margin-top:6px}";
+  document.head.appendChild(st);
+}
+
+var F = { sb: null, plan: null, full: false, onSaved: null, res: {}, keyword: "", market: "US", currency: "USD", busy: false, ref: "target", amazon: null, hideNoShip: false };
 
 function safeUrl(u) { return /^https?:\/\//i.test(u || "") ? u : null; }
 function ago(iso) {
@@ -30,6 +77,10 @@ async function call(provider, force) {
   var r = await F.sb.functions.invoke("supplier-apify", { body: { keyword: F.keyword, market: F.market, providers: [provider], force: !!force } });
   var data = r.data, err = r.error;
   if (err && err.context && typeof err.context.json === "function") { try { data = await err.context.json(); } catch (e) { /* keep */ } }
+  if (data && data.error === "plan_required") {
+    var lr = lockedResult(provider); if (data.required_plan && PLAN_NAME[data.required_plan]) { lr.required_plan = data.required_plan; lr.reason = "Included from " + PLAN_NAME[data.required_plan] + "."; }
+    return lr;
+  }
   if (!data || data.ok === false) {
     var msg = (data && data.error) || (err && err.message) || "The supplier service did not answer.";
     return { provider: provider, label: LABEL[provider], status: "error", reason: msg, items: [], summary: {}, item_count: 0, cost_usd: 0 };
@@ -80,6 +131,7 @@ function rows() {
 function chip(id) {
   var r = F.res[id]; if (!r) return "";
   var s = r.status, cls = "sf-chip", txt;
+  if (s === "locked") { return '<span class="sf-chip lock" title="' + esc(r.reason || "") + '"><b>' + esc(LABEL[id]) + "</b> " + LOCK + " " + esc(PLAN_NAME[r.required_plan] || "Plus") + ' · <a href="pricing.html">Upgrade</a></span>'; }
   if (s === "running") { cls += " run"; txt = "searching…"; }
   else if (s === "ok") { cls += " ok"; txt = r.item_count + " result" + (r.item_count === 1 ? "" : "s") + (r.source === "cache" ? " · cached " + ago(r.fetched_at) : ""); }
   else if (s === "empty") { txt = "no results" + (r.source === "cache" ? " · cached" : ""); }
@@ -110,7 +162,7 @@ function refBlock() {
 function paintTable() {
   var host = $("[data-sf-table]");
   var rs = rows();
-  var any = SUPPLIERS.some(function (p) { return F.res[p.id] && F.res[p.id].status && F.res[p.id].status !== "running"; });
+  var any = SUPPLIERS.some(function (p) { return F.res[p.id] && F.res[p.id].status && F.res[p.id].status !== "running" && F.res[p.id].status !== "locked"; });
   if (!any) { host.innerHTML = ""; return; }
   var ref = refPrice();
   if (!rs.length) {
@@ -140,6 +192,7 @@ function signalCard(id) {
   var r = F.res[id];
   if (!r) return "";
   var head = '<h3>' + esc(LABEL[id]) + "</h3>";
+  if (r.status === "locked") return '<div class="sf-card is-locked">' + head + '<p class="ws-mini"><span class="sf-tag">' + LOCK + " " + esc(PLAN_NAME[r.required_plan] || "Plus") + '</span> Included from ' + esc(PLAN_NAME[r.required_plan] || "Plus") + '.</p><a class="btn btn-sm btn-amber" href="pricing.html">Upgrade to ' + esc(PLAN_NAME[r.required_plan] || "Plus") + "</a></div>";
   if (r.status === "running") return '<div class="sf-card">' + head + '<p class="ws-mini">Searching…</p></div>';
   if (r.status !== "ok") return '<div class="sf-card">' + head + '<p class="ws-mini">' + esc(r.reason || (r.status === "empty" ? "No data for this keyword." : "Unavailable.")) + "</p></div>";
   var s = r.summary || {}, cur = s.currency, body = "";
@@ -171,9 +224,9 @@ function signalCard(id) {
   return '<div class="sf-card">' + head + body + '<p class="ws-mini">' + esc(s.scope_note || "") + " " + esc(r.attribution || "") + (r.source === "cache" ? " · cached " + ago(r.fetched_at) : " · fetched just now") + (r.cost_usd ? " · est. cost $" + r.cost_usd.toFixed(3) : "") + "</p></div>";
 }
 function paint() {
-  var hasS = SUPPLIERS.some(function (p) { return F.res[p.id]; });
+  var hasS = SUPPLIERS.some(function (p) { return F.res[p.id] && F.res[p.id].status !== "locked"; });
   $("[data-sf-chips]").innerHTML = SUPPLIERS.concat(SIGNALS.map(function (id) { return { id: id }; })).map(function (p) { return chip(p.id); }).join("");
-  $("[data-sf-refbox]").innerHTML = hasS || F.res.shopify ? refBlock() : "";
+  $("[data-sf-refbox]").innerHTML = hasS || (F.res.shopify && F.res.shopify.status !== "locked") ? refBlock() : "";
   $("[data-sf-notes]").innerHTML = statusNotes();
   paintTable();
   var sig = SIGNALS.map(signalCard).join("");
@@ -193,12 +246,14 @@ function readForm() {
   return true;
 }
 async function search(ids, force) {
+  ids = ids.filter(allowed);
+  if (!ids.length) return toast("These sources are not included in your plan. See Upgrade.");
   if (F.busy || !readForm()) return;
   F.busy = true;
   var btns = $$("[data-sf-go],[data-sf-signals-go],[data-sf-refresh]"); btns.forEach(function (b) { b.disabled = true; });
   try { await runMany(ids, force); } finally { F.busy = false; btns.forEach(function (b) { b.disabled = false; }); }
 }
-function chosenSuppliers() { return $$("[data-sf-prov]:checked").map(function (c) { return c.value; }); }
+function chosenSuppliers() { return $$("[data-sf-prov]:checked").map(function (c) { return c.value; }).filter(allowed); }
 async function loadAmazon(kw) {
   F.amazon = null;
   if (!kw) return;
@@ -235,7 +290,7 @@ async function restoreLast() {
     F.keyword = first.keyword; F.market = first.market; F.currency = CUR[F.market] || "USD";
     $("[data-sf-kw]").value = F.keyword; $("[data-sf-market]").value = F.market;
     same.forEach(function (x) {
-      if (!LABEL[x.provider]) return;
+      if (!LABEL[x.provider] || !allowed(x.provider)) return;
       F.res[x.provider] = { provider: x.provider, label: LABEL[x.provider], status: x.status, reason: x.reason, items: x.items || [], summary: x.summary || {}, item_count: x.item_count, cost_usd: 0, source: "cache", fetched_at: x.fetched_at, attribution: "Source: " + LABEL[x.provider] + " (via Apify)" };
     });
     await loadAmazon(F.keyword);
@@ -246,19 +301,25 @@ async function restoreLast() {
 export async function initFinder(opts) {
   F.sb = opts.sb; F.onSaved = opts.onSaved;
   var host = $("[data-finder]"); if (!host) return;
+  await loadPlan(); injectCss();
+  SUPPLIERS.concat(SIGNALS.map(function (id) { return { id: id }; })).forEach(function (p) { if (!allowed(p.id)) F.res[p.id] = lockedResult(p.id); });
+  var noSup = !SUPPLIERS.some(function (p) { return allowed(p.id); });
   host.innerHTML =
     '<form class="ws-form" data-sf-form autocomplete="off"><label class="full-2">PRODUCT KEYWORD<input data-sf-kw list="sf-kw-list" maxlength="80" placeholder="e.g. posture corrector" required><datalist id="sf-kw-list"></datalist></label>' +
     '<label>MARKET (ship-to)<select data-sf-market>' + MARKETS.map(function (m) { return '<option value="' + m[0] + '">' + esc(m[1]) + "</option>"; }).join("") + "</select></label>" +
     '<label>TARGET SELL PRICE <span data-sf-cur class="ws-mini">USD</span><input data-sf-target type="number" step="0.01" min="0" placeholder="optional"></label>' +
-    '<label>MARGIN REFERENCE<select data-sf-ref><option value="target">Your target price</option><option value="shopify">Shopify storefront median</option><option value="amazon">Amazon market price (report)</option></select></label>' +
-    '<div class="full sf-provs">' + SUPPLIERS.map(function (p) { return '<label class="sf-prov" title="' + esc(p.note) + '"><input type="checkbox" data-sf-prov value="' + p.id + '" checked> ' + esc(p.label) + "</label>"; }).join("") + "</div>" +
-    '<div class="full sf-actions"><button class="btn btn-sm btn-amber" type="submit" data-sf-go>Find suppliers</button><button class="btn btn-sm btn-ghost" type="button" data-sf-signals-go title="Shopify stores, Meta ads and TikTok for this keyword">Market signals</button><button class="btn btn-sm btn-ghost" type="button" data-sf-refresh title="Re-run the selected providers now, ignoring the 24-hour cache (uses provider credit)">Refresh live</button><label class="sf-hide"><input type="checkbox" data-sf-hide> Only listings with a shipping quote</label></div></form>' +
+    '<label>MARGIN REFERENCE<select data-sf-ref><option value="target">Your target price</option><option value="shopify"' + (allowed("shopify") ? "" : " disabled") + '>Shopify storefront median' + (allowed("shopify") ? "" : " (Pro)") + '</option><option value="amazon">Amazon market price (report)</option></select></label>' +
+    '<div class="full sf-provs">' + SUPPLIERS.map(function (p) {
+      var ok = allowed(p.id);
+      return '<label class="sf-prov' + (ok ? "" : " is-locked") + '" title="' + esc(ok ? p.note : p.label + " is included from " + PLAN_NAME[minPlan(p.id)]) + '"><input type="checkbox" data-sf-prov value="' + p.id + '"' + (ok ? " checked" : " disabled") + "> " + esc(p.label) + (ok ? "" : ' <span class="sf-tag">' + LOCK + " " + PLAN_NAME[minPlan(p.id)] + "</span>") + "</label>";
+    }).join("") + "</div>" + '<div class="full" data-sf-upgrade>' + upgradeHint() + "</div>" +
+    '<div class="full sf-actions"><button class="btn btn-sm btn-amber" type="submit" data-sf-go' + (noSup ? " disabled title=\"Supplier marketplaces are included from Plus\"" : "") + '>Find suppliers</button><button class="btn btn-sm btn-ghost" type="button" data-sf-signals-go title="' + esc(["shopify", "meta", "tiktok"].filter(allowed).map(function (id) { return LABEL[id]; }).join(", ") + " for this keyword") + '">Market signals</button><button class="btn btn-sm btn-ghost" type="button" data-sf-refresh title="Re-run the selected providers now, ignoring the 24-hour cache (uses provider credit)">Refresh live</button><label class="sf-hide"><input type="checkbox" data-sf-hide> Only listings with a shipping quote</label></div></form>' +
     '<p class="ws-mini" data-sf-limit></p><div class="sf-chips" data-sf-chips></div><div data-sf-refbox></div><div data-sf-notes></div><div data-sf-table></div><h3 class="sf-h3" data-sf-sig-h hidden>Market signals</h3><div data-sf-signals></div><p class="ws-mini sf-attr" data-sf-attr></p>' +
     '<p class="ws-mini">Results come live from public marketplaces through Apify, are cached for 24 hours per keyword and market, and each search costs provider credit, so searches are rate-limited. Figures describe the sample returned, not the whole marketplace.</p>';
 
   $("[data-sf-form]").addEventListener("submit", function (e) { e.preventDefault(); if (!readForm()) return; loadAmazon(F.keyword).then(function () { return search(chosenSuppliers(), false); }); });
   $("[data-sf-signals-go]").addEventListener("click", function () { $("[data-sf-sig-h]").hidden = false; search(SIGNALS, false); });
-  $("[data-sf-refresh]").addEventListener("click", function () { if (!chosenSuppliers().length) return toast("Pick at least one provider."); if (confirm("Re-run the selected providers now? This uses provider credit.")) search(chosenSuppliers(), true); });
+  $("[data-sf-refresh]").addEventListener("click", function () { if (!chosenSuppliers().length) return toast(noSup ? "Supplier marketplaces are included from Plus." : "Pick at least one provider."); if (confirm("Re-run the selected providers now? This uses provider credit.")) search(chosenSuppliers(), true); });
   $("[data-sf-market]").addEventListener("change", function () { $("[data-sf-cur]").textContent = CUR[this.value] || "USD"; F.market = this.value; F.currency = CUR[this.value] || "USD"; paint(); });
   $("[data-sf-target]").addEventListener("input", paint);
   $("[data-sf-ref]").addEventListener("change", function () { F.ref = this.value; paint(); });
@@ -273,6 +334,7 @@ export async function initFinder(opts) {
     $("#sf-kw-list").innerHTML = opts2.slice(0, 40).map(function (p) { return '<option value="' + esc(p) + '">'; }).join("");
   } catch (e) { /* no suggestions */ }
   await restoreLast();
+  paint();
   $("[data-sf-cur]").textContent = F.currency;
   if (SIGNALS.some(function (id) { return F.res[id]; })) $("[data-sf-sig-h]").hidden = false;
   try {
@@ -280,7 +342,7 @@ export async function initFinder(opts) {
     if (pre) {
       var isSignal = SIGNALS.indexOf(pre) !== -1;
       $$("[data-sf-prov]").forEach(function (c) {
-        c.checked = !isSignal && c.value === pre;
+        c.checked = !isSignal && c.value === pre && !c.disabled;
         var lab = c.closest(".sf-prov");
         if (lab) lab.classList.toggle("is-preselected", c.checked);
       });
