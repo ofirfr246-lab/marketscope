@@ -548,6 +548,13 @@ function fillCompare() {
   }).join("");
   sel.value = cur;
 }
+/* ---------------- phone layout: section jump bar (shown only under 900px by exchange.css) ---------------- */
+function mobileJump(where) {
+  var target = { chart: ".xt-center", positions: ".xt-bottom", watchlist: ".xt-left", trade: ".xt-right", research: ".xt-right", alerts: ".xt-right" }[where];
+  if (["trade", "research", "alerts"].indexOf(where) >= 0) { var b = $('[data-rt="' + where + '"]'); if (b && !b.classList.contains("on")) b.click(); }
+  $$("[data-mnav]").forEach(function (x) { x.classList.toggle("on", x.getAttribute("data-mnav") === where); });
+  var el = target && $(target); if (el) el.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+}
 /* ---------------- price alerts (public.price_alerts) ---------------- */
 function lastMap() { var m = {}; tradable().forEach(function (p) { m[p.symbol] = num(p.latest.opportunity); }); return m; }
 async function loadAlerts(first) {
@@ -668,6 +675,7 @@ function bind() {
     var rg = t.closest("[data-r]"); if (rg) { S.range = +rg.getAttribute("data-r"); S.fromDate = ""; S.toDate = ""; var fr = $("[data-from]"), to = $("[data-to]"); if (fr) fr.value = ""; if (to) to.value = ""; $$("[data-r]").forEach(function (b) { b.classList.toggle("on", b === rg); }); persistLayout(); return drawChart(); }
     var ind = t.closest("[data-ind]"); if (ind && !ind.disabled) { var k = ind.getAttribute("data-ind"); S.ind[k] = !S.ind[k]; ind.classList.toggle("on", S.ind[k]); persistLayout(); return drawChart(); }
     var tb = t.closest("[data-tab]"); if (tb) { S.tab = tb.getAttribute("data-tab"); return paintBottom(); }
+    var mn = t.closest("[data-mnav]"); if (mn) { mobileJump(mn.getAttribute("data-mnav")); return; }
     var rt = t.closest("[data-rt]"); if (rt) { S.rt = rt.getAttribute("data-rt"); $$("[data-rt]").forEach(function (b) { b.classList.toggle("on", b === rt); }); $$("[data-rpanel]").forEach(function (p) { p.hidden = p.getAttribute("data-rpanel") !== S.rt; }); if (S.rt === "alerts") markAlertsSeen(); return; }
     var wl = t.closest("[data-wl]"); if (wl) { S.wl = wl.getAttribute("data-wl"); $$("[data-wl]").forEach(function (b) { b.classList.toggle("on", b === wl); }); return paintWatch(); }
     var sd = t.closest("[data-side]"); if (sd) { S.side = sd.getAttribute("data-side"); return paintTicket(); }
