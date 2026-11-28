@@ -182,6 +182,7 @@ function renderSignedInNav(user, profile) {
             '<p class="account-sec-label" id="acc-sec-workspace">Workspace</p>' +
             '<a href="dashboard.html" role="menuitem">Dashboard</a>' +
             '<a href="reports.html" role="menuitem">Reports</a>' +
+            '<a href="meta-ads.html" role="menuitem">Meta ad history</a>' +
             '<a href="my-terminal.html" role="menuitem">Live Terminal</a>' +
             '<a href="exchange.html" role="menuitem">Exchange · Simulation</a>' +
           "</div>" +
@@ -216,6 +217,7 @@ function renderSignedInNav(user, profile) {
       wrap.className = "mob-auth";
       wrap.innerHTML =
         '<a href="reports.html">Reports</a>' +
+        '<a href="meta-ads.html">Meta ad history</a>' +
         '<a href="wallet.html">Credit Wallet</a>' +
         '<a href="settings.html">Settings</a>' +
         '<button type="button" class="btn btn-ghost btn-block" data-sign-out>Log out</button>';

@@ -151,6 +151,7 @@ function render() {
   }
 
   h += '<div class="meta-row" style="margin-top:22px">' +
+    (active && state.accounts.length ? '<a class="btn btn-amber btn-sm" href="meta-ads.html">View ad history</a>' : "") +
     (active ? '<button type="button" class="btn btn-ghost btn-sm" data-meta-refresh>Refresh accounts</button>' : connectButton("Reconnect Meta")) +
     '<button type="button" class="btn btn-ghost btn-sm btn-danger-ghost" data-meta-disconnect>Disconnect &amp; delete my Meta data</button></div>';
   body.innerHTML = h;
