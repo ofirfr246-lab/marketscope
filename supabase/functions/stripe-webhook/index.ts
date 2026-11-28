@@ -18,6 +18,17 @@ import Stripe from "npm:stripe@19.1.0";
 type Catalog = { plan: string | null; credits: number | null; kind: string | null };
 
 const PRICE_CATALOG: Record<string, Catalog> = {
+  // Current prices (Nov 2026 pricing: $19/$49/$99 monthly, $190/$490/$990 yearly, top-ups $9/$35/$89)
+  price_1UgZXyKGd933k3yPmhnqr3bO: { plan: "starter", credits: 30, kind: "subscription" },
+  price_1UgZY4KGd933k3yPVkO1gKIh: { plan: "starter", credits: 30, kind: "subscription" },
+  price_1UgZY5KGd933k3yP2rtD7L45: { plan: "plus", credits: 100, kind: "subscription" },
+  price_1UgZY7KGd933k3yPax8jI8Zh: { plan: "plus", credits: 100, kind: "subscription" },
+  price_1UgZY8KGd933k3yPB2DUwFAb: { plan: "pro", credits: 200, kind: "subscription" },
+  price_1UgZYAKGd933k3yPxwfus61z: { plan: "pro", credits: 200, kind: "subscription" },
+  price_1UgZYCKGd933k3yPlGZD9wlI: { plan: null, credits: 10, kind: "topup" },
+  price_1UgZYDKGd933k3yPnIOMcuFh: { plan: null, credits: 50, kind: "topup" },
+  price_1UgZYEKGd933k3yPH9S2AQoR: { plan: null, credits: 150, kind: "topup" },
+  // Previous prices: kept so existing subscriptions on them still map to the right plan
   price_1Ub2a3KGd933k3yPs0SBUQh2: { plan: "starter", credits: 30, kind: "subscription" },
   price_1Ub2a4KGd933k3yPcESrI9ln: { plan: "starter", credits: 30, kind: "subscription" },
   price_1Ub2a5KGd933k3yPLuQlRSSk: { plan: "plus", credits: 100, kind: "subscription" },
@@ -30,6 +41,17 @@ const PRICE_CATALOG: Record<string, Catalog> = {
 };
 
 const LINK_CATALOG: Record<string, Catalog> = {
+  // Current payment links
+  plink_1UgZYLKGd933k3yPMaf3iNg3: { plan: "starter", credits: 30, kind: "subscription" },
+  plink_1UgZYQKGd933k3yPoliyM4Fq: { plan: "starter", credits: 30, kind: "subscription" },
+  plink_1UgZYSKGd933k3yP0Kdgf8rT: { plan: "plus", credits: 100, kind: "subscription" },
+  plink_1UgZYUKGd933k3yPsdD4lPXW: { plan: "plus", credits: 100, kind: "subscription" },
+  plink_1UgZYWKGd933k3yPkTBzUdCc: { plan: "pro", credits: 200, kind: "subscription" },
+  plink_1UgZYZKGd933k3yPxKyYfbGn: { plan: "pro", credits: 200, kind: "subscription" },
+  plink_1UgZYjKGd933k3yPzxTRfySk: { plan: null, credits: 10, kind: "topup" },
+  plink_1UgZYlKGd933k3yP9pBWZkV2: { plan: null, credits: 50, kind: "topup" },
+  plink_1UgZYnKGd933k3yPK4JpRlUr: { plan: null, credits: 150, kind: "topup" },
+  // Previous payment links (deactivated; kept so late or retried events still map)
   plink_1Ub3FNKGd933k3yPc7fnyFY3: { plan: "starter", credits: 30, kind: "subscription" },
   plink_1Ub3FOKGd933k3yPLgnBOICB: { plan: "starter", credits: 30, kind: "subscription" },
   plink_1Ub3FOKGd933k3yPIYkL2qki: { plan: "plus", credits: 100, kind: "subscription" },
