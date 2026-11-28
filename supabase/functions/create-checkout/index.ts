@@ -23,19 +23,33 @@ const CANCEL_URL = SITE_URL + "pricing.html";
 
 /** Live prices created on the Growege Stripe account. Public IDs, not secrets. */
 const PRICES: Record<string, { id: string; kind: "subscription" | "topup"; plan: string | null; credits: number }> = {
-  starter_monthly: { id: "price_1Ub2a3KGd933k3yPs0SBUQh2", kind: "subscription", plan: "starter", credits: 30 },
-  starter_yearly: { id: "price_1Ub2a4KGd933k3yPcESrI9ln", kind: "subscription", plan: "starter", credits: 30 },
-  plus_monthly: { id: "price_1Ub2a5KGd933k3yPLuQlRSSk", kind: "subscription", plan: "plus", credits: 100 },
-  plus_yearly: { id: "price_1Ub2a5KGd933k3yPnJnSfDup", kind: "subscription", plan: "plus", credits: 100 },
-  pro_monthly: { id: "price_1Ub2a6KGd933k3yPFA3dokgq", kind: "subscription", plan: "pro", credits: 200 },
-  pro_yearly: { id: "price_1Ub2a6KGd933k3yP58jlDYey", kind: "subscription", plan: "pro", credits: 200 },
-  topup_10: { id: "price_1Ub2a7KGd933k3yPBF5yC9LA", kind: "topup", plan: null, credits: 10 },
-  topup_50: { id: "price_1Ub2a7KGd933k3yPKx7xO48e", kind: "topup", plan: null, credits: 50 },
-  topup_150: { id: "price_1Ub2a8KGd933k3yP2a08sT4X", kind: "topup", plan: null, credits: 150 },
+  starter_monthly: { id: "price_1UgZXyKGd933k3yPmhnqr3bO", kind: "subscription", plan: "starter", credits: 30 },
+  starter_yearly: { id: "price_1UgZY4KGd933k3yPVkO1gKIh", kind: "subscription", plan: "starter", credits: 30 },
+  plus_monthly: { id: "price_1UgZY5KGd933k3yP2rtD7L45", kind: "subscription", plan: "plus", credits: 100 },
+  plus_yearly: { id: "price_1UgZY7KGd933k3yPax8jI8Zh", kind: "subscription", plan: "plus", credits: 100 },
+  pro_monthly: { id: "price_1UgZY8KGd933k3yPB2DUwFAb", kind: "subscription", plan: "pro", credits: 200 },
+  pro_yearly: { id: "price_1UgZYAKGd933k3yPxwfus61z", kind: "subscription", plan: "pro", credits: 200 },
+  topup_10: { id: "price_1UgZYCKGd933k3yPlGZD9wlI", kind: "topup", plan: null, credits: 10 },
+  topup_50: { id: "price_1UgZYDKGd933k3yPnIOMcuFh", kind: "topup", plan: null, credits: 50 },
+  topup_150: { id: "price_1UgZYEKGd933k3yPH9S2AQoR", kind: "topup", plan: null, credits: 150 },
 };
 
 const BY_ID: Record<string, (typeof PRICES)[string] & { lookup: string }> = {};
 for (const [lookup, p] of Object.entries(PRICES)) BY_ID[p.id] = { ...p, lookup };
+
+/** Previous price IDs (replaced Nov 2026). Only used to resolve an explicit price_id sent by an old client. */
+const LEGACY_PRICE_IDS: Record<string, string> = {
+  price_1Ub2a3KGd933k3yPs0SBUQh2: "starter_monthly",
+  price_1Ub2a4KGd933k3yPcESrI9ln: "starter_yearly",
+  price_1Ub2a5KGd933k3yPLuQlRSSk: "plus_monthly",
+  price_1Ub2a5KGd933k3yPnJnSfDup: "plus_yearly",
+  price_1Ub2a6KGd933k3yPFA3dokgq: "pro_monthly",
+  price_1Ub2a6KGd933k3yP58jlDYey: "pro_yearly",
+  price_1Ub2a7KGd933k3yPBF5yC9LA: "topup_10",
+  price_1Ub2a7KGd933k3yPKx7xO48e: "topup_50",
+  price_1Ub2a8KGd933k3yP2a08sT4X: "topup_150",
+};
+for (const [oldId, lookup] of Object.entries(LEGACY_PRICE_IDS)) BY_ID[oldId] = { ...PRICES[lookup], lookup };
 
 type Json = Record<string, unknown>;
 
