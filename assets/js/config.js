@@ -38,7 +38,7 @@ window.MS_CONFIG = {
         "1 Watchlist slot",
         "Terminal desk (example tape, movers, 7-day charts)"
       ] },
-    { id: "starter", name: "Starter", price: 39, credits: 30, creditsLabel: "30 credits / month",
+    { id: "starter", name: "Starter", price: 19, credits: 30, creditsLabel: "30 credits / month",
       blurb: "For founders validating their first products.",
       question: "Answers “Is there demand?”",
       cta: "Choose Starter",
@@ -53,7 +53,7 @@ window.MS_CONFIG = {
         "Email alerts (5) · compare 2 names",
         "Indices, calendar, ratings & 30-day history"
       ] },
-    { id: "plus", name: "Plus", price: 149, credits: 100, creditsLabel: "100 credits / month", popular: true,
+    { id: "plus", name: "Plus", price: 49, credits: 100, creditsLabel: "100 credits / month", popular: true,
       blurb: "For active sellers testing multiple markets.",
       question: "Answers “How is it being sold?”",
       cta: "Choose Plus",
@@ -68,7 +68,7 @@ window.MS_CONFIG = {
         "20 email alerts · 10 tracked stores · 12-month history",
         "AI Advisor summaries & priority email support"
       ] },
-    { id: "pro", name: "Pro", price: 349, credits: 200, creditsLabel: "200 credits / month",
+    { id: "pro", name: "Pro", price: 99, credits: 200, creditsLabel: "200 credits / month",
       blurb: "For brands and teams making big bets.",
       question: "Answers “How much will I make?”",
       cta: "Choose Pro",
@@ -87,9 +87,9 @@ window.MS_CONFIG = {
   ],
   // Pay-per-use credit packs for the Credit Wallet
   topups: [
-    { credits: 10, price: 19 },
-    { credits: 50, price: 85, tag: "Save 10%" },
-    { credits: 150, price: 225, tag: "Best value · save 21%" }
+    { credits: 10, price: 9 },
+    { credits: 50, price: 35, tag: "Save 22%" },
+    { credits: 150, price: 89, tag: "Best value · save 34%" }
   ],
   // Full comparison matrix: [label, free, starter, plus, pro]; true/false or text
   matrix: [
