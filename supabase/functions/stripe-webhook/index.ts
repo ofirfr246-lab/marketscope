@@ -5,7 +5,7 @@
 
    Handles:
      checkout.session.completed / async_payment_succeeded -> plan or credits
-     invoice.paid (renewals)                               -> reset monthly credits
+     invoice.paid (renewals)                               -> reset monthly credits (top-ups kept)
      customer.subscription.updated                         -> plan changes, status, cancel flag
      customer.subscription.deleted                         -> back to free
      invoice.payment_failed                                -> status past_due
@@ -204,6 +204,9 @@ async function savePendingGrant(
   if (error) throw error;
 }
 
+/* Plan purchase or renewal. One atomic DB call (public.grant_plan_credits):
+   credits = new monthly allowance + the user's purchased top-up credits.
+   Unused monthly plan credits don't roll over; top-up credits persist. */
 async function setPlan(
   admin: SupabaseClient,
   userId: string,
@@ -212,31 +215,30 @@ async function setPlan(
   customerId?: string | null,
   subscriptionId?: string | null,
 ): Promise<void> {
-  const patch: Record<string, unknown> = {
-    plan,
-    credits,
-    subscription_status: "active",
-    cancel_at_period_end: false,
-  };
-  if (customerId) patch.stripe_customer_id = customerId;
-  if (subscriptionId) patch.stripe_subscription_id = subscriptionId;
-  const { error } = await admin.from("profiles").update(patch).eq("id", userId);
+  const { error } = await admin.rpc("grant_plan_credits", {
+    p_user_id: userId,
+    p_plan: plan,
+    p_allowance: credits,
+    p_customer: customerId || null,
+    p_subscription: subscriptionId || null,
+  });
   if (error) throw error;
 }
 
+/* Top-up pack: adds to the balance and to the persistent top-up part
+   (atomic, public.grant_topup_credits). */
 async function addCredits(
   admin: SupabaseClient,
   userId: string,
   amount: number,
   customerId?: string | null,
 ): Promise<void> {
-  const { data, error } = await admin.from("profiles").select("credits").eq("id", userId).maybeSingle();
+  const { error } = await admin.rpc("grant_topup_credits", {
+    p_user_id: userId,
+    p_amount: amount,
+    p_customer: customerId || null,
+  });
   if (error) throw error;
-  const current = typeof data?.credits === "number" ? data.credits : 0;
-  const patch: Record<string, unknown> = { credits: current + amount };
-  if (customerId) patch.stripe_customer_id = customerId;
-  const { error: upErr } = await admin.from("profiles").update(patch).eq("id", userId);
-  if (upErr) throw upErr;
 }
 
 function catalogFromLines(lines: unknown): Catalog {
@@ -433,10 +435,16 @@ async function handleSubscriptionUpdated(
     if (info.plan && info.plan !== profile.plan) {
       const oldCredits = (PLAN_CREDITS[profile.plan || ""] ?? 0);
       patch.plan = info.plan;
-      // Upgrade: top the wallet up to the new plan's monthly credits now.
+      // Upgrade: top the plan part of the wallet up to the new plan's monthly credits now
+      // (purchased top-up credits are left untouched; idempotent, so a webhook retry is safe).
+      // Granted before the profile patch so a retry after a failure still sees the upgrade.
       // Downgrade: keep current credits until the next renewal resets them.
       if (info.credits != null && info.credits > oldCredits) {
-        patch.credits = Math.max(profile.credits ?? 0, info.credits);
+        const { error: upgradeErr } = await admin.rpc("upgrade_plan_credits", {
+          p_user_id: userId,
+          p_allowance: info.credits,
+        });
+        if (upgradeErr) throw upgradeErr;
       }
     }
   }
