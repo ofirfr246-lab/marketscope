@@ -194,6 +194,7 @@ function renderSignedInNav(user, profile) {
           '<div class="account-sec" role="group" aria-labelledby="acc-sec-account">' +
             '<p class="account-sec-label" id="acc-sec-account">Account</p>' +
             '<a href="dashboard.html?tour=1" role="menuitem">Take the tour</a>' +
+            '<a href="wallet.html" role="menuitem">Credit Wallet</a>' +
             '<a href="settings.html" role="menuitem">Settings</a>' +
             '<button type="button" class="link-btn" data-sign-out role="menuitem">Log out</button>' +
           "</div>" +
@@ -215,6 +216,7 @@ function renderSignedInNav(user, profile) {
       wrap.className = "mob-auth";
       wrap.innerHTML =
         '<a href="reports.html">Reports</a>' +
+        '<a href="wallet.html">Credit Wallet</a>' +
         '<a href="settings.html">Settings</a>' +
         '<button type="button" class="btn btn-ghost btn-block" data-sign-out>Log out</button>';
       signupLink.replaceWith(wrap);
