@@ -688,3 +688,17 @@ body.josy-app{overflow:hidden}
 .cm-nav .cm-tab{color:var(--muted)}
 .cm-nav .cm-tab.on,.cm-nav .cm-tab[aria-current]{color:var(--text)}
 .josy-kicker,.cm-label,label.mono,.jl-kicker{color:var(--muted)}
+
+/* mobile pass: chat toolbar and composer touch targets */
+@media (max-width:640px){
+  .icon-btn{width:40px;height:40px}
+  .m-actions .icon-btn{width:36px;height:36px}
+  .bell.in-tools .bell-btn,.bell-btn{width:40px;height:40px}
+  .send{width:44px;height:44px}
+  .lang-tabs button{min-height:40px}
+}
+/* closed chat drawer is out of the tab order and the accessibility tree on phones */
+@media (max-width:900px){
+  .josy-side{visibility:hidden;transition:transform .25s ease,visibility 0s linear .25s}
+  .josy-side.open{visibility:visible;transition:transform .25s ease}
+}

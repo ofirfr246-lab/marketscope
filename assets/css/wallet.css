@@ -189,3 +189,10 @@ a.wl-tx:hover{background:rgba(255,255,255,.04);transform:translateX(3px)}
   .wl-panel{padding:18px 14px}
   .wl-tx-amt{max-width:46%}
 }
+
+/* mobile pass: touch targets */
+@media (max-width:640px){
+  .wl-copy{min-height:40px}
+  .wl-tabs button,.wl-chips button{min-height:40px;font-size:.875rem}
+  .wl a.amber,.wl .link-btn{display:inline-flex;align-items:center;min-height:40px}
+}

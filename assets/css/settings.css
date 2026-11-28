@@ -157,3 +157,6 @@ kbd{font:600 .75rem var(--mono);padding:3px 7px;border-radius:6px;border:1px sol
   .set-search{min-width:0;flex:1}
   .set-row-head .set-actions.tight{width:100%}
 }
+
+/* mobile pass: settings tabs touch height */
+@media (max-width:900px){.set-tabs button{min-height:42px}}

@@ -202,3 +202,49 @@ body.xt-page .footer{display:none}
   .xt-tools,.xt-chartcol,.xt-bottom,.xt-head{grid-column:1}
   .xt-chartcol{grid-row:auto}
 }
+
+/* ---- Phone & tablet layout (mobile pass). Desktop (> 900px) is unchanged. ---- */
+.xt-mnav{display:none}
+@media (max-width:900px){
+  /* section jump bar: Chart · Trade · Positions · Watchlist · Research · Alerts */
+  .xt-mnav:not([hidden]){display:flex;position:sticky;top:66px;z-index:40;gap:4px;padding:6px 8px;overflow-x:auto;scrollbar-width:none;background:rgba(8,10,13,.96);border-bottom:1px solid var(--xt-line);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+  .xt-mnav::-webkit-scrollbar{display:none}
+  .xt-mnav button{flex:1 0 auto;min-height:40px;padding:0 12px;border:1px solid var(--xt-line);border-radius:9px;background:transparent;color:var(--muted);font:600 .875rem var(--sans);cursor:pointer;white-space:nowrap}
+  .xt-mnav button.on{color:var(--amber);border-color:rgba(255,176,0,.5);background:rgba(255,176,0,.08)}
+  .xt-center,.xt-right,.xt-left,.xt-bottom{scroll-margin-top:124px}
+
+  /* symbol header, then a full-width chart, then the controls */
+  .xt-center{display:flex;flex-direction:column}
+  .xt-head{order:1}
+  .xt-chartcol{order:2;flex:none;height:clamp(300px,52svh,460px);width:100%}
+  .xt-tools{order:3}
+  .xt-drawbar{order:4}
+  .xt-bottom{order:5}
+  .xt-tools,.xt-drawbar{flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:8px 10px;gap:6px}
+  .xt-tools::-webkit-scrollbar,.xt-drawbar::-webkit-scrollbar{display:none}
+  .xt-tools>*,.xt-drawbar>*{flex:none}
+  .xt-drawbar button{min-width:40px;min-height:40px}
+  .xt-seg button,.xt-tog{min-height:40px;padding:6px 12px;font-size:.8125rem}
+  .xt-kv span,.xt-kv b{font-size:.875rem}
+  .xt-sec-h>span:first-child,.xt-tools .lbl{font-size:.72rem}
+  .xt-sec-h .xt-seg button{min-width:44px}
+  .ws-mini{display:inline-flex;align-items:center;min-height:40px}
+  .xt-date{font-size:.75rem}
+  .xt-date input{font-size:16px;min-height:38px}
+  /* popovers inside the scrolling toolbar open as a centred sheet so they are never clipped */
+  .xt-pop{position:fixed;left:12px;right:12px;top:auto;bottom:calc(12px + env(safe-area-inset-bottom));max-width:none;min-width:0;max-height:60vh;z-index:300}
+
+  /* right panel (Research / Trade / Alerts) and bottom tabs: bigger touch targets */
+  .xt-rtabs button{min-height:46px;font-size:.875rem}
+  .xt-tabs button{min-height:44px;font-size:.875rem}
+  .xt-right .xt-scroll,.xt-left .xt-scroll{max-height:none;overflow:visible}
+  .xt-side button{min-height:46px;font-size:.9rem}
+  .xt-field{font-size:.72rem}
+  .xt-field input,.xt-field select,.xt-search{font-size:16px;min-height:44px}
+  .xt-sym{padding:12px 14px;min-height:56px;grid-template-columns:32px minmax(0,1fr) auto}
+  .xt-star{min-width:32px;min-height:40px;font-size:1.05rem}
+  .xt-left{max-height:none}
+  .xt-left .xt-scroll{max-height:60vh;overflow:auto}
+  .xt-strip{font-size:.875rem;padding:10px 14px}
+  .xt-strip button,.xt-strip a{min-height:40px;display:inline-flex;align-items:center}
+}

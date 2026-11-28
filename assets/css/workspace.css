@@ -129,3 +129,8 @@
 .sf-card h3{margin:0 0 8px;font-size:.95rem}
 .sf-kv{display:flex;flex-wrap:wrap;gap:6px 22px;margin-bottom:10px;font-size:.78rem;color:var(--muted)}
 .sf-kv b{color:var(--text);font:600 .95rem var(--mono);margin-right:4px}
+
+/* mobile pass: research sub-nav and form labels */
+@media (max-width:640px){
+  .ws-sub a{min-height:42px;display:inline-flex;align-items:center;font-size:.8125rem}
+}

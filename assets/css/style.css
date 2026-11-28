@@ -2747,3 +2747,91 @@ a.amber{color:var(--text);text-decoration:underline;text-underline-offset:3px}
 .tutorial-video{margin:28px auto 8px;max-width:920px}
 .tutorial-video video{display:block;width:100%;height:auto;border-radius:16px;background:#0b0d10;border:1px solid rgba(255,255,255,.08);box-shadow:0 22px 40px -22px rgba(0,0,0,.85)}
 .tutorial-video figcaption{margin-top:10px;color:var(--muted);font-size:.85rem;text-align:center}
+
+/* =====================================================================
+   Mobile pass (phones and tablets). Everything below sits inside
+   max-width media queries, so the desktop layout (> 900px) is unchanged.
+   ===================================================================== */
+@media (max-width:900px){
+  /* iOS Safari zooms into any field under 16px; keep every text field at 16px on touch layouts */
+  input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]):not([type=submit]):not([type=button]),select,textarea{font-size:16px!important}
+  /* long words, URLs and code never push the page sideways */
+  h1,h2,h3,p,li,dd,td,figcaption{overflow-wrap:anywhere}
+  img,video,canvas,iframe{max-width:100%}
+  pre,pre.code{max-width:100%;overflow-x:auto}
+  table{max-width:100%}
+  .link-btn{min-height:40px}
+}
+@media (max-width:640px){
+  /* compact cookie notice: full width, short, buttons side by side */
+  .cookie{left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));padding:14px 14px 12px;border-radius:14px}
+  .cookie p{font-size:.875rem;line-height:1.45;margin:0 0 10px}
+  .cookie-actions .btn{flex:1;min-height:44px;padding:10px 12px}
+
+  /* header and footer touch targets */
+  .brand{min-height:44px}
+  .foot-grid a,.foot-grid .link-btn{display:flex;align-items:center;min-height:42px;padding:0;font-size:.9375rem}
+  .foot-grid h4{font-size:.75rem}
+  .foot-brand .brand{min-height:44px}
+  .status-pill{min-height:40px;font-size:.8125rem!important;padding:0 14px!important}
+  .tb{font-size:.875rem}
+  .tb i{font-size:.7rem}
+  .foot-bottom{font-size:.8125rem}
+
+  /* buttons: comfortable height, and wrapped button rows line up instead of indenting */
+  .btn-sm{min-height:42px;font-size:.875rem}
+  :is(div,p,nav,form):has(> .btn + .btn):not(:has(> :not(.btn,br))):not(.cookie-actions,.mobile-menu,.xt-actions){display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  :is(div,p,nav,form):has(> .btn + .btn):not(:has(> :not(.btn,br))):not(.cookie-actions,.mobile-menu,.xt-actions) > .btn + .btn{margin-left:0}
+  .center:has(> .btn + .btn):not(:has(> :not(.btn,br))){justify-content:center}
+  .hero-link{display:inline-flex;align-items:center;min-height:40px}
+  .switch::before{content:"";position:absolute;inset:-9px -6px}
+
+  /* small mono labels: readable floor (they stay small caps-style labels by design) */
+  .kicker{font-size:.75rem}
+  .chip{font-size:.75rem}
+  .crumbs{font-size:.8125rem}
+  .crumbs a{display:inline-flex;align-items:center;min-height:40px}
+  .post .meta{font-size:.8125rem}
+  small{font-size:max(.8125rem,.85em)}
+
+  /* guides and legal pages: table of contents */
+  .toc{font-size:.9375rem}
+  .toc a{padding-top:9px;padding-bottom:9px}
+  /* guide pages: keep "On this page" up top; the guide and related link lists stay on desktop
+     (the same links are in the guides hub and footer) */
+  .toc:has(a[href="guides.html"]){border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--panel)}
+  .toc:has(a[href="guides.html"]) h4:nth-of-type(n+2),
+  .toc:has(a[href="guides.html"]) h4:nth-of-type(2) ~ a:not([href="guides.html"]),
+  .toc:has(a[href="guides.html"]) h4:nth-of-type(2) ~ span{display:none}
+  .toc:has(a[href="guides.html"]) a[href="guides.html"]{margin-top:8px;color:var(--amber);border-left-color:var(--amber)}
+
+  /* data tables scroll inside their card instead of squashing */
+  .table-wrap{-webkit-overflow-scrolling:touch}
+}
+@media (max-width:640px){
+  /* blog / guide cards: whole title and the "Read the guide" link are easy to tap */
+  .post .body h3 a{display:block;padding:6px 0}
+  .post a.meta{display:inline-flex;align-items:center;min-height:40px}
+  /* segmented controls, chart range pills, watch star */
+  .seg button{min-height:44px}
+  .tv-tf{min-height:36px;padding:6px 12px;font-size:.8125rem}
+  .star-btn{min-height:40px;padding:0 10px}
+  /* checkboxes and radios: larger box, label row is the touch target */
+  input[type=checkbox],input[type=radio]{width:20px;height:20px}
+  label:has(> input[type=checkbox]),label:has(> input[type=radio]){min-height:40px;display:inline-flex;align-items:center;gap:8px}
+}
+@media (max-width:640px){
+  /* app preview header: title + button on one row, the search hint takes a full row below */
+  .app-top .search{order:3;flex:1 1 100%;min-height:44px;display:flex;align-items:center;gap:8px}
+  .app-top .search kbd{display:none}
+}
+@media (max-width:640px){
+  /* readability floor for running copy and data values (labels stay compact) */
+  .source-card-desc,.sources-sub,.wl-know li,.ws-kpi .d,.stat p,.stat .d,.news-row p,.compare-picks label,.plan .ask,.plan .billed,.report-meta,.conv-empty,.usage p{font-size:.875rem}
+  .stat .k,.ws-kpi .k,.field label,.ws-form label,.ws-src span,.side-sec{font-size:.75rem}
+  .table-wrap td,.table-wrap th,.cmp td,.cmp th{font-size:.875rem}
+  tr.grp th{font-size:.75rem}
+  pre.code{font-size:.8125rem}
+  .ht-meta,.ht-name{font-size:.8125rem}
+  .wl-act b,.wl-buy-t small{font-size:.8125rem}
+}
