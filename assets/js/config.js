@@ -5,13 +5,13 @@
    credit top-ups, sign-up plan picker, app preview wallet.
    Framing: Starter answers “Is there demand?”, Plus “How is it being
    sold?”, Pro “How much will I make?”.
-   Data sources: research reports use Google Shopping + Google Search
-   (Live) on every plan. Amazon (via DataForSEO) is Coming soon / not live.
-   Supplier Intelligence (any signed-in account) is Live: AliExpress,
-   Alibaba, 1688, CJ Dropshipping, Temu, DHgate, Shopify competitor stores,
-   Meta Ad Library and TikTok (videos & hashtag views). Ad publishing,
-   TikTok Creative Center, connecting your own Shopify store, and the
-   Exchange as real-money trading are not live.
+   Data sources by plan: Free and Starter get Google Shopping, Google Search
+   and the Meta Ad Library (public ads). Plus adds TikTok and the supplier
+   marketplaces (AliExpress, Alibaba, 1688, CJ Dropshipping, Temu, DHgate).
+   Pro adds Shopify competitor stores and Amazon (via DataForSEO, Soon).
+   The Meta ad-account connection (read-only, beta) is Plus and up.
+   Ad publishing, TikTok Creative Center, connecting your own Shopify store,
+   and the Exchange as real-money trading are not live.
    ===================================================================== */
 /* Public base URL of the site (canonical/og/sitemap use the same value).
    Change it everywhere with: scripts/set-site-url.sh <new-url-with-trailing-slash>
@@ -26,14 +26,14 @@ window.MS_CONFIG = {
       blurb: "Try MarketScope on a real idea.",
       question: "See how a report works.",
       cta: "Start free",
-      sources: ["Google Shopping", "Google Search", "Amazon"],
+      sources: ["Google Shopping", "Google Search", "Meta Ad Library"],
       features: [
         "5 one-time credits",
-        "Google Shopping &amp; Search <span class=\"chip live\">Live</span> · Amazon <span class=\"chip soon\">Soon · DataForSEO</span>",
+        "Google Shopping &amp; Search <span class=\"chip live\">Live</span>",
+        "Meta Ad Library (public ads) <span class=\"chip live\">Live</span> in Supplier Intelligence",
         "Demand, Competition, Saturation & Opportunity scores",
         "Verdict (STRONG BUY → AVOID)",
         "AI Advisor summary",
-        "Supplier Intelligence search (AliExpress, Alibaba, 1688, CJ, Temu, DHgate, Shopify stores, Meta, TikTok) <span class=\"chip live\">Live</span>",
         "Paste & Analyze from a product URL (early access)",
         "1 Watchlist slot",
         "Terminal desk (example tape, movers, 7-day charts)"
@@ -42,11 +42,10 @@ window.MS_CONFIG = {
       blurb: "For founders validating their first products.",
       question: "Answers “Is there demand?”",
       cta: "Choose Starter",
-      sources: ["Google Shopping", "Google Search", "Amazon"],
+      sources: ["Google Shopping", "Google Search", "Meta Ad Library"],
       features: [
         "30 credits every month",
         "Everything in Free, plus:",
-        "Amazon BSR &amp; review velocity <span class=\"chip soon\">Soon · DataForSEO</span>",
         "Price-band recommendation",
         "Competitor Intelligence & 1 tracked store",
         "PDF / CSV export & saved reports",
@@ -57,13 +56,13 @@ window.MS_CONFIG = {
       blurb: "For active sellers testing multiple markets.",
       question: "Answers “How is it being sold?”",
       cta: "Choose Plus",
-      sources: ["Google Shopping", "Google Search", "Amazon", "Meta Ad Library", "TikTok"],
+      sources: ["Google Shopping", "Google Search", "Meta Ad Library", "TikTok", "AliExpress"],
       features: [
         "100 credits every month",
         "Everything in Starter, plus:",
-        "Meta Ad Library (public ads) <span class=\"chip live\">Live</span> in Supplier Intelligence",
-        "Ad longevity, advertiser count &amp; creative angles <span class=\"chip live\">Live</span> in Supplier Intelligence",
         "TikTok videos &amp; hashtag views <span class=\"chip live\">Live</span> in Supplier Intelligence (Creative Center not connected)",
+        "AliExpress, Alibaba, 1688, CJ, Temu and DHgate supplier search with landed cost <span class=\"chip live\">Live</span> in Supplier Intelligence",
+        "Meta ad-account connection (read-only) <span class=\"chip beta\">Beta</span>",
         "Screener, heatmap, backtest, sentiment & compare up to 4",
         "20 email alerts · 10 tracked stores · 12-month history",
         "AI Advisor summaries & priority email support"
@@ -72,12 +71,12 @@ window.MS_CONFIG = {
       blurb: "For brands and teams making big bets.",
       question: "Answers “How much will I make?”",
       cta: "Choose Pro",
-      sources: ["Google Shopping", "Google Search", "Amazon", "Meta Ad Library", "TikTok", "AliExpress", "Shopify"],
+      sources: ["Google Shopping", "Google Search", "Meta Ad Library", "TikTok", "AliExpress", "Shopify", "Amazon"],
       features: [
         "200 credits every month",
         "Everything in Plus, plus:",
-        "AliExpress, Alibaba, 1688, CJ, Temu and DHgate supplier search with landed cost <span class=\"chip live\">Live</span> in Supplier Intelligence",
         "Shopify competitor stores — store count, price bands, top stores and newest launches <span class=\"chip live\">Live</span> in Supplier Intelligence",
+        "Amazon listings, pricing, BSR &amp; review velocity <span class=\"chip soon\">Soon · DataForSEO</span>",
         "Margin / ROAS breakeven &amp; profit simulator <span class=\"chip soon\">Coming soon</span>",
         "Unlimited tracked stores, watch slots & 24-month history",
         "Portfolio desk & white-label PDF reports (early access)",
@@ -97,13 +96,14 @@ window.MS_CONFIG = {
     { group: "Data sources" },
     ["Google Shopping", "Live", "Live", "Live", "Live"],
     ["Google Search", "Live", "Live", "Live", "Live"],
-    ["Amazon (listings & pricing, via DataForSEO)", "Soon", "Soon", "Soon", "Soon"],
-    ["Amazon BSR & review velocity (via DataForSEO)", false, "Soon", "Soon", "Soon"],
     ["Meta Ad Library (public ads, Supplier Intelligence)", "Live", "Live", "Live", "Live"],
-    ["TikTok videos & hashtag views (Supplier Intelligence)", "Live", "Live", "Live", "Live"],
+    ["TikTok videos & hashtag views (Supplier Intelligence)", false, false, "Live", "Live"],
     ["TikTok Creative Center & ad publishing", false, false, false, false],
-    ["AliExpress, Alibaba, 1688, CJ, Temu, DHgate (Supplier Intelligence)", "Live", "Live", "Live", "Live"],
-    ["Shopify competitor stores (Supplier Intelligence)", "Live", "Live", "Live", "Live"],
+    ["AliExpress, Alibaba, 1688, CJ, Temu, DHgate (Supplier Intelligence)", false, false, "Live", "Live"],
+    ["Shopify competitor stores (Supplier Intelligence)", false, false, false, "Live"],
+    ["Amazon (listings & pricing, via DataForSEO)", false, false, false, "Soon"],
+    ["Amazon BSR & review velocity (via DataForSEO)", false, false, false, "Soon"],
+    ["Meta ad-account connection (read-only, beta)", false, false, "Beta", "Beta"],
     { group: "Analysis & scores" },
     ["Demand / Competition / Saturation / Opportunity scores", true, true, true, true],
     ["Verdict (STRONG BUY → AVOID)", true, true, true, true],
@@ -112,8 +112,8 @@ window.MS_CONFIG = {
     ["AI Advisor", "Summary", "Full", "Full + summaries", "Full + follow-ups"],
     ["Competitor Intelligence", "Top 3", true, true, true],
     ["Ad longevity, advertiser count & creative angles", "Live", "Live", "Live", "Live"],
-    ["TikTok trend velocity & hashtag views (Supplier Intelligence)", "Live", "Live", "Live", "Live"],
-    ["Supplier finder & landed-cost estimate (Supplier Intelligence)", "Live", "Live", "Live", "Live"],
+    ["TikTok trend velocity & hashtag views (Supplier Intelligence)", false, false, "Live", "Live"],
+    ["Supplier finder & landed-cost estimate (Supplier Intelligence)", false, false, "Live", "Live"],
     ["Margin / ROAS breakeven calculator", false, false, false, "Coming soon"],
     ["Profit simulator", false, false, false, "Coming soon"],
     { group: "Market terminal" },

@@ -6,13 +6,29 @@ import { SUPABASE_URL, SUPABASE_ANON_KEY, isSupabaseConfigured } from "./supabas
 
 var CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-/* Lowest plan that includes each integration. Source: pricing comparison matrix (config.js):
-   - CSV / PDF export: Starter and up ("Export reports (PDF / CSV)" is off on Free).
-   - REST API: Pro (API access, early access).
-   - Meta ad-account connection (beta): NOT on the pricing page yet. Proposed: Plus and Pro. Change here only.
-   Data sources (Google, Meta Ad Library public ads, TikTok, supplier marketplaces, Shopify competitor stores)
-   are Live on every plan in the matrix, so they are never locked. */
-export var MIN_PLAN = { "meta-ads": "plus", export: "starter", api: "pro" };
+/* Lowest plan that includes each integration. Must match the pricing matrix in config.js.
+   Free / Starter: Google Shopping, Google Search, Meta Ad Library (public ads).
+   Plus: those + TikTok + supplier marketplaces (AliExpress, Alibaba, 1688, CJ, Temu, DHgate).
+   Pro: those + Shopify competitor stores + remaining sources (Amazon, via DataForSEO, Soon).
+   Meta ad-account connection (beta, ads_read): Plus and Pro.
+   CSV / PDF export: Starter and up. REST API: Pro (early access). */
+export var MIN_PLAN = {
+  "google-shopping": "free",
+  "google-search": "free",
+  "meta-library": "free",
+  tiktok: "plus",
+  aliexpress: "plus",
+  alibaba: "plus",
+  "1688": "plus",
+  cj: "plus",
+  temu: "plus",
+  dhgate: "plus",
+  shopify: "pro",
+  amazon: "pro",
+  "meta-ads": "plus",
+  export: "starter",
+  api: "pro"
+};
 var ORDER = ["free", "starter", "plus", "pro"];
 var NAMES = { free: "Free", starter: "Starter", plus: "Plus", pro: "Pro" };
 
@@ -69,7 +85,7 @@ async function decorate() {
   var i = await getPlanInfo();
   if (strip && i.signedIn) {
     strip.hidden = false;
-    strip.innerHTML = 'Your plan: <b>' + planName(i.plan) + '</b>. Data sources are included on every plan. Integrations marked <span class="chip planned">LOCKED</span> need a higher plan. <a href="pricing.html">Compare plans</a>';
+    strip.innerHTML = 'Your plan: <b>' + planName(i.plan) + '</b>. Sources and integrations marked <span class="chip planned">LOCKED</span> need a higher plan. <a href="pricing.html">Compare plans</a>';
   }
   cards.forEach(function (c) {
     var key = c.getAttribute("data-min-plan-key") || "";
