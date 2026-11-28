@@ -25,7 +25,7 @@ var SOURCES = [
   ["Temu", "Retail marketplace prices (Supplier Intelligence)", "live"],
   ["DHgate", "Wholesale listings and MOQ (Supplier Intelligence)", "live"],
   ["Shopify stores", "Competitor store counts, price bands, launches (Supplier Intelligence)", "live"],
-  ["Meta Ad Library", "Public ads, advertisers, longevity (Supplier Intelligence). Publishing is not live.", "live"],
+  ["Meta Ad Library (public ads)", "Public ads, advertisers, longevity (Supplier Intelligence). Publishing is not live.", "live"],
   ["TikTok", "Videos and hashtag views (Supplier Intelligence). Creative Center and publishing are not live.", "live"]
 ];
 $("[data-steps]").innerHTML = STEPS.map(function (s, i) {

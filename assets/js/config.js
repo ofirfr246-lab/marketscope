@@ -99,7 +99,7 @@ window.MS_CONFIG = {
     ["Google Search", "Live", "Live", "Live", "Live"],
     ["Amazon (listings & pricing, via DataForSEO)", "Soon", "Soon", "Soon", "Soon"],
     ["Amazon BSR & review velocity (via DataForSEO)", false, "Soon", "Soon", "Soon"],
-    ["Meta Ad Library (Supplier Intelligence)", "Live", "Live", "Live", "Live"],
+    ["Meta Ad Library (public ads, Supplier Intelligence)", "Live", "Live", "Live", "Live"],
     ["TikTok videos & hashtag views (Supplier Intelligence)", "Live", "Live", "Live", "Live"],
     ["TikTok Creative Center & ad publishing", false, false, false, false],
     ["AliExpress, Alibaba, 1688, CJ, Temu, DHgate (Supplier Intelligence)", "Live", "Live", "Live", "Live"],
